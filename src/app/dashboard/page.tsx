@@ -25,9 +25,22 @@ export default async function DashboardPage() {
 
   const isStaff = profile?.role === "admin" || profile?.role === "ceo";
 
+  // Proves the read path works for real content, not just the profiles row:
+  // units + their words, through the same RLS-scoped client. Requires
+  // approval_status = 'approved' per the 0002 migration — reaching this far
+  // at all already implies that (the proxy would have redirected to
+  // /pending otherwise), but the policy is what actually enforces it here.
+  const { data: units } = await supabase
+    .from("units")
+    .select(
+      "id, title, order, source_reference, words(id, vietnamese_text, english_text, tone_pattern, audio_url)"
+    )
+    .order("order", { ascending: true })
+    .order("vietnamese_text", { referencedTable: "words", ascending: true });
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-8">
-      <div className="w-full max-w-sm text-center">
+    <main className="min-h-screen p-8">
+      <div className="max-w-sm mx-auto text-center mb-10">
         <h1 className="text-2xl font-semibold mb-1">
           Chào mừng{profile?.name ? `, ${profile.name}` : ""}!
         </h1>
@@ -43,6 +56,46 @@ export default async function DashboardPage() {
           </p>
         )}
         <SignOutButton />
+      </div>
+
+      <div className="max-w-2xl mx-auto">
+        <h2 className="text-lg font-medium mb-4">Lessons</h2>
+        {!units || units.length === 0 ? (
+          <p className="text-sm text-gray-500">
+            No units yet — add one with{" "}
+            <code className="text-xs">npm run seed -- &lt;file&gt;</code>.
+          </p>
+        ) : (
+          <ul className="flex flex-col gap-4">
+            {units.map((unit) => (
+              <li key={unit.id} className="border rounded-md p-4">
+                <p className="font-medium">{unit.title}</p>
+                {unit.source_reference && (
+                  <p className="text-xs text-gray-400 mb-3">
+                    {unit.source_reference}
+                  </p>
+                )}
+                {unit.words.length === 0 ? (
+                  <p className="text-sm text-gray-500">No words yet.</p>
+                ) : (
+                  <ul className="flex flex-col gap-1 mt-2">
+                    {unit.words.map((word) => (
+                      <li
+                        key={word.id}
+                        className="text-sm flex justify-between gap-4"
+                      >
+                        <span>{word.vietnamese_text}</span>
+                        <span className="text-gray-500">
+                          {word.english_text}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </main>
   );
