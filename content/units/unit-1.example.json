@@ -1,0 +1,19 @@
+{
+  "title": "Unit 1 — Greetings",
+  "order": 1,
+  "source_reference": "July 2026 Convention Program",
+  "words": [
+    {
+      "vietnamese_text": "xin chào",
+      "english_text": "hello",
+      "tone_pattern": "ngang-huyền",
+      "audio_url": null
+    },
+    {
+      "vietnamese_text": "cảm ơn",
+      "english_text": "thank you",
+      "tone_pattern": "hỏi-ngang",
+      "audio_url": null
+    }
+  ]
+}

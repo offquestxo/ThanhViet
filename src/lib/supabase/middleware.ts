@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import type { Database } from "./types";
 
 /**
  * Refreshes the Supabase auth session cookie on every request. Required by
@@ -9,7 +10,7 @@ import { NextResponse, type NextRequest } from "next/server";
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
-  const supabase = createServerClient(
+  const supabase = createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -37,16 +38,46 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Redirect unauthenticated users away from protected routes.
+  const pathname = request.nextUrl.pathname;
   const isAuthRoute =
-    request.nextUrl.pathname.startsWith("/login") ||
-    request.nextUrl.pathname.startsWith("/signup") ||
-    request.nextUrl.pathname.startsWith("/auth");
+    pathname.startsWith("/login") ||
+    pathname.startsWith("/signup") ||
+    pathname.startsWith("/auth");
+  const isPendingRoute = pathname.startsWith("/pending");
+  // /admin is exempt from the approval-status check below (not from the
+  // sign-in check above) so an admin/ceo account can never get stuck in a
+  // redirect loop or locked out of the one tool that could fix its own
+  // approval_status. Role gating for /admin itself happens in the page and
+  // in each Server Action, independent of this.
+  const isAdminRoute = pathname.startsWith("/admin");
 
-  if (!user && !isAuthRoute && request.nextUrl.pathname !== "/") {
-    const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    return NextResponse.redirect(url);
+  // Redirect unauthenticated users away from protected routes.
+  if (!user) {
+    if (!isAuthRoute && pathname !== "/") {
+      const url = request.nextUrl.clone();
+      url.pathname = "/login";
+      return NextResponse.redirect(url);
+    }
+    return supabaseResponse;
+  }
+
+  // Redirect signed-in-but-not-yet-approved users to /pending, regardless
+  // of which route they're hitting (except the exemptions above — those
+  // would otherwise create a redirect loop or a lockout).
+  if (!isAuthRoute && !isPendingRoute && !isAdminRoute) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("approval_status")
+      .eq("id", user.id)
+      .single();
+
+    // Fails closed: a missing/errored profile row is treated the same as
+    // "not approved" rather than silently letting the request through.
+    if (profile?.approval_status !== "approved") {
+      const url = request.nextUrl.clone();
+      url.pathname = "/pending";
+      return NextResponse.redirect(url);
+    }
   }
 
   return supabaseResponse;
