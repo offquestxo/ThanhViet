@@ -1,5 +1,6 @@
 /**
- * Hand-written types matching supabase/migrations/0001_init.sql.
+ * Hand-written types matching supabase/migrations/0001_init.sql and
+ * 0002_roles_and_approval.sql.
  *
  * Shape follows what @supabase/postgrest-js expects for type inference
  * (each table needs Row/Insert/Update/Relationships; the schema needs
@@ -12,6 +13,9 @@
  * Until then, update this by hand alongside any migration.
  */
 
+export type ProfileRole = "member" | "admin" | "ceo";
+export type ApprovalStatus = "pending" | "approved" | "rejected";
+
 export type Database = {
   public: {
     Tables: {
@@ -23,6 +27,9 @@ export type Database = {
           accent_pref: "northern" | "southern";
           total_points: number;
           created_at: string;
+          role: ProfileRole;
+          approval_status: ApprovalStatus;
+          email: string | null;
         };
         Insert: {
           id: string;
@@ -31,6 +38,9 @@ export type Database = {
           accent_pref?: "northern" | "southern";
           total_points?: number;
           created_at?: string;
+          role?: ProfileRole;
+          approval_status?: ApprovalStatus;
+          email?: string | null;
         };
         Update: Partial<Database["public"]["Tables"]["profiles"]["Insert"]>;
         Relationships: [];
