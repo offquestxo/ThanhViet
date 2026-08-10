@@ -3,7 +3,7 @@
   "configurations": [
     {
       "name": "thanhviet-dev",
-      "runtimeExecutable": "/Users/jason/ThanhViet/scripts/dev.sh",
+      "runtimeExecutable": "/Users/jason/Desktop/ThanhViet/scripts/dev.sh",
       "runtimeArgs": [],
       "port": 3000
     }
