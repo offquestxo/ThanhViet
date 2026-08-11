@@ -2,18 +2,99 @@
   "title": "Unit 1 — Greetings",
   "order": 1,
   "source_reference": "July 2026 Convention Program",
-  "words": [
+  "chunks": [
     {
-      "vietnamese_text": "xin chào",
-      "english_text": "hello",
-      "tone_pattern": "ngang-huyền",
-      "audio_url": null
+      "vietnamese_text": "Xin chào.",
+      "english_text": "Hello.",
+      "source_context": "Opening greeting, convention program welcome",
+      "audio_url": null,
+      "structural_concept": "none",
+      "words": [
+        {
+          "vietnamese_text": "xin chào",
+          "english_text": "hello",
+          "tone_pattern": "ngang-huyền",
+          "audio_url": null
+        }
+      ]
     },
     {
-      "vietnamese_text": "cảm ơn",
-      "english_text": "thank you",
-      "tone_pattern": "hỏi-ngang",
-      "audio_url": null
+      "vietnamese_text": "Tôi tên là Lan.",
+      "english_text": "My name is Lan.",
+      "source_context": "Self-introduction, convention program welcome",
+      "audio_url": null,
+      "structural_concept": "topic_comment",
+      "words": [
+        {
+          "vietnamese_text": "tôi",
+          "english_text": "I / me",
+          "tone_pattern": "ngang",
+          "audio_url": null
+        },
+        {
+          "vietnamese_text": "tên",
+          "english_text": "name",
+          "tone_pattern": "ngang",
+          "audio_url": null
+        }
+      ]
+    },
+    {
+      "vietnamese_text": "Đây là một quyển sách.",
+      "english_text": "This is a book.",
+      "source_context": "Classifier example, everyday object",
+      "audio_url": null,
+      "structural_concept": "classifier",
+      "words": [
+        {
+          "vietnamese_text": "quyển",
+          "english_text": "classifier for books/bound volumes",
+          "tone_pattern": "ngang",
+          "audio_url": null
+        },
+        {
+          "vietnamese_text": "sách",
+          "english_text": "book",
+          "tone_pattern": "sắc",
+          "audio_url": null
+        }
+      ]
+    },
+    {
+      "vietnamese_text": "Tôi đã học tiếng Việt.",
+      "english_text": "I have studied Vietnamese.",
+      "source_context": "Particle example, no verb conjugation",
+      "audio_url": null,
+      "structural_concept": "particle",
+      "words": [
+        {
+          "vietnamese_text": "đã",
+          "english_text": "particle marking completed action",
+          "tone_pattern": "ngã",
+          "audio_url": null
+        },
+        {
+          "vietnamese_text": "học",
+          "english_text": "to study",
+          "tone_pattern": "nặng",
+          "audio_url": null
+        }
+      ]
+    },
+    {
+      "vietnamese_text": "Cảm ơn.",
+      "english_text": "Thank you.",
+      "source_context": "Closing courtesy phrase, convention program",
+      "audio_url": null,
+      "structural_concept": "tone_identity",
+      "words": [
+        {
+          "vietnamese_text": "cảm ơn",
+          "english_text": "thank you",
+          "tone_pattern": "hỏi-ngang",
+          "audio_url": null
+        }
+      ]
     }
   ]
 }

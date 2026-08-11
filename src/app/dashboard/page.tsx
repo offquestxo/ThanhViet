@@ -26,17 +26,18 @@ export default async function DashboardPage() {
   const isStaff = profile?.role === "admin" || profile?.role === "ceo";
 
   // Proves the read path works for real content, not just the profiles row:
-  // units + their words, through the same RLS-scoped client. Requires
-  // approval_status = 'approved' per the 0002 migration — reaching this far
-  // at all already implies that (the proxy would have redirected to
-  // /pending otherwise), but the policy is what actually enforces it here.
+  // units + their chunks (Section 1a's primary teaching unit, not raw word
+  // pairs), through the same RLS-scoped client. Requires approval_status =
+  // 'approved' per the 0002 migration — reaching this far at all already
+  // implies that (the proxy would have redirected to /pending otherwise),
+  // but the policy is what actually enforces it here.
   const { data: units } = await supabase
     .from("units")
     .select(
-      "id, title, order, source_reference, words(id, vietnamese_text, english_text, tone_pattern, audio_url)"
+      "id, title, order, source_reference, chunks(id, vietnamese_text, english_text, structural_concept, display_order)"
     )
     .order("order", { ascending: true })
-    .order("vietnamese_text", { referencedTable: "words", ascending: true });
+    .order("display_order", { referencedTable: "chunks", ascending: true });
 
   return (
     <main className="min-h-screen p-8">
@@ -75,21 +76,28 @@ export default async function DashboardPage() {
                     {unit.source_reference}
                   </p>
                 )}
-                {unit.words.length === 0 ? (
-                  <p className="text-sm text-gray-500">No words yet.</p>
+                {unit.chunks.length === 0 ? (
+                  <p className="text-sm text-gray-500">No chunks yet.</p>
                 ) : (
-                  <ul className="flex flex-col gap-1 mt-2">
-                    {unit.words.map((word) => (
-                      <li
-                        key={word.id}
-                        className="text-sm flex justify-between gap-4"
-                      >
-                        <span>{word.vietnamese_text}</span>
-                        <span className="text-gray-500">
-                          {word.english_text}
-                        </span>
-                      </li>
-                    ))}
+                  <ul className="flex flex-col gap-2 mt-2">
+                    {unit.chunks
+                      .slice()
+                      .sort((a, b) => a.display_order - b.display_order)
+                      .map((chunk) => (
+                        <li key={chunk.id} className="text-sm">
+                          <div className="flex justify-between gap-4">
+                            <span>{chunk.vietnamese_text}</span>
+                            <span className="text-gray-500">
+                              {chunk.english_text}
+                            </span>
+                          </div>
+                          {chunk.structural_concept !== "none" && (
+                            <span className="text-xs text-gray-400">
+                              {chunk.structural_concept}
+                            </span>
+                          )}
+                        </li>
+                      ))}
                   </ul>
                 )}
               </li>

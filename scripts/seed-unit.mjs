@@ -2,13 +2,15 @@
 // Minimal content-loading tool — spec Section 7 explicitly allows the
 // content pipeline to "start as a spreadsheet import" for Phase 1. This is
 // that, in script form: point it at a JSON file shaped like
-// content/units/unit-1.example.json and it upserts a unit + its words.
+// content/units/unit-1.example.json and it upserts a unit + its chunks
+// (sentence/phrase-level, per Section 1a) + the Word entries each chunk
+// references for Tone Tuner purposes.
 //
 // Uses the admin (secret-key) client because it needs to write to
-// units/words, which have no client-side INSERT policy on purpose — normal
-// users (even signed in) can't write lesson content, only this
-// trusted, locally-run script can. Never expose this script's logic to a
-// web route without adding real authorization first.
+// units/chunks/words/chunk_words, which have no client-side INSERT policy
+// on purpose — normal users (even signed in) can't write lesson content,
+// only this trusted, locally-run script can. Never expose this script's
+// logic to a web route without adding real authorization first.
 //
 // Usage:
 //   node --env-file=.env.local scripts/seed-unit.mjs content/units/unit-1.example.json
@@ -40,8 +42,8 @@ if (!url || !secretKey) {
 const raw = await readFile(filePath, "utf-8");
 const unitData = JSON.parse(raw);
 
-if (!unitData.title || !Array.isArray(unitData.words)) {
-  console.error('Content file must have a "title" and a "words" array.');
+if (!unitData.title || !Array.isArray(unitData.chunks)) {
+  console.error('Content file must have a "title" and a "chunks" array.');
   process.exit(1);
 }
 
@@ -86,53 +88,177 @@ if (existingUnit) {
   console.log(`Created unit "${unitData.title}" (${unitId}).`);
 }
 
-// --- Words: find-or-create by (unit_id, vietnamese_text).
-let created = 0;
-let skipped = 0;
-
-for (const word of unitData.words) {
-  if (!word.vietnamese_text || !word.english_text) {
-    console.warn("Skipping word missing vietnamese_text/english_text:", word);
-    continue;
-  }
-
-  const { data: existingWord, error: findWordError } = await supabase
+// --- Words: find-or-create by vietnamese_text alone. Words are no longer
+// unit-scoped (Section 9 revision, migration 0003) — they're a shared
+// global registry reached via chunk_words, so the same word (e.g. reused
+// across chunks or units) resolves to one row rather than being
+// re-inserted per chunk.
+async function findOrCreateWord(word) {
+  const { data: existingWord, error: findError } = await supabase
     .from("words")
     .select("id")
-    .eq("unit_id", unitId)
     .eq("vietnamese_text", word.vietnamese_text)
     .maybeSingle();
 
-  if (findWordError) {
+  if (findError) {
     console.error(
       `Error looking up word "${word.vietnamese_text}":`,
-      findWordError.message
+      findError.message
     );
-    continue;
+    return null;
   }
 
   if (existingWord) {
-    skipped++;
-    continue;
+    return { id: existingWord.id, created: false };
   }
 
-  const { error: insertWordError } = await supabase.from("words").insert({
-    unit_id: unitId,
-    vietnamese_text: word.vietnamese_text,
-    english_text: word.english_text,
-    tone_pattern: word.tone_pattern ?? null,
-    audio_url: word.audio_url ?? null,
-  });
+  const { data: newWord, error: insertError } = await supabase
+    .from("words")
+    .insert({
+      vietnamese_text: word.vietnamese_text,
+      english_text: word.english_text,
+      tone_pattern: word.tone_pattern ?? null,
+      audio_url: word.audio_url ?? null,
+    })
+    .select("id")
+    .single();
 
-  if (insertWordError) {
+  if (insertError) {
     console.error(
       `Error inserting word "${word.vietnamese_text}":`,
-      insertWordError.message
+      insertError.message
+    );
+    return null;
+  }
+
+  return { id: newWord.id, created: true };
+}
+
+// --- Chunks: find-or-create by (unit_id, vietnamese_text) — same
+// best-effort match convention as units above.
+let chunksCreated = 0;
+let chunksSkipped = 0;
+let wordsCreated = 0;
+let wordsSkipped = 0;
+let chunkWordsCreated = 0;
+let chunkWordsSkipped = 0;
+
+for (const [chunkIndex, chunk] of unitData.chunks.entries()) {
+  if (!chunk.vietnamese_text || !chunk.english_text) {
+    console.warn(
+      "Skipping chunk missing vietnamese_text/english_text:",
+      chunk
     );
     continue;
   }
 
-  created++;
+  const { data: existingChunk, error: findChunkError } = await supabase
+    .from("chunks")
+    .select("id")
+    .eq("unit_id", unitId)
+    .eq("vietnamese_text", chunk.vietnamese_text)
+    .maybeSingle();
+
+  if (findChunkError) {
+    console.error(
+      `Error looking up chunk "${chunk.vietnamese_text}":`,
+      findChunkError.message
+    );
+    continue;
+  }
+
+  let chunkId;
+  if (existingChunk) {
+    chunkId = existingChunk.id;
+    chunksSkipped++;
+  } else {
+    const { data: newChunk, error: insertChunkError } = await supabase
+      .from("chunks")
+      .insert({
+        unit_id: unitId,
+        vietnamese_text: chunk.vietnamese_text,
+        english_text: chunk.english_text,
+        source_context: chunk.source_context ?? null,
+        audio_url: chunk.audio_url ?? null,
+        structural_concept: chunk.structural_concept ?? "none",
+        display_order: chunk.display_order ?? chunkIndex,
+      })
+      .select("id")
+      .single();
+
+    if (insertChunkError) {
+      console.error(
+        `Error inserting chunk "${chunk.vietnamese_text}":`,
+        insertChunkError.message
+      );
+      continue;
+    }
+    chunkId = newChunk.id;
+    chunksCreated++;
+  }
+
+  // --- ChunkWords: each chunk lists the subset of Word entries it wants
+  // tracked for Tone Tuner drills (not a full tokenization of the chunk).
+  const words = Array.isArray(chunk.words) ? chunk.words : [];
+  for (const [wordIndex, word] of words.entries()) {
+    if (!word.vietnamese_text || !word.english_text) {
+      console.warn(
+        `Skipping word missing vietnamese_text/english_text in chunk "${chunk.vietnamese_text}":`,
+        word
+      );
+      continue;
+    }
+
+    const wordResult = await findOrCreateWord(word);
+    if (!wordResult) continue;
+    if (wordResult.created) {
+      wordsCreated++;
+    } else {
+      wordsSkipped++;
+    }
+
+    const { data: existingLink, error: findLinkError } = await supabase
+      .from("chunk_words")
+      .select("chunk_id")
+      .eq("chunk_id", chunkId)
+      .eq("word_id", wordResult.id)
+      .maybeSingle();
+
+    if (findLinkError) {
+      console.error(
+        `Error looking up chunk_words link for "${word.vietnamese_text}":`,
+        findLinkError.message
+      );
+      continue;
+    }
+
+    if (existingLink) {
+      chunkWordsSkipped++;
+      continue;
+    }
+
+    const { error: insertLinkError } = await supabase
+      .from("chunk_words")
+      .insert({
+        chunk_id: chunkId,
+        word_id: wordResult.id,
+        display_order: wordIndex,
+      });
+
+    if (insertLinkError) {
+      console.error(
+        `Error linking word "${word.vietnamese_text}" to chunk "${chunk.vietnamese_text}":`,
+        insertLinkError.message
+      );
+      continue;
+    }
+
+    chunkWordsCreated++;
+  }
 }
 
-console.log(`Done. ${created} word(s) added, ${skipped} already existed.`);
+console.log(
+  `Done. Chunks: ${chunksCreated} created, ${chunksSkipped} already existed. ` +
+    `Words: ${wordsCreated} created, ${wordsSkipped} already existed. ` +
+    `Chunk-word links: ${chunkWordsCreated} created, ${chunkWordsSkipped} already existed.`
+);
