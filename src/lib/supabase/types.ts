@@ -1,6 +1,7 @@
 /**
  * Hand-written types matching supabase/migrations/0001_init.sql,
- * 0002_roles_and_approval.sql, and 0003_chunks_and_workspace.sql.
+ * 0002_roles_and_approval.sql, 0003_chunks_and_workspace.sql,
+ * 0004_collections.sql, and 0005_collection_presentation_metadata.sql.
  *
  * Shape follows what @supabase/postgrest-js expects for type inference
  * (each table needs Row/Insert/Update/Relationships; the schema needs
@@ -45,9 +46,38 @@ export type Database = {
         Update: Partial<Database["public"]["Tables"]["profiles"]["Insert"]>;
         Relationships: [];
       };
+      collections: {
+        // Groups Units (e.g. a convention program or publication). Added
+        // 0004, purely additive — see the spec's Section 9 addendum.
+        // icon_key/theme_key added 0005 — controlled presentation
+        // metadata only, mapped to real icons/tokens in
+        // src/components/home/collections-grid.tsx, never stored as raw
+        // component names or CSS values.
+        Row: {
+          id: string;
+          title: string;
+          order: number;
+          description: string | null;
+          icon_key: "book" | "presentation" | "microphone" | "library";
+          theme_key: "primary" | "secondary" | "accent" | "muted";
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          title: string;
+          order?: number;
+          description?: string | null;
+          icon_key?: "book" | "presentation" | "microphone" | "library";
+          theme_key?: "primary" | "secondary" | "accent" | "muted";
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["collections"]["Insert"]>;
+        Relationships: [];
+      };
       units: {
         Row: {
           id: string;
+          collection_id: string | null;
           title: string;
           order: number;
           source_reference: string | null;
@@ -55,13 +85,22 @@ export type Database = {
         };
         Insert: {
           id?: string;
+          collection_id?: string | null;
           title: string;
           order: number;
           source_reference?: string | null;
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["units"]["Insert"]>;
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "units_collection_id_fkey";
+            columns: ["collection_id"];
+            isOneToOne: false;
+            referencedRelation: "collections";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       words: {
         // No longer unit-scoped directly (0003) — reached via `chunk_words`.

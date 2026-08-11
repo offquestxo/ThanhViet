@@ -1,3 +1,5 @@
+> **ARCHIVED (August 11, 2026):** superseded by `docs/PRD.md`, `docs/TAD.md`, `docs/UI-UX-Design-System.md`, and `docs/Engineering-Standards.md`. Kept here as a point-in-time snapshot only — do not treat as current.
+
 # Vietnamese Learning App — MVP & Phased Spec
 
 *Working title: Thanh Việt*
@@ -36,6 +38,8 @@ The app is **Duolingo-*shaped*** (streaks, points, unlockable path, gamified dri
 - The atomic content unit is a **sentence/phrase-level chunk pulled from real talks**, not an isolated vocabulary word. This is a good fit for your content source specifically — JW.org talks and scripture readings are naturally connected, contextualized prose, not word lists, so this philosophy fits the *source material* better than the flashcard model would have.
 - The lesson flow is reordered so the Vietnamese chunk is encountered **in context first**, before any English translation is shown (Section 5.4).
 - `Word`-level data still exists and still matters — it's the necessary unit for the Tone Tuner (which is inherently word/syllable-level) and serves as a supporting reference layer, but it's no longer the *primary* teaching unit (Section 9).
+
+**Resolved: supplementary flashcard/matching layer, kept alongside (not instead of) concept-first flow.** Translation-pair flashcards ("Learn Vocabulary" cards) and VN→EN matching games are **not the primary teaching mechanism**, but they're kept as an **optional supplementary layer** — e.g., accessible as extra review/practice after the core Chunk Drilling flow, not as the default path a learner is funneled through. This resolves a real tension surfaced by the "Interactive Learning Architecture" doc: those mechanics are useful as quick reinforcement/review once meaning is already established via comprehensible input, just not as the *first* exposure to a word. Treat this the same way a paper dictionary is useful *after* you've read a sentence in context, not as the thing you read first.
 
 ---
 
@@ -160,6 +164,18 @@ Krashen's original "i+1" has no built-in operational definition — this section
 
 ## 5. Screens & User Flows
 
+### 5.0 Navigation & Tab Naming (adopted from the Homepage Design Handoff)
+
+Formal tab names, replacing placeholder language used elsewhere in this doc — **Collections** = the Learning tab (Sections 1a–1d), **Practice** = Workspace (Section 5.6):
+
+**Home · Collections · Practice · Tone Tuner · Leaderboard · Profile**
+
+**Two decisions resolved from the design handoff:**
+- **Favorites** (a Collection card on Home) is a personal, non-linear bookmark list — **no completion percentage**, unlike curriculum Collections (Scriptures, Presentations, Talks) which track real progress through sequential content.
+- **Weak Words widget "Practice" button** routes to **SRS-based recall review using the supplementary flashcard layer** (Section 1a), *not* the Tone Tuner. This keeps the Tone Tuner's preset-series-only decision (Section 8.2a, Decision 6) fully intact with no carve-outs, and gives the flashcard layer its first concrete use case.
+
+**Build sequencing note:** the homepage design assumes all systems (Collections, Tone Tuner, Practice/reading) are simultaneously live. Given the confirmed Phase 1a/1b split (Section 4) — Tone Tuner's engine is gated on real recordings that don't exist yet — homepage components tied to Tone Tuner (the "Tone Accuracy" stat card, "Practice Tone Tuner" daily-goal item) should be built to **gracefully degrade or hide** rather than show fake/broken data until Phase 1b actually lands.
+
 ### 5.1 Onboarding
 1. Welcome screen → sign up / log in
 2. Placement (optional in MVP — can default everyone to Unit 1 given "mostly beginners")
@@ -178,8 +194,9 @@ Krashen's original "i+1" has no built-in operational definition — this section
 1. **Encounter** — the Vietnamese chunk (sentence/phrase from a real talk) is shown with native audio and, where helpful, a supporting image or short situational context — **no English translation yet**
 2. **Notice** — a lightweight pattern-recognition step: e.g., matching the chunk to one of a few context clues, or identifying a recurring word/particle across a few chunks — reinforces statistical pattern detection before any rule is stated
 3. **Check** — the English meaning becomes available on request (tap to reveal), confirming or correcting what the learner inferred, rather than being the starting point
-4. **Produce** — Tone Tuner drill on one or two key words from the chunk: user speaks the word, gets live tone feedback, must pass a threshold to continue
-5. **Review** — quick recap screen, points awarded, streak updated; the chunk is scheduled for spaced review via the SRS engine rather than being marked "done" permanently
+4. **Speak** — the learner records themselves saying the chunk and can play it back next to the native audio for self-comparison. **No automated scoring here** — this is self-assessment/listening practice, distinct from the Tone Tuner's scored word-level check in the next step. Resolves an ambiguity from the "Interactive Learning Architecture" doc: this step is playback-only, not phrase-level automated grading, which stays out of scope per the Tone Tuner's word-only v1 decision (Section 8.2a, Decision 4).
+5. **Produce** — Tone Tuner drill on one or two key words from the chunk: user speaks the word, gets live tone feedback, must pass a threshold to continue
+6. **Review** — quick recap screen, points awarded, streak updated; the chunk is scheduled for spaced review via the SRS engine rather than being marked "done" permanently
 
 ### 5.5 Tone Tuner (standalone + embedded in lessons)
 - Large visual tone indicator (needle, wave, or tone-contour graphic — matches the "instrument tuner" metaphor)
@@ -330,7 +347,7 @@ Locked in during a follow-up product/research session, treated as settled scope 
 | 3 | Correction feedback scope | **Confirmed: full voice-quality (glottalization) feedback for all six tones from v1** — not deferred to just the high-risk tones. Supersedes the narrower ngã/nặng/hỏi-only scoping in 8.0/8.1. |
 | 4 | Practice unit | **Words only for v1** (not phrases) — the source doc proposed "words plus short phrases," but this stays word-only per Phase 1 MVP scope; short phrases are Phase 2, consistent with sentence-level grading already being deferred there. |
 | 5 | Feedback timing | Instant, per recording — a hard low-latency requirement on the pipeline, which factors directly into the offline/online decision (8.4) and the pitch-tracker choice (8.2b). |
-| 6 | Content source | **Revised:** entirely curated, preset content — no user customization of what goes into Tone Tuner. Users work through a fixed series, not open freeform selection. "Freeform practice on any word" (as originally decided) now means freely practicing within the curated set, not user-added content — see 8.2c for the full resolution. |
+| 6 | Content source | **Revised:** entirely curated, preset content — no user customization of what goes into Tone Tuner. Users work through a fixed series, not open freeform selection. "Freeform practice on any word" (as originally decided) now means freely practicing within the curated set, not user-added content — see 8.2c for the full resolution. **Reconfirmed** against the "Interactive Learning Architecture" doc's proposal to practice by Collection/Journey/Lesson/Word/Weak Words/Favorites/Random Review — that browse-by-selection model was explicitly considered and rejected; the preset-series decision stands. |
 | 7 | Freeform guardrail | Freeform practice is **blocked** for any word without recorded reference data — no best-effort/estimated scoring. The curated list is the entire usable vocabulary at any given time; dataset growth directly gates feature growth. **Cross-cutting note:** confirmed — Workspace will eventually consume this same engine (see 8.2c), and inherits this same guardrail: a word from someone's own talk only gets feedback if it's already in the curated reference set. |
 | 8 | Visual feedback | Dual-layer: pitch contour line (attempt vs. target) **and** glottalization/creak shown visually, not just folded into a score (reflected in pipeline step 9 above). |
 
@@ -379,12 +396,17 @@ The original call for 5–10 speakers × 3–5 repetitions per word stands, with
 
 **Note on this revision:** `Chunk` (sentence/phrase-level, pulled from real talks) is now the *primary* teaching unit, per the concept-first design in Section 1a. `Word` still exists and still matters — it's the required unit for the Tone Tuner and a supporting reference layer — but lessons, the SRS engine, and Talk Practice now schedule and track progress at the `Chunk` level, not the `Word` level.
 
+**New: `Collection` added above `Unit`**, per the "Interactive Learning Architecture" doc's hierarchy — accepted as a genuine improvement, not a conflict. `Unit` conceptually plays the role that doc calls "Journey" (a sequential, unlockable learning experience); `Collection` is the natural grouping above it (e.g., "2027 Convention," "Bible Reading Series," "Family Worship"). This is additive — existing `Unit`/`Chunk` structure is unchanged, just gains a parent.
+
 ```
 User
  - id, name, email, accent_pref, created_at
 
+Collection
+ - id, title, description, display_order (e.g., "2027 Convention," "Bible Reading Series")
+
 Unit
- - id, title, order, source_reference (e.g., "July 2026 Convention Program")
+ - id, collection_id, title, order, source_reference (e.g., "July 2026 Convention Program")
 
 Chunk
  - id, unit_id, vietnamese_text, english_text, source_context (e.g. which talk/paragraph this came from), audio_url, structural_concept (tags: classifier | topic_comment | particle | tone_identity | none — see Section 1b; drives Pattern Noticing selection)

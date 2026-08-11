@@ -1,26 +1,155 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+/* ============================================================================
+ * Design tokens — Thanh Việt warm palette (UI-UX-Design-System.md Section 3)
+ *
+ * FLAG: the design system names color CATEGORIES ("Emerald, Teal," "Warm
+ * Gold," "Deep Slate"), not hex values. Every hex below is my own concrete
+ * interpretation, not something literally specified — worth a visual check
+ * once real components exist in Stage 2, not just a doc-compliance read.
+ *
+ * Naming follows the standard shadcn/ui semantic token convention
+ * (background/foreground/card/primary/secondary/muted/accent/destructive/
+ * border/input/ring) so components added via `npx shadcn add ...` in Stage 2
+ * pick these up automatically. I did NOT re-run `shadcn init` to get an
+ * auto-generated baseline to check this against — that would have created
+ * src/lib/utils.ts, outside this stage's stated file scope (package.json /
+ * components.json / globals.css only) — so treat the exact variable *names*
+ * as reasonably confident (this convention has been stable across shadcn
+ * versions for years) but not independently verified against the specific
+ * "radix-nova" preset's own scaffold. First real `shadcn add` in Stage 2
+ * will immediately reveal any mismatch.
+ * ============================================================================ */
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Base surface + text */
+  --background: #fdfbf6; /* warm white/cream */
+  --foreground: #232b28; /* deep slate, warm-tinted — never pure black */
+
+  --card: #ffffff;
+  --card-foreground: var(--foreground);
+  --popover: #ffffff;
+  --popover-foreground: var(--foreground);
+
+  /* Primary: Emerald/Teal */
+  --primary: #0e9f7e;
+  --primary-foreground: #fdfbf6;
+
+  /* Secondary: Deep Jade */
+  --secondary: #1b4b43;
+  --secondary-foreground: #fdfbf6;
+
+  /* Soft Gray, warm-tinted */
+  --muted: #f2eee4;
+  --muted-foreground: #6b7268;
+
+  /* Accent: Warm Gold (doc also lists Soft Coral/Orange as accent touches —
+     kept as separate --accent-coral/--accent-orange below for occasional
+     use, not folded into the single shadcn `accent` slot) */
+  --accent: #d6a24a;
+  --accent-foreground: #2a2015;
+  --accent-coral: #e08a72;
+  --accent-orange: #e08838;
+
+  --success: #229758;
+  --warning: #d98f2b;
+  --destructive: #c1554b;
+  --destructive-foreground: #fdfbf6;
+
+  --border: #e6e1d4;
+  --input: #e6e1d4;
+  --ring: #0e9f7e;
+
+  /* Border radius — the doc gives ranges per component type (Cards 20–24px,
+     Buttons 16–20px, Inputs 16px, Avatars circular), not a single scale.
+     --radius is the shadcn-standard base (feeds the sm/md/lg/xl scale below
+     for any stock component); --radius-card is a separate explicit token
+     since cards need to run larger than the standard scale would give them.
+     FLAG: Stage 2 component work needs to actually apply --radius-card
+     on card components explicitly — it won't happen automatically. */
+  --radius: 1.125rem; /* 18px — mid of the 16–20px button/input range */
+  --radius-card: 1.375rem; /* 22px — mid of the 20–24px card range */
+
+  /* Elevation — doc says "subtle shadows only." Exploratory tokens, not
+     used anywhere yet; Stage 2 may find Tailwind's built-in shadow-sm/
+     shadow-md utilities sufficient instead. Flagged as an open call. */
+  --shadow-card: 0 1px 2px rgba(35, 43, 40, 0.04), 0 4px 16px rgba(35, 43, 40, 0.06);
+  --shadow-hover: 0 2px 4px rgba(35, 43, 40, 0.06), 0 8px 24px rgba(35, 43, 40, 0.1);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-coral: var(--accent-coral);
+  --color-accent-orange: var(--accent-orange);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) - 8px);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-card: var(--radius-card);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #171c1a;
+    --foreground: #f1ece1;
+
+    --card: #1d2422;
+    --card-foreground: var(--foreground);
+    --popover: #1d2422;
+    --popover-foreground: var(--foreground);
+
+    --primary: #34c495;
+    --primary-foreground: #0d1512;
+
+    --secondary: #2e7b62;
+    --secondary-foreground: #f1ece1;
+
+    --muted: #232b27;
+    --muted-foreground: #9ca79e;
+
+    --accent: #e5b968;
+    --accent-foreground: #241b0c;
+    --accent-coral: #e79c86;
+    --accent-orange: #e79a52;
+
+    --success: #3fbe7a;
+    --warning: #e2a64c;
+    --destructive: #dd776c;
+    --destructive-foreground: #1b1210;
+
+    --border: #2b332f;
+    --input: #2b332f;
+    --ring: #34c495;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
