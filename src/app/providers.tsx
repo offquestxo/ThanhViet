@@ -2,6 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   // useState ensures each user/request gets its own QueryClient instance
@@ -18,6 +19,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      {/* Required by shadcn's tooltip component (Stage 2 nav uses it) —
+          added per the CLI's own post-install instructions. */}
+      <TooltipProvider>{children}</TooltipProvider>
+    </QueryClientProvider>
   );
 }

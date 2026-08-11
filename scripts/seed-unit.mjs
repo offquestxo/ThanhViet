@@ -2,9 +2,13 @@
 // Minimal content-loading tool — spec Section 7 explicitly allows the
 // content pipeline to "start as a spreadsheet import" for Phase 1. This is
 // that, in script form: point it at a JSON file shaped like
-// content/units/unit-1.example.json and it upserts a unit + its chunks
-// (sentence/phrase-level, per Section 1a) + the Word entries each chunk
-// references for Tone Tuner purposes.
+// content/units/unit-1.example.json and it upserts a unit (optionally
+// under a Collection) + its chunks (sentence/phrase-level, per Section 1a)
+// + the Word entries each chunk references for Tone Tuner purposes.
+//
+// Collection grouping is optional and additive (migration 0004) — a
+// content file without a "collection" key still works exactly as before,
+// leaving the unit's collection_id untouched/null.
 //
 // Uses the admin (secret-key) client because it needs to write to
 // units/chunks/words/chunk_words, which have no client-side INSERT policy
@@ -51,13 +55,78 @@ const supabase = createClient(url, secretKey, {
   auth: { autoRefreshToken: false, persistSession: false },
 });
 
+// --- Collection: find-or-create by title, same best-effort match
+// convention as everything else here (no DB-enforced uniqueness).
+// Optional — content files with no "collection" key skip this entirely.
+let collectionId = null;
+if (unitData.collection?.title) {
+  const { data: existingCollection, error: findCollectionError } = await supabase
+    .from("collections")
+    .select("id, icon_key, theme_key")
+    .eq("title", unitData.collection.title)
+    .maybeSingle();
+
+  if (findCollectionError) {
+    console.error("Error looking up collection:", findCollectionError.message);
+    process.exit(1);
+  }
+
+  if (existingCollection) {
+    collectionId = existingCollection.id;
+    console.log(
+      `Collection "${unitData.collection.title}" already exists (${collectionId}) — reusing it.`
+    );
+
+    // Backfill icon_key/theme_key (0005 — controlled presentation
+    // metadata) if the content file specifies values that differ from
+    // what's already there. Same backfill pattern as collection_id above.
+    const updates = {};
+    if (unitData.collection.icon_key && unitData.collection.icon_key !== existingCollection.icon_key) {
+      updates.icon_key = unitData.collection.icon_key;
+    }
+    if (unitData.collection.theme_key && unitData.collection.theme_key !== existingCollection.theme_key) {
+      updates.theme_key = unitData.collection.theme_key;
+    }
+    if (Object.keys(updates).length > 0) {
+      const { error: updateCollectionError } = await supabase
+        .from("collections")
+        .update(updates)
+        .eq("id", collectionId);
+
+      if (updateCollectionError) {
+        console.error("Error backfilling collection metadata:", updateCollectionError.message);
+        process.exit(1);
+      }
+      console.log(`Updated collection metadata for "${unitData.collection.title}":`, updates);
+    }
+  } else {
+    const { data: newCollection, error: insertCollectionError } = await supabase
+      .from("collections")
+      .insert({
+        title: unitData.collection.title,
+        description: unitData.collection.description ?? null,
+        icon_key: unitData.collection.icon_key ?? undefined,
+        theme_key: unitData.collection.theme_key ?? undefined,
+      })
+      .select("id")
+      .single();
+
+    if (insertCollectionError) {
+      console.error("Error creating collection:", insertCollectionError.message);
+      process.exit(1);
+    }
+    collectionId = newCollection.id;
+    console.log(`Created collection "${unitData.collection.title}" (${collectionId}).`);
+  }
+}
+
 // --- Unit: find-or-create by title. Titles aren't declared unique in the
 // schema, so this is a best-effort match, not a DB-enforced guarantee —
 // fine for one founder seeding content by hand, revisit if that changes.
 let unitId;
 const { data: existingUnit, error: findUnitError } = await supabase
   .from("units")
-  .select("id")
+  .select("id, collection_id")
   .eq("title", unitData.title)
   .maybeSingle();
 
@@ -69,6 +138,23 @@ if (findUnitError) {
 if (existingUnit) {
   unitId = existingUnit.id;
   console.log(`Unit "${unitData.title}" already exists (${unitId}) — reusing it.`);
+
+  // Backfill collection_id on a pre-existing unit if the content file now
+  // specifies one and the unit doesn't have it yet — the live "Unit 1 —
+  // Greetings" row predates the collections feature and needs exactly
+  // this to actually pick one up.
+  if (collectionId && existingUnit.collection_id !== collectionId) {
+    const { error: updateUnitError } = await supabase
+      .from("units")
+      .update({ collection_id: collectionId })
+      .eq("id", unitId);
+
+    if (updateUnitError) {
+      console.error("Error backfilling unit's collection_id:", updateUnitError.message);
+      process.exit(1);
+    }
+    console.log(`Linked unit "${unitData.title}" to collection ${collectionId}.`);
+  }
 } else {
   const { data: newUnit, error: insertUnitError } = await supabase
     .from("units")
@@ -76,6 +162,7 @@ if (existingUnit) {
       title: unitData.title,
       order: unitData.order ?? 0,
       source_reference: unitData.source_reference ?? null,
+      collection_id: collectionId,
     })
     .select("id")
     .single();

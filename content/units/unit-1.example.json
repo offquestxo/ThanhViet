@@ -2,6 +2,12 @@
   "title": "Unit 1 — Greetings",
   "order": 1,
   "source_reference": "July 2026 Convention Program",
+  "collection": {
+    "title": "July 2026 Convention Program",
+    "description": null,
+    "icon_key": "presentation",
+    "theme_key": "secondary"
+  },
   "chunks": [
     {
       "vietnamese_text": "Xin chào.",
