@@ -1,7 +1,7 @@
 # Thanh Việt
 
-A Vietnamese-learning web app (Duolingo-style lessons + a live pronunciation
-"Tone Tuner") built for a specific congregation's study group. See the full
+A Vietnamese-learning web app (custom lessons + a live pronunciation
+"Tone Tuner") built for a specific study group. See the full
 product spec for vision, phased roadmap, and data model.
 
 ## Stack
