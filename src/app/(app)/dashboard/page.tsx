@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Lock } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { SignOutButton } from "@/components/sign-out-button";
 import { Section } from "@/components/ui/section";
@@ -13,6 +14,7 @@ import { RecentlyPracticed } from "@/components/home/recently-practiced";
 import { TodayGoal } from "@/components/home/today-goal";
 import { LeaderboardCard } from "@/components/home/leaderboard-card";
 import { WeakWordsCard } from "@/components/home/weak-words-card";
+import { computeUnitProgression } from "@/lib/lesson-progression";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -44,15 +46,42 @@ export default async function DashboardPage() {
   // the actual lesson flow now (/lesson/[unitId]).
   const { data: units } = await supabase
     .from("units")
-    .select("id, title, order, source_reference, chunks(id)")
+    .select("id, collection_id, title, order, source_reference, chunks(id)")
     .order("order", { ascending: true });
 
-  // Hero's "current journey" — real, reused data: the first unit with
-  // chunks to actually practice, falling back to the first unit overall.
-  // Not the real i+1/next-unit-selection algorithm (unbuilt) — just the
-  // simplest honest choice from what's already fetched.
+  // Track 2: derived unit unlock/progression, no new schema — just this
+  // user's completed chunk ids, read from a table already proven working
+  // end-to-end this session. See src/lib/lesson-progression.ts for the
+  // full rule set.
+  const { data: completedChunkRows } = await supabase
+    .from("user_chunk_progress")
+    .select("chunk_id")
+    .eq("user_id", user.id);
+
+  const completedChunkIds = new Set(
+    (completedChunkRows ?? []).map((row) => row.chunk_id)
+  );
+
+  const progression = computeUnitProgression(
+    (units ?? []).map((u) => ({
+      id: u.id,
+      collection_id: u.collection_id,
+      order: u.order,
+      chunkIds: u.chunks.map((c) => c.id),
+    })),
+    completedChunkIds
+  );
+
+  // Hero's "current journey" — real, reused data: the first *accessible*
+  // (unlocked or completed) unit with chunks to actually practice, falling
+  // back to the first unit overall. Not the real i+1/next-unit-selection
+  // algorithm (unbuilt) — just the simplest honest choice from what's
+  // already fetched, now also honoring the unlock gate so the hero never
+  // points at a locked unit.
   const heroUnit =
-    units?.find((u) => u.chunks.length > 0) ?? units?.[0] ?? null;
+    units?.find(
+      (u) => u.chunks.length > 0 && progression.get(u.id) !== "locked"
+    ) ?? units?.[0] ?? null;
 
   // Real Collections — same RLS-gated read path as units/chunks. Nested
   // embed verified against the live schema before wiring it up here (same
@@ -119,35 +148,47 @@ export default async function DashboardPage() {
           {units && units.length > 0 && (
             <Section title="Lessons">
               <ul className="flex flex-col gap-4">
-                {units.map((unit) => (
-                  <li key={unit.id}>
-                    <AppCard>
-                      <CardContent className="flex items-center justify-between gap-4">
-                        <div>
-                          <p className="font-medium">{unit.title}</p>
-                          {unit.source_reference && (
-                            <p className="text-xs text-muted-foreground">
-                              {unit.source_reference}
+                {units.map((unit) => {
+                  const status = progression.get(unit.id) ?? "unlocked";
+                  const isLocked = status === "locked";
+                  return (
+                    <li key={unit.id}>
+                      <AppCard className={isLocked ? "opacity-60" : undefined}>
+                        <CardContent className="flex items-center justify-between gap-4">
+                          <div>
+                            <p className="font-medium">{unit.title}</p>
+                            {unit.source_reference && (
+                              <p className="text-xs text-muted-foreground">
+                                {unit.source_reference}
+                              </p>
+                            )}
+                            <p className="mt-1 text-xs text-muted-foreground">
+                              {unit.chunks.length} chunk
+                              {unit.chunks.length === 1 ? "" : "s"}
+                              {status === "completed" && " · Completed"}
                             </p>
+                          </div>
+                          {isLocked ? (
+                            <span className="flex items-center gap-1.5 text-xs whitespace-nowrap text-muted-foreground">
+                              <Lock className="size-3.5" strokeWidth={1.75} />
+                              Locked
+                            </span>
+                          ) : unit.chunks.length > 0 ? (
+                            <Button size="sm" asChild>
+                              <Link href={`/lesson/${unit.id}`}>
+                                {status === "completed" ? "Practice again" : "Start lesson"}
+                              </Link>
+                            </Button>
+                          ) : (
+                            <span className="text-xs whitespace-nowrap text-muted-foreground">
+                              No chunks yet
+                            </span>
                           )}
-                          <p className="mt-1 text-xs text-muted-foreground">
-                            {unit.chunks.length} chunk
-                            {unit.chunks.length === 1 ? "" : "s"}
-                          </p>
-                        </div>
-                        {unit.chunks.length > 0 ? (
-                          <Button size="sm" asChild>
-                            <Link href={`/lesson/${unit.id}`}>Start lesson</Link>
-                          </Button>
-                        ) : (
-                          <span className="text-xs whitespace-nowrap text-muted-foreground">
-                            No chunks yet
-                          </span>
-                        )}
-                      </CardContent>
-                    </AppCard>
-                  </li>
-                ))}
+                        </CardContent>
+                      </AppCard>
+                    </li>
+                  );
+                })}
               </ul>
             </Section>
           )}

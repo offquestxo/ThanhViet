@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { selectChunksForLesson } from "@/lib/chunk-selection";
 import { LessonFlow, type LessonChunk } from "./lesson-flow";
 
 export default async function LessonPage({
@@ -29,7 +30,7 @@ export default async function LessonPage({
     .eq("id", unitId)
     .single();
 
-  const chunks: LessonChunk[] = (unit?.chunks ?? [])
+  const allChunks: LessonChunk[] = (unit?.chunks ?? [])
     .slice()
     .sort((a, b) => a.display_order - b.display_order)
     .map((chunk) => ({
@@ -37,14 +38,14 @@ export default async function LessonPage({
       chunk_words: chunk.chunk_words.slice().sort((a, b) => a.display_order - b.display_order),
     }));
 
-  if (!unit || chunks.length === 0) {
+  if (!unit || allChunks.length === 0) {
     return (
-      <main className="min-h-screen p-8">
-        <div className="max-w-lg mx-auto text-center">
-          <p className="text-sm text-gray-500 mb-4">
+      <main className="min-h-screen bg-background p-8">
+        <div className="mx-auto max-w-lg text-center">
+          <p className="mb-4 text-sm text-muted-foreground">
             This unit doesn&apos;t have any chunks yet.
           </p>
-          <Link href="/dashboard" className="text-sm underline">
+          <Link href="/dashboard" className="text-sm text-primary underline">
             Back to dashboard
           </Link>
         </div>
@@ -52,5 +53,37 @@ export default async function LessonPage({
     );
   }
 
+  // Due-chunks-first selection (approved mechanism, PRD Section 2b's
+  // "Warm-up recall") — scoped to this unit's chunks only (Rule 6). Not
+  // i+1 (Rule 7): pure next_review_at ordering against data
+  // src/app/lesson/actions.ts already writes correctly.
+  const { data: progressRows } = await supabase
+    .from("user_chunk_progress")
+    .select("chunk_id, next_review_at")
+    .eq("user_id", user.id)
+    .in(
+      "chunk_id",
+      allChunks.map((c) => c.id)
+    );
+
+  const progressByChunkId = new Map(
+    (progressRows ?? []).map((row) => [row.chunk_id, { next_review_at: row.next_review_at }])
+  );
+
+  const chunks = selectChunksForLesson(allChunks, progressByChunkId, new Date());
+
+  // Deliberately NOT branching on chunks.length === 0 here, even though a
+  // unit can have real chunks but nothing due/new for this user right now
+  // (guaranteed the moment someone re-enters a just-finished unit) — see
+  // the "found a real bug" note in LessonFlow. A page-level branch here
+  // re-evaluates on every Server Action revalidation (completeChunk causes
+  // one on this very route), so it can flip mid-session and unmount the
+  // active lesson out from under a user who's mid-Review on their last
+  // chunk. The empty/zero-eligible check lives inside LessonFlow instead,
+  // protected by the same mount-time snapshot that protects `chunks`
+  // itself — see there for why. What UX the "nothing due" state deserves
+  // beyond a plain status message (a countdown, hiding the entry point on
+  // the dashboard, a "practice anyway" override) is a separate open
+  // question, flagged not decided, independent of this fix.
   return <LessonFlow unitTitle={unit.title} chunks={chunks} />;
 }
