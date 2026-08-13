@@ -2,8 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useAudioRecorder } from "@/hooks/use-audio-recorder";
 import { completeChunk } from "../actions";
+import { Button } from "@/components/ui/button";
+import { AppCard } from "@/components/ui/app-card";
+import { CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 type StructuralConcept =
   | "classifier"
@@ -56,14 +61,36 @@ const CONCEPT_OPTIONS: { value: StructuralConcept; label: string }[] = [
 type Step = "encounter" | "notice" | "check" | "speak" | "produce" | "review";
 const STEPS: Step[] = ["encounter", "notice", "check", "speak", "produce", "review"];
 
+const STEP_LABELS: Record<Step, string> = {
+  encounter: "Encounter",
+  notice: "Notice",
+  check: "Check",
+  speak: "Speak",
+  produce: "Produce",
+  review: "Review",
+};
+
 export function LessonFlow({
   unitTitle,
-  chunks,
+  chunks: chunksProp,
 }: {
   unitTitle: string;
   chunks: LessonChunk[];
 }) {
   const router = useRouter();
+  // Snapshot the chunk list once, on mount — deliberately NOT reading
+  // chunksProp directly on every render. Server Actions called from within
+  // this tree (completeChunk, below) cause Next.js to automatically
+  // re-render this route's Server Component (page.tsx) as part of the
+  // action round-trip, which recomputes the due/new selection with
+  // freshly-updated data — including the chunk that action JUST
+  // rescheduled, which now drops out of the due set. Without this
+  // snapshot, that fresh (shorter) array gets pushed into this
+  // already-mounted component while `chunkIndex` stays put, silently
+  // shifting every chunk after it by one and skipping one entirely.
+  // A lesson session's chunk list is decided once, at entry — not
+  // continuously re-evaluated while you're mid-walk through it.
+  const [chunks] = useState(chunksProp);
   const [chunkIndex, setChunkIndex] = useState(0);
   const [step, setStep] = useState<Step>("encounter");
   const [noticeSelection, setNoticeSelection] = useState<StructuralConcept | null>(null);
@@ -75,6 +102,29 @@ export function LessonFlow({
     | { status: "error"; message: string }
   >({ status: "idle" });
   const recorder = useAudioRecorder();
+
+  // A unit can have real chunks but nothing due/new for this user right
+  // now (every chunk already practiced and future-scheduled) — guaranteed
+  // to happen the moment someone re-enters a just-finished unit. Handled
+  // here, inside the snapshotted component, rather than as a branch in
+  // page.tsx — see the note there for why that distinction is load-
+  // bearing, not stylistic. What UX this deserves beyond a plain status
+  // message is a separate open question, not decided here.
+  if (chunks.length === 0) {
+    return (
+      <main className="min-h-screen bg-background p-8">
+        <div className="mx-auto max-w-lg text-center">
+          <p className="mb-4 text-sm text-muted-foreground">
+            Nothing to practice right now — every chunk in this unit is already
+            scheduled for a later review.
+          </p>
+          <Link href="/dashboard" className="text-sm text-primary underline">
+            Back to dashboard
+          </Link>
+        </div>
+      </main>
+    );
+  }
 
   const chunk = chunks[chunkIndex];
   const isLastChunk = chunkIndex === chunks.length - 1;
@@ -118,253 +168,267 @@ export function LessonFlow({
   }
 
   return (
-    <main className="min-h-screen p-8">
-      <div className="max-w-lg mx-auto">
-        <div className="flex justify-between items-baseline mb-1">
-          <p className="text-xs text-gray-400">{unitTitle}</p>
-          <p className="text-xs text-gray-400">
+    <main className="min-h-screen bg-background p-8">
+      <div className="mx-auto max-w-lg">
+        <div className="mb-1 flex items-baseline justify-between">
+          <p className="text-xs text-muted-foreground">{unitTitle}</p>
+          <p className="text-xs text-muted-foreground">
             Chunk {chunkIndex + 1} / {chunks.length}
           </p>
         </div>
-        <div className="flex gap-1 mb-8">
+        <div className="mb-8 flex gap-1">
           {STEPS.map((s, i) => (
             <div
               key={s}
-              className={`h-1 flex-1 rounded ${
-                i <= stepIndex ? "bg-foreground" : "bg-gray-200 dark:bg-gray-800"
-              }`}
+              className={cn(
+                "h-1 flex-1 rounded-full transition-colors",
+                i <= stepIndex ? "bg-primary" : "bg-muted"
+              )}
             />
           ))}
         </div>
 
         {step === "encounter" && (
-          <section>
-            <p className="text-xs uppercase tracking-wide text-gray-400 mb-3">
-              Encounter
-            </p>
-            <p className="text-2xl mb-3">{chunk.vietnamese_text}</p>
-            {chunk.source_context && (
-              <p className="text-sm text-gray-500 mb-4">{chunk.source_context}</p>
-            )}
-            {chunk.audio_url ? (
-              <audio controls src={chunk.audio_url} className="mb-6 w-full" />
-            ) : (
-              <p className="text-xs text-gray-400 mb-6">
-                (native audio coming soon for this chunk)
+          <AppCard>
+            <CardContent className="flex flex-col gap-4">
+              <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                {STEP_LABELS.encounter}
               </p>
-            )}
-            <button
-              onClick={() => setStep("notice")}
-              className="border rounded-md px-4 py-2 text-sm"
-            >
-              Continue
-            </button>
-          </section>
+              <p className="text-2xl">{chunk.vietnamese_text}</p>
+              {chunk.source_context && (
+                <p className="text-sm text-muted-foreground">{chunk.source_context}</p>
+              )}
+              {chunk.audio_url ? (
+                <audio controls src={chunk.audio_url} className="w-full" />
+              ) : (
+                <p className="text-xs text-muted-foreground">
+                  (native audio coming soon for this chunk)
+                </p>
+              )}
+              <div>
+                <Button onClick={() => setStep("notice")}>Continue</Button>
+              </div>
+            </CardContent>
+          </AppCard>
         )}
 
         {step === "notice" && (
-          <section>
-            <p className="text-xs uppercase tracking-wide text-gray-400 mb-3">
-              Notice
-            </p>
-            <p className="text-xl mb-4">{chunk.vietnamese_text}</p>
-            <p className="text-sm text-gray-500 mb-4">
-              What pattern do you notice in this chunk?
-            </p>
-            <div className="flex flex-col gap-2 mb-4">
-              {CONCEPT_OPTIONS.map((opt) => {
-                const isSelected = noticeSelection === opt.value;
-                const showFeedback = noticeSelection !== null;
-                const isThisCorrect = opt.value === chunk.structural_concept;
-                return (
-                  <button
-                    key={opt.value}
-                    onClick={() => setNoticeSelection(opt.value)}
-                    disabled={noticeSelection !== null}
-                    className={`text-left text-sm border rounded-md px-3 py-2 ${
-                      isSelected ? "border-foreground" : ""
-                    } ${
-                      showFeedback && isThisCorrect
-                        ? "border-green-600"
-                        : showFeedback && isSelected
-                          ? "border-red-600"
-                          : ""
-                    }`}
-                  >
-                    {opt.label}
-                  </button>
-                );
-              })}
-            </div>
-            {noticeSelection !== null && (
-              <p className="text-sm mb-4">
-                {noticeCorrect ? "Right — nicely noticed." : "Not quite — keep an eye out for this pattern."}
+          <AppCard>
+            <CardContent className="flex flex-col gap-4">
+              <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                {STEP_LABELS.notice}
               </p>
-            )}
-            <button
-              onClick={() => setStep("check")}
-              disabled={noticeSelection === null}
-              className="border rounded-md px-4 py-2 text-sm disabled:opacity-40"
-            >
-              Continue
-            </button>
-          </section>
+              <p className="text-xl">{chunk.vietnamese_text}</p>
+              <p className="text-sm text-muted-foreground">
+                What pattern do you notice in this chunk?
+              </p>
+              <div className="flex flex-col gap-2">
+                {CONCEPT_OPTIONS.map((opt) => {
+                  const isSelected = noticeSelection === opt.value;
+                  const showFeedback = noticeSelection !== null;
+                  const isThisCorrect = opt.value === chunk.structural_concept;
+                  return (
+                    <button
+                      key={opt.value}
+                      onClick={() => setNoticeSelection(opt.value)}
+                      disabled={noticeSelection !== null}
+                      className={cn(
+                        "rounded-[var(--radius-md)] border border-border px-3 py-2 text-left text-sm transition-colors",
+                        isSelected && "border-foreground",
+                        showFeedback && isThisCorrect && "border-success",
+                        showFeedback && isSelected && !isThisCorrect && "border-destructive"
+                      )}
+                    >
+                      {opt.label}
+                    </button>
+                  );
+                })}
+              </div>
+              {noticeSelection !== null && (
+                <p
+                  className={cn(
+                    "text-sm",
+                    noticeCorrect ? "text-success" : "text-muted-foreground"
+                  )}
+                >
+                  {noticeCorrect
+                    ? "Right — nicely noticed."
+                    : "Not quite — keep an eye out for this pattern."}
+                </p>
+              )}
+              <div>
+                <Button onClick={() => setStep("check")} disabled={noticeSelection === null}>
+                  Continue
+                </Button>
+              </div>
+            </CardContent>
+          </AppCard>
         )}
 
         {step === "check" && (
-          <section>
-            <p className="text-xs uppercase tracking-wide text-gray-400 mb-3">Check</p>
-            <p className="text-xl mb-4">{chunk.vietnamese_text}</p>
-            {meaningRevealed ? (
-              <p className="text-lg text-gray-500 mb-6">{chunk.english_text}</p>
-            ) : (
-              <button
-                onClick={() => setMeaningRevealed(true)}
-                className="border rounded-md px-4 py-2 text-sm mb-6"
-              >
-                Reveal meaning
-              </button>
-            )}
-            <div>
-              <button
-                onClick={() => setStep("speak")}
-                disabled={!meaningRevealed}
-                className="border rounded-md px-4 py-2 text-sm disabled:opacity-40"
-              >
-                Continue
-              </button>
-            </div>
-          </section>
+          <AppCard>
+            <CardContent className="flex flex-col gap-4">
+              <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                {STEP_LABELS.check}
+              </p>
+              <p className="text-xl">{chunk.vietnamese_text}</p>
+              {meaningRevealed ? (
+                <p className="text-lg text-muted-foreground">{chunk.english_text}</p>
+              ) : (
+                <div>
+                  <Button variant="outline" onClick={() => setMeaningRevealed(true)}>
+                    Reveal meaning
+                  </Button>
+                </div>
+              )}
+              <div>
+                <Button onClick={() => setStep("speak")} disabled={!meaningRevealed}>
+                  Continue
+                </Button>
+              </div>
+            </CardContent>
+          </AppCard>
         )}
 
         {step === "speak" && (
-          <section>
-            <p className="text-xs uppercase tracking-wide text-gray-400 mb-3">Speak</p>
-            <p className="text-xl mb-4">{chunk.vietnamese_text}</p>
-            <p className="text-sm text-gray-500 mb-4">
-              Say it out loud, then compare your recording with the native audio.
-              This isn&apos;t scored — it&apos;s just for your own ear.
-            </p>
-
-            {chunk.audio_url ? (
-              <div className="mb-4">
-                <p className="text-xs text-gray-400 mb-1">Native audio</p>
-                <audio controls src={chunk.audio_url} className="w-full" />
-              </div>
-            ) : (
-              <p className="text-xs text-gray-400 mb-4">
-                (native audio coming soon for this chunk)
+          <AppCard>
+            <CardContent className="flex flex-col gap-4">
+              <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                {STEP_LABELS.speak}
               </p>
-            )}
+              <p className="text-xl">{chunk.vietnamese_text}</p>
+              <p className="text-sm text-muted-foreground">
+                Say it out loud, then compare your recording with the native audio. This
+                isn&apos;t scored — it&apos;s just for your own ear.
+              </p>
 
-            <div className="mb-4">
-              <p className="text-xs text-gray-400 mb-1">Your recording</p>
-              {recorder.audioUrl ? (
-                <audio controls src={recorder.audioUrl} className="w-full" />
+              {chunk.audio_url ? (
+                <div>
+                  <p className="mb-1 text-xs text-muted-foreground">Native audio</p>
+                  <audio controls src={chunk.audio_url} className="w-full" />
+                </div>
               ) : (
-                <button
-                  onClick={
-                    recorder.isRecording ? recorder.stopRecording : recorder.startRecording
-                  }
-                  className="border rounded-md px-4 py-2 text-sm"
-                >
-                  {recorder.isRecording ? "Stop recording" : "Record yourself"}
-                </button>
+                <p className="text-xs text-muted-foreground">
+                  (native audio coming soon for this chunk)
+                </p>
               )}
-              {recorder.audioUrl && (
-                <button
-                  onClick={recorder.reset}
-                  className="ml-2 text-xs underline text-gray-500"
-                >
-                  Re-record
-                </button>
-              )}
-              {recorder.error && (
-                <p className="text-xs text-red-600 mt-2">{recorder.error}</p>
-              )}
-            </div>
 
-            <button
-              onClick={() => setStep("produce")}
-              className="border rounded-md px-4 py-2 text-sm"
-            >
-              {recorder.audioUrl ? "Continue" : "Skip"}
-            </button>
-          </section>
+              <div>
+                <p className="mb-1 text-xs text-muted-foreground">Your recording</p>
+                {recorder.audioUrl ? (
+                  <audio controls src={recorder.audioUrl} className="w-full" />
+                ) : (
+                  <Button
+                    variant="outline"
+                    onClick={
+                      recorder.isRecording ? recorder.stopRecording : recorder.startRecording
+                    }
+                  >
+                    {recorder.isRecording ? "Stop recording" : "Record yourself"}
+                  </Button>
+                )}
+                {recorder.audioUrl && (
+                  <button
+                    onClick={recorder.reset}
+                    className="ml-2 text-xs text-muted-foreground underline"
+                  >
+                    Re-record
+                  </button>
+                )}
+                {recorder.error && (
+                  <p className="mt-2 text-xs text-destructive">{recorder.error}</p>
+                )}
+              </div>
+
+              <div>
+                <Button onClick={() => setStep("produce")}>
+                  {recorder.audioUrl ? "Continue" : "Skip"}
+                </Button>
+              </div>
+            </CardContent>
+          </AppCard>
         )}
 
         {step === "produce" && (
-          <section>
-            <p className="text-xs uppercase tracking-wide text-gray-400 mb-3">
-              Produce
-            </p>
-            <p className="text-sm text-gray-500 mb-4">
-              Key words from this chunk:
-            </p>
-            <ul className="flex flex-col gap-2 mb-4">
-              {chunk.chunk_words
-                .slice()
-                .sort((a, b) => a.display_order - b.display_order)
-                .slice(0, 2)
-                .map((cw) => (
-                  <li key={cw.words.id} className="border rounded-md px-3 py-2 text-sm">
-                    {cw.words.vietnamese_text}
-                    {cw.words.tone_pattern && (
-                      <span className="text-gray-400"> · {cw.words.tone_pattern}</span>
-                    )}
-                  </li>
-                ))}
-            </ul>
-            <p className="text-xs text-gray-400 mb-6">
-              Tone Tuner check coming in Phase 1b — this step doesn&apos;t block your
-              progress yet.
-            </p>
-            <button
-              onClick={() => {
-                setStep("review");
-                void handleReviewEntered();
-              }}
-              className="border rounded-md px-4 py-2 text-sm"
-            >
-              Continue
-            </button>
-          </section>
+          <AppCard>
+            <CardContent className="flex flex-col gap-4">
+              <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                {STEP_LABELS.produce}
+              </p>
+              <p className="text-sm text-muted-foreground">Key words from this chunk:</p>
+              <ul className="flex flex-col gap-2">
+                {chunk.chunk_words
+                  .slice()
+                  .sort((a, b) => a.display_order - b.display_order)
+                  .slice(0, 2)
+                  .map((cw) => (
+                    <li
+                      key={cw.words.id}
+                      className="rounded-[var(--radius-md)] border border-border px-3 py-2 text-sm"
+                    >
+                      {cw.words.vietnamese_text}
+                      {cw.words.tone_pattern && (
+                        <span className="text-muted-foreground"> · {cw.words.tone_pattern}</span>
+                      )}
+                    </li>
+                  ))}
+              </ul>
+              <p className="text-xs text-muted-foreground">
+                Tone Tuner check coming in Phase 1b — this step doesn&apos;t block your progress
+                yet.
+              </p>
+              <div>
+                <Button
+                  onClick={() => {
+                    setStep("review");
+                    void handleReviewEntered();
+                  }}
+                >
+                  Continue
+                </Button>
+              </div>
+            </CardContent>
+          </AppCard>
         )}
 
         {step === "review" && (
-          <section>
-            <p className="text-xs uppercase tracking-wide text-gray-400 mb-3">Review</p>
-            {reviewState.status === "saving" && (
-              <p className="text-sm text-gray-500">Saving your progress…</p>
-            )}
-            {reviewState.status === "error" && (
-              <div>
-                <p className="text-sm text-red-600 mb-4">{reviewState.message}</p>
-                <button
-                  onClick={() => void handleReviewEntered()}
-                  className="border rounded-md px-4 py-2 text-sm"
-                >
-                  Try again
-                </button>
-              </div>
-            )}
-            {reviewState.status === "done" && (
-              <div>
-                <p className="text-lg mb-1">
-                  +{reviewState.pointsAwarded} points
-                </p>
-                <p className="text-sm text-gray-500 mb-6">
-                  {reviewState.currentStreak}-day streak
-                </p>
-                <button
-                  onClick={goToNextChunk}
-                  className="border rounded-md px-4 py-2 text-sm"
-                >
-                  {isLastChunk ? "Finish lesson" : "Next chunk"}
-                </button>
-              </div>
-            )}
-          </section>
+          <AppCard>
+            <CardContent className="flex flex-col gap-4">
+              <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                {STEP_LABELS.review}
+              </p>
+              {reviewState.status === "saving" && (
+                <p className="text-sm text-muted-foreground">Saving your progress…</p>
+              )}
+              {reviewState.status === "error" && (
+                <div className="flex flex-col gap-4">
+                  <p className="text-sm text-destructive">{reviewState.message}</p>
+                  <div>
+                    <Button variant="outline" onClick={() => void handleReviewEntered()}>
+                      Try again
+                    </Button>
+                  </div>
+                </div>
+              )}
+              {reviewState.status === "done" && (
+                <div className="flex flex-col gap-4">
+                  <div>
+                    <p className="text-lg font-semibold text-primary">
+                      +{reviewState.pointsAwarded} points
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {reviewState.currentStreak}-day streak
+                    </p>
+                  </div>
+                  <div>
+                    <Button onClick={goToNextChunk}>
+                      {isLastChunk ? "Finish lesson" : "Next chunk"}
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </AppCard>
         )}
       </div>
     </main>
