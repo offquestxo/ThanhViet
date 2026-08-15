@@ -17,7 +17,7 @@ The app is **Duolingo-*shaped*** (streaks, points, unlockable path, gamified dri
 
 ## 2. Learning Philosophy: Concept-First, Not Translation-First
 
-**Scope note:** everything in this section (and Sections 2a–2c below) applies specifically to the **Collections tab** (formerly "Learning tab") — the actual teaching engine. Two other systems are explicitly **out of scope here and follow their own separate design**: the **Tone Tuner** (see TAD Section 4) and **Practice / Personal Workspace** (Section 6 below — deadline-driven rehearsal of a user's own fixed content, governed by its own research-backed principles, not the acquisition-focused ones below).
+**Scope note:** everything in this section (and Sections 2a–2c below) applies specifically to the **Collections tab** (formerly "Learning tab") — the actual teaching engine. Two other systems are explicitly **out of scope here and follow their own separate design**: the **Tone Tuner** (see TAD Section 4) and **Practice / Personal Workspace** (Sections 6/6a below — deadline-driven rehearsal of a user's own fixed content, governed by its own research-backed principles, not the acquisition-focused ones below).
 
 *Full research basis: see `research-learning-foundations.md`. This section summarizes the design implications.*
 
@@ -108,7 +108,7 @@ Krashen's original "i+1" has no built-in operational definition — this section
 - A fixed, unlockable core lesson path built from JW.org/wol.jw.org-sourced **sentence/phrase-level chunks** (not isolated vocabulary lists), using native-speaker audio provided by the founder
 - Comprehensible-input-first lesson flow: Vietnamese chunk encountered in context before translation is revealed
 - Tone Tuner: **live feedback**, **single words only** (drawn from within chunks), using recorded/native audio as the reference
-- Practice / Personal Workspace: user adds text + a deadline via paste, file upload, or manual typing; app auto-segments into breath-groups, tags verbatim vs. gist tiers, and runs build-then-taper practice scheduling with weak-spot-first resurfacing (Section 6)
+- Practice / Personal Workspace: user adds Vietnamese text + an optional deadline via paste or manual typing (file/image upload deferred — Section 6a); app auto-segments into breath-groups (learner can merge/split/reorder), suggests a default verbatim-vs-gist tag per group that the learner can override, and runs peak-then-taper practice scheduling with aggressive weak-spot-first resurfacing (Sections 6, 6a)
 - Basic SRS scheduling for chunk review (spaced retrieval, not just a mastery percentage)
 - Core gamification: points, streaks, badges, and a leaderboard (group-wide or per-cohort)
 - Cloud storage for progress and voice-practice history
@@ -133,7 +133,7 @@ Krashen's original "i+1" has no built-in operational definition — this section
 - [x] Comprehensible-input-first lesson flow (Encounter → Notice → Check → Speak → Produce → Review) — **done**
 - [x] Basic SRS scheduling (simplified half-life heuristic) — **done**
 - [ ] i+1 content selection: lexical/chunk coverage matching (90–95% known-word band) — not yet built
-- [ ] Workspace v1 (breath-groups, two-tier tagging, build-then-taper) — not yet built
+- [ ] Workspace v1 (breath-groups, verbatim/gist tagging, peak-then-taper scheduling, weak-spot system) — not yet built; resolved design: Section 6a
 - [x] Gamification: streak, points — **done** (badges/leaderboard UI not yet built)
 - [x] Admin/content pipeline: seed script — **done** (spreadsheet/JSON import); full admin console not yet built
 - [ ] Homepage redesign per UI/UX Design System — **in progress**
@@ -177,18 +177,64 @@ Krashen's original "i+1" has no built-in operational definition — this section
 6. **No comparative gamification.** Self-referential mechanics only (per-chunk mastery status, personal streak, a "ready" indicator tied to the individual's own deadline). No leaderboard.
 
 **Flow:**
-1. **Add material** — paste text / upload file / type manually, with a deadline date
-2. **Auto-segment** — app breaks the text into breath-groups, tags verbatim-tier spans
+1. **Add material** — paste or type Vietnamese text, with an optional deadline date (MVP: paste/type only, no file upload — see Section 6a)
+2. **Auto-segment** — app breaks the text into breath-groups and suggests verbatim-tier spans, both learner-adjustable
 3. **Build phase** — regular practice, volume increasing toward the deadline; weak breath-groups resurface disproportionately
-4. **Taper phase** (final ~week) — practice volume decreases but stays frequent; timed no-restart full run-throughs introduced
-5. **Ready status** — tied to the individual's own deadline, not group comparison; exact criteria still open
+4. **Taper phase** (final ~week) — practice volume decreases but stays frequent; periodic no-restart full run-throughs required, weak spots or not
+5. **Ready status** — tied to the individual's own deadline, not group comparison; exact criteria still open (see Section 6a)
 
-**Open items, not yet resolved:**
-- Exact breath-group segmentation approach: clause/punctuation heuristics vs. a trained sentence-boundary model
-- How verbatim-tier content gets flagged automatically vs. requiring manual tagging
-- Precise build/taper timeline defaults, and whether they scale with how far out the deadline is
-- Definition of "weak chunk" for resurfacing: error rate, hesitation/pause length, or both
-- Whether "ready" requires a successful no-restart full run-through, or can be inferred from chunk mastery alone
+**Resolved design:** the open items previously listed here (segmentation approach, verbatim-tier assignment, build/taper scaling, weak-chunk definition, and more) are resolved in **Section 6a** below, which is the authoritative spec for Workspace/Practice — this section stays as framing/rationale, 6a as the detail.
+
+---
+
+## 6a. Workspace / Practice Design (Resolved)
+
+*Resolves the Workspace-related product decisions tracked as #10–14, plus several sub-decisions surfaced during design review. Supersedes the prior vaguer Workspace language in Section 6 above wherever the two conflict; Section 6's "why" framing and six design principles still stand as the rationale this section makes concrete.*
+
+**Optimization goal.** Pronunciation, memorization, and natural delivery are pursued simultaneously, not sequenced. Practice assumes comprehension already exists (built via Learn/lessons) — it is pure rehearsal, not a comprehension-building tool.
+
+**Type-differentiated flows.** Talks, Demonstrations, Scripture readings, Prayers, and Comments get meaningfully different rehearsal flows, not one generic flow with relabeling. Assignment type is specified at creation and drives flow selection, verbatim defaults, and segmentation behavior. *(Data-model implication for the TAD — an assignment-type field driving flow/defaults per type — not detailed further here.)*
+
+**Material intake (MVP).**
+- Paste/type only. PDF/DOCX/image upload deferred to later (this corrects Section 4's MVP scope bullet, which previously listed file upload).
+- Vietnamese only — no English required at intake, and no auto-generated English reference (Practice doesn't build comprehension).
+- Imported/segmented Vietnamese text remains editable after processing — not locked.
+- Deadlines are optional per item; undated items are ongoing practice with no scheduling engine applied.
+
+**Segmentation.**
+- Auto-split into breath groups via simple punctuation/clause heuristics for MVP (smarter linguistic segmentation deferred).
+- Learner can manually merge/split/reorder groups after auto-split.
+- English meaning display is an optional per-group toggle — default on/off not specified, implementer's discretion unless otherwise noted.
+
+**Rehearsal loop (resolved shape):** Listen to reference → learner's choice: shadow (record while/immediately after listening) or read-then-record as two separate reps → compare own recording vs. reference → *[mastery-gated]* attempt without looking at text → mark difficulty (Struggled / Okay / Easy) → move to next group.
+- A group marked "Struggled" does not re-loop immediately — it moves on and resurfaces in a later session via the weak-spot/spaced system.
+- The no-looking-at-text step is adaptive, gated on a group having prior demonstrated mastery — not forced on first exposure.
+- Reference audio plays for every breath group, every time. Source: TTS as an interim stand-in until native recordings exist for that content; native preferred once available, silently upgraded per-item as recordings come in (no user-facing distinction needed at MVP).
+
+**Verbatim vs. gist.** Hybrid ownership — the app suggests a default per group (opener/closer/Scripture quotations always default verbatim), the learner can override any suggestion. Gist-mode rehearsal hides the full sentence and shows only keywords/prompts; the learner reconstructs the idea aloud rather than reciting hidden text.
+
+**Deadline engine.**
+- Auto-generates a suggested daily plan; fully editable by the learner, never a rigid lock.
+- Plan intensity scales with time remaining: a 21-day runway gets a light, spread-out plan; a 3-day runway gets intensive daily sessions. (Exact curve/thresholds are an implementation detail, not specified further here.)
+- Practice intensity follows a peak-then-taper curve: heaviest ~7–10 days before delivery, tapering afterward, with a light run-through-only recommendation on the final day.
+- Missed practice days are flagged to the learner, who decides how to catch up — no automatic guilt messaging, no automatic aggressive rescheduling.
+
+**Weak-spot system.**
+- Weakness is determined by a combination of signals: learner self-marking (Struggled/Okay/Easy) plus retry count and hesitation/restart detection — both are real MVP requirements, not deferred.
+- Weak/struggled groups resurface aggressively — nearly every session until resolved, not on a loose spaced schedule.
+- Learners are periodically required to complete a no-restart full run-through of the whole piece, even with known weak spots still present — this is a real, enforced requirement, not optional.
+
+**Tone Tuner integration.** Fully separate systems for MVP — no live handoff, no shared UI. When integration eventually happens (post-MVP): tapping a word during rehearsal that Tone Tuner doesn't support (outside its curated word list) renders as plain, non-interactive text — no fallback scoring, no degraded mode. Once integrated, pronunciation problems Tone Tuner detects will automatically feed into Practice's weak-spot system as a shared signal source.
+
+**Privacy & retention.**
+- Rehearsal recordings are not permanently stored — analyzed/played back within the session, then discarded. This significantly simplifies the privacy story: there's no persistent audio artifact to protect or leak.
+- Practice material and activity are private by default; group admins can see practice activity/progress metadata (that an assignment exists, general progress), but not recording content (moot anyway, given recordings aren't retained) or the verbatim text of what someone's rehearsing, unless otherwise specified later.
+- Deleting an assignment soft-deletes/archives it — hidden from the learner's active list but recoverable, not a hard, irreversible delete.
+
+**Still open after this pass:**
+- Whether "ready" status requires a successful no-restart full run-through, or can be inferred from chunk mastery alone — the periodic no-restart run-through above is an ongoing practice-discipline requirement, not a stated definition of "ready."
+- English-meaning-toggle default (on/off) — explicitly implementer's discretion, not decided here.
+- Exact build/taper plan curve and day-thresholds — explicitly an implementation detail, not decided here.
 
 ---
 
