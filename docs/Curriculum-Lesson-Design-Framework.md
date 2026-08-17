@@ -40,7 +40,7 @@ Thanh Việt follows a concept-first, comprehension-first acquisition model. The
 
 **Hear → Distinguish → Understand → Imitate → Tune → Recognize → Encode → Retrieve → Produce**
 
-This is a learning progression, not a rigid UI sequence. Different lessons emphasize different stages. Where a course has dropped tone-focused instruction (see Section 20), the Distinguish/Imitate/Tune stages specific to tone are omitted for that course, and the progression compresses to **Hear → Understand → Encode → Retrieve → Produce**.
+This is a learning progression, not a rigid UI sequence. Different lessons emphasize different stages. Where a course has dropped tone-focused instruction (see Section 16), the Distinguish/Imitate/Tune stages specific to tone are omitted for that course, and the progression compresses to **Hear → Understand → Encode → Retrieve → Produce**.
 
 ---
 
@@ -57,7 +57,7 @@ Whenever appropriate, use this progression: **Listen → Discriminate → Shadow
 
 Tag anything requiring native reference audio: **[NATIVE AUDIO REQUIRED]**, specifying exactly what needs to be recorded.
 
-**Note on current scope:** the Introductory course has this stage set deliberately disabled — see Section 20 for how course-level pedagogy scoping works and what that means for lessons built under it.
+**Note on current scope:** the Introductory course has this stage set deliberately disabled — see Section 16 for how course-level pedagogy scoping works and what that means for lessons built under it.
 
 ---
 
@@ -162,7 +162,7 @@ By error type:
 | Chunk recall | Recast in context | No | Reintroduce with support |
 | Writing/orthography | Direct correction | N/A | None needed |
 
-Where a course has tone-focused instruction disabled (Section 20), the tone-specific rows above do not apply for that course; all vocabulary is still subject to the other rows.
+Where a course has tone-focused instruction disabled (Section 16), the tone-specific rows above do not apply for that course; all vocabulary is still subject to the other rows.
 
 ---
 
