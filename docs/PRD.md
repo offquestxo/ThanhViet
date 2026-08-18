@@ -193,7 +193,17 @@ Krashen's original "i+1" has no built-in operational definition — this section
 
 **Optimization goal.** Pronunciation, memorization, and natural delivery are pursued simultaneously, not sequenced. Practice assumes comprehension already exists (built via Learn/lessons) — it is pure rehearsal, not a comprehension-building tool.
 
-**Type-differentiated flows.** Talks, Demonstrations, Scripture readings, Prayers, and Comments get meaningfully different rehearsal flows, not one generic flow with relabeling. Assignment type is specified at creation and drives flow selection, verbatim defaults, and segmentation behavior. *(Data-model implication for the TAD — an assignment-type field driving flow/defaults per type — not detailed further here.)*
+**Type-differentiated flows.** One shared rehearsal engine, not five separate flows/state machines — the earlier "meaningfully different, not just relabeled" language is resolved as a **per-`item_type` configuration profile** feeding the same engine, not branching logic:
+
+| `item_type` | Profile |
+|---|---|
+| Scripture reading | High exactness; verbatim default; full-text → text-fade progression |
+| Talk | Gist default; keyword/prompt-driven → no-text progression |
+| Demonstration | Gist-oriented; delivery-emphasis framing |
+| Prayer | Gist-oriented; minimal memorization pressure |
+| Comment | Gist-oriented; short-session bias |
+
+Phase 2 can graduate a type to a genuinely distinct drill (not just a config profile) where real usage shows the shared engine isn't enough — not designed here. *(Data-model implication for the TAD — an assignment-type field driving flow/defaults per type — not detailed further here.)*
 
 **Material intake (MVP).**
 - Paste/type only. PDF/DOCX/image upload deferred to later (this corrects Section 4's MVP scope bullet, which previously listed file upload).
@@ -209,10 +219,11 @@ Krashen's original "i+1" has no built-in operational definition — this section
 
 **Rehearsal loop (resolved shape):** Listen to reference → learner's choice: shadow (record while/immediately after listening) or read-then-record as two separate reps → compare own recording vs. reference → *[mastery-gated]* attempt without looking at text → mark difficulty (Struggled / Okay / Easy) → move to next group.
 - A group marked "Struggled" does not re-loop immediately — it moves on and resurfaces in a later session via the weak-spot/spaced system.
-- The no-looking-at-text step is adaptive, gated on a group having prior demonstrated mastery — not forced on first exposure.
+- The no-looking-at-text step is adaptive, gated on a group having prior demonstrated mastery — **resolved gate: both conditions required — at least 2 prior reps on that group, AND `mastery_status != 'weak'`** (see the Weak-spot system's mastery classification below; 2 is a picked default, not derived from data, flagged as tunable).
+- The shadow-vs-read-then-record choice is a fresh, ephemeral, per-rep UI choice — not persisted anywhere, no stored preference.
 - Reference audio plays for every breath group, every time. Source: TTS as an interim stand-in until native recordings exist for that content; native preferred once available, silently upgraded per-item as recordings come in (no user-facing distinction needed at MVP).
 
-**Verbatim vs. gist.** Hybrid ownership — the app suggests a default per group (opener/closer/Scripture quotations always default verbatim), the learner can override any suggestion. Gist-mode rehearsal hides the full sentence and shows only keywords/prompts; the learner reconstructs the idea aloud rather than reciting hidden text.
+**Verbatim vs. gist.** Hybrid ownership — the app suggests a default per group (opener/closer/Scripture quotations always default verbatim), the learner can override any suggestion. Gist-mode rehearsal hides the full sentence and shows only keywords/prompts; the learner reconstructs the idea aloud rather than reciting hidden text. **Resolved: keywords/prompts are hand-authored per breath group, not algorithmically derived** from the Vietnamese text or the generated English — needs its own field (`gist_prompt`, nullable; see the follow-up migration).
 
 **Deadline engine.**
 - Auto-generates a suggested daily plan; fully editable by the learner, never a rigid lock.
@@ -220,10 +231,22 @@ Krashen's original "i+1" has no built-in operational definition — this section
 - Practice intensity follows a peak-then-taper curve: heaviest ~7–10 days before delivery, tapering afterward, with a light run-through-only recommendation on the final day.
 - Missed practice days are flagged to the learner, who decides how to catch up — no automatic guilt messaging, no automatic aggressive rescheduling.
 
-**Weak-spot system.**
-- Weakness is determined by a combination of signals: learner self-marking (Struggled/Okay/Easy) plus retry count and hesitation/restart detection — both are real MVP requirements, not deferred.
-- Weak/struggled groups resurface aggressively — nearly every session until resolved, not on a loose spaced schedule.
-- Learners are periodically required to complete a no-restart full run-through of the whole piece, even with known weak spots still present — this is a real, enforced requirement, not optional.
+**Weak-spot system, resolved into a concrete session-selection algorithm** (`selectRehearsalSession`, a pure function mirroring `selectChunksForLesson`'s architecture — see TAD):
+
+1. **Mastery classification per chunk**, computed from the same raw signals a rep writes to `user_rehearsal_progress` (`last_self_rating`, `restart_count`, `avg_hesitation_ms`) — `mastery_status` is the single stored source of truth for this, written by the rep-completion action using this rule, read (not recomputed) by both session selection and the no-look gate above:
+   - **weak** if `last_self_rating = 'struggled'` OR `restart_count >= 2` OR `avg_hesitation_ms` exceeds a threshold (**picked default: 800ms**, flagged as tunable once real usage data exists)
+   - **new** if no progress row exists for that chunk yet
+   - otherwise **developing** or **ready**
+2. **Ordinary session composition:** weak chunks first (oldest-attempted first), new chunks fill any remaining session capacity in `display_order`.
+3. **Session capacity scales with deadline phase** (picked defaults, same "flag, don't over-specify" treatment as the build/taper curve itself — tunable, not derived from data):
+   - Before `build_phase_end` (light): **4 chunks**
+   - Peak (between `build_phase_end` and `taper_start`): **10 chunks**
+   - Taper (after `taper_start`, not the final day): **6 chunks**
+   - **Undated items:** flat **6 chunks** always — phase-scaling is skipped entirely, since there's no deadline to phase against.
+4. Weak chunks resurface in *every* eligible session, no cooldown, until they stop qualifying as weak.
+5. **Periodic forced full run-through** bypasses steps 1–3 entirely and uses `full_run_through_attempts` instead of per-chunk selection — **picked cadence: every 5th eligible session, and always on the final day** (the Deadline engine's existing "light run-through-only recommendation on the final day" *is* this drill, not a separate thing). Required even with known weak spots still present — not optional.
+
+**Gamification.** Zero points from Practice reps — consistent with Section 6's "no comparative gamification" principle, since `total_points` directly feeds the group-wide leaderboard. Streak *is* shared: a completed rehearsal session bumps the same `user_streaks` row Collections/lessons already write to — one unified daily-activity streak, not a separate Practice-specific one.
 
 **Tone Tuner integration.** Fully separate systems for MVP — no live handoff, no shared UI. When integration eventually happens (post-MVP): tapping a word during rehearsal that Tone Tuner doesn't support (outside its curated word list) renders as plain, non-interactive text — no fallback scoring, no degraded mode. Once integrated, pronunciation problems Tone Tuner detects will automatically feed into Practice's weak-spot system as a shared signal source.
 
@@ -235,7 +258,8 @@ Krashen's original "i+1" has no built-in operational definition — this section
 **Still open after this pass:**
 - Whether "ready" status requires a successful no-restart full run-through, or can be inferred from chunk mastery alone — the periodic no-restart run-through above is an ongoing practice-discipline requirement, not a stated definition of "ready."
 - English-meaning-toggle default (on/off) — explicitly implementer's discretion, not decided here.
-- Exact build/taper plan curve and day-thresholds — explicitly an implementation detail, not decided here.
+- The build/taper *phase-boundary* day-thresholds themselves (exactly how many days before the deadline `build_phase_end`/`taper_start` fall) — still an implementation detail, not decided here. (Distinct from the session-*capacity*-per-phase numbers above, which are now picked.)
+- Exact parsing of "shadow ... or read-then-record as two separate reps": whether read-then-record's "two reps" means a silent-read rep followed by a recorded rep, or that the learner gets two full attempts either way. Persistence is resolved (ephemeral, not stored) — this narrower phrasing question is not.
 
 ---
 
