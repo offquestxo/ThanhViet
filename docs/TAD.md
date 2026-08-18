@@ -167,24 +167,27 @@ The original call for 5–10 speakers × 3–5 repetitions per word stands, with
 
 `Collection` sits above `Unit` — `Unit` conceptually plays the role of a "Journey" (a sequential, unlockable learning experience); `Collection` is the natural grouping above it (e.g., "2027 Convention," "Bible Reading Series," "Scriptures," "Family Worship").
 
+**Synced against the live schema (migrations 0001–0007) as of this revision.** Previously this section had drifted in several places that were never Workspace-related: `profiles`' role/approval/points fields (0002), `collections`' icon_key/theme_key (0005), `chunks.display_order` (0003), and the `timestamp` → `created_at` rename that `FullRunThroughAttempt` already documented but `TonePracticeAttempt` never picked up. `UserStreak` was never listed here at all despite being live since 0001. All fixed below in one pass, not just the Workspace delta.
+
 ```
-User
- - id, name, email, accent_pref, created_at
+User (profiles table)
+ - id, name, avatar_url, accent_pref, total_points, created_at
+ - role (member | admin | ceo — migration 0002), approval_status (pending | approved | rejected — migration 0002), email (mirrors auth.users.email — migration 0002)
 
 Collection
- - id, title, description, display_order (e.g., "Scriptures," "Presentations," "Talks," "Favorites")
+ - id, title, description, display_order (as `order`), icon_key (book | presentation | microphone | library — migration 0005), theme_key (primary | secondary | accent | muted — migration 0005), created_at
 
 Unit
- - id, collection_id, title, order, source_reference (e.g., "July 2026 Convention Program")
+ - id, collection_id (nullable), title, order, source_reference (e.g., "July 2026 Convention Program"), created_at
 
 Chunk
- - id, unit_id, vietnamese_text, english_text, source_context (e.g. which talk/paragraph this came from), audio_url, structural_concept (tags: classifier | topic_comment | particle | tone_identity | none — drives Pattern Noticing selection)
+ - id, unit_id, vietnamese_text, english_text, source_context (e.g. which talk/paragraph this came from), audio_url, structural_concept (tags: classifier | topic_comment | particle | tone_identity | none — drives Pattern Noticing selection), display_order, created_at
 
 ChunkWord
- - chunk_id, word_id, display_order (which Word entries appear within this chunk — links chunks to the Tone Tuner's word-level data)
+ - chunk_id, word_id, display_order (which Word entries appear within this chunk — links chunks to the Tone Tuner's word-level data; composite PK, no surrogate id)
 
 Word
- - id, vietnamese_text, english_text, tone_pattern, audio_url
+ - id, vietnamese_text, english_text, tone_pattern, audio_url, created_at
  (no longer unit-scoped directly — reached via ChunkWord; still the atomic unit for Tone Tuner drills)
 
 UserChunkProgress
@@ -207,34 +210,43 @@ UserWordProgress
   and 9]. Don't treat UserWordProgress as implemented.)
 
 WorkspaceItem
- - id, user_id, title, source_text, item_type (talk | demo | prayer | reading | other), deadline_date, created_at
+ - id, user_id, title, source_text, item_type (talk | demo | prayer | reading | comment | other — 'comment' added 0006), deadline_date (nullable — 0006, optional deadlines per PRD Section 6a), archived_at (nullable, soft-delete — 0006), created_at
 
 RehearsalChunk
- - id, workspace_item_id, text, display_order, tier (verbatim | gist), is_opener (bool), is_closer (bool)
- (breath-group segmented, ~10–15 words, following clause/punctuation — distinct from Collections' `Chunk`)
+ - id, workspace_item_id, text, display_order, tier (verbatim | gist), is_opener (bool), is_closer (bool), is_quotation (bool — 0006, inline Scripture-quotation flagging independent of item_type), audio_url (nullable — 0006), audio_source (tts | native, nullable, paired with audio_url via a CHECK — 0006), english_text (nullable, Claude-generated — 0006), english_generated_at (nullable — 0006), gist_prompt (nullable, hand-authored — 0007)
+ (breath-group segmented, ~10–15 words, following clause/punctuation — distinct from Collections' `Chunk`. display_order's uniqueness constraint is DEFERRABLE INITIALLY DEFERRED as of 0006 — reordering must be written as a single batched multi-row write, e.g. one upsert call; a naive sequence of individual per-row updates still violates it, verified live against the migrated schema)
 
 UserRehearsalProgress
- - id, user_id, rehearsal_chunk_id, error_count, avg_hesitation_ms, last_practiced_at, mastery_status (weak | developing | ready)
- (drives weak-spot-first resurfacing; deliberately no SRS interval fields — deadline-driven build-then-taper, not long-horizon spaced repetition.
+ - id, user_id, rehearsal_chunk_id, error_count, avg_hesitation_ms, last_practiced_at, mastery_status (weak | developing | ready), last_self_rating (struggled | okay | easy, nullable — 0006), restart_count (0006), rep_count (0007)
+ (drives weak-spot-first resurfacing per PRD Section 6a's selectRehearsalSession algorithm: mastery_status is the single stored source of truth, written by the rep-completion action from last_self_rating/restart_count/avg_hesitation_ms — weak if last_self_rating='struggled' OR restart_count>=2 OR avg_hesitation_ms exceeds a picked 800ms default. rep_count (0007) is a distinct signal from restart_count — total reps completed vs. reps abandoned/restarted — and is required alongside mastery_status != 'weak' for the no-look-at-text gate (rep_count >= 2, picked default). Deliberately no SRS interval fields — deadline-driven build-then-taper, not long-horizon spaced repetition.
   Known redundancy, flagged not fixed: RehearsalChunk is always 1:1-owned via WorkspaceItem, so this join table's many-to-many shape is
   structurally unnecessary here — kept as specified for now.)
 
-WorkspaceSchedule
+WorkspaceSchedule (workspace_schedules table — persisted cache of computable deadline-derived values; known deadline_date duplication flagged in migration 0003 and intentionally retained for now)
  - workspace_item_id, deadline_date, build_phase_end, taper_start
- (computed from deadline_date; drives the build-then-taper practice-volume curve — exact timeline defaults still open)
+ (computed from deadline_date; drives the build-then-taper practice-volume curve. Session-*capacity* per phase is resolved — PRD Section 6a's picked defaults: 4 chunks before build_phase_end, 10 at peak, 6 during taper, 6 flat for undated items. The phase-*boundary* day-thresholds themselves — how many days before the deadline build_phase_end/taper_start actually fall — remain an open implementation detail, Section 6 below.)
 
 FullRunThroughAttempt
- - id, user_id, workspace_item_id, completed_without_restart (bool), duration_seconds, timestamp
- (taper-phase drill; contributes toward "ready" status — exact criteria still open)
+ - id, user_id, workspace_item_id, completed_without_restart (bool), duration_seconds, created_at (renamed from the spec sketch's `timestamp` — see migration 0003 Flag 6)
+ (taper-phase drill; contributes toward "ready" status — exact criteria still open. Also the vehicle for PRD Section 6a's periodic forced full run-through: picked cadence is every 5th eligible rehearsal session, and always on the final day. The final day's run-through IS the Deadline engine's "final-day-light" recommendation, not a separately-sized capacity session on top of it — the final day bypasses per-chunk session-capacity selection [UserRehearsalProgress above] entirely in favor of this one whole-piece pass.)
+
+AdminWorkspaceProgressView (admin_workspace_progress_view — migration 0006, a view, not a table)
+ - workspace_item_id, user_id, item_type, title, deadline_date, archived_at, created_at, total_chunks, weak_chunks, developing_chunks, ready_chunks, last_practiced_at, successful_run_throughs
+ (Group-admin visibility per PRD Section 6a — rolled up to item level, never selects source_text/rehearsal_chunks.text/english_text. Gated by a WHERE clause inside the view itself (current_user_role() in ('admin','ceo')), not RLS on the base tables — RLS controls rows, not columns, and a naive admin SELECT policy directly on workspace_items/rehearsal_chunks would leak verbatim content to anyone querying those tables directly. A non-admin querying this view gets zero rows, not a permission error.)
 
 TonePracticeAttempt
- - id, user_id, word_id, detected_tone, target_tone, passed (bool), timestamp
+ - id, user_id, word_id, detected_tone, target_tone, passed (bool), created_at (renamed from `timestamp`, matching FullRunThroughAttempt — this section previously still said `timestamp`)
 
 Badge / UserBadge
  - standard badge/achievement join table
 
-LeaderboardEntry (can be computed, not necessarily stored)
- - derived from UserChunkProgress + streaks
+LeaderboardEntry (leaderboard view — computed, not stored)
+ - user_id, name, total_points, current_streak
+ (a Postgres view joining profiles.total_points + user_streaks.current_streak — corrected from the previous "derived from UserChunkProgress + streaks," which didn't match: total_points is a maintained rolling total on profiles, updated directly by completeChunk, not recomputed from UserChunkProgress rows)
+
+UserStreak (user_streaks table — live since migration 0001, never previously listed in this section)
+ - user_id, current_streak, longest_streak, last_activity_date
+ (day-level streak. Per PRD Section 6a: bumped by both Collections' completeChunk and Practice rehearsal-session completion — one shared streak, not a separate Practice-specific one. Practice reps award zero points, per the same Section 6a decision.)
 ```
 
 **As-built note:** `talk_practice_sets`/`talk_practice_words` (an earlier, pre-redesign stub for the same Workspace feature) were dropped in migration 0003 rather than left as dead schema alongside the new `WorkspaceItem`/`RehearsalChunk` model.

@@ -1,8 +1,9 @@
 /**
  * Hand-written types matching supabase/migrations/0001_init.sql,
  * 0002_roles_and_approval.sql, 0003_chunks_and_workspace.sql,
- * 0004_collections.sql, 0005_collection_presentation_metadata.sql, and
- * 0006_workspace_schema_alignment.sql.
+ * 0004_collections.sql, 0005_collection_presentation_metadata.sql,
+ * 0006_workspace_schema_alignment.sql, and
+ * 0007_rehearsal_gist_prompt_and_rep_count.sql.
  *
  * Shape follows what @supabase/postgrest-js expects for type inference
  * (each table needs Row/Insert/Update/Relationships; the schema needs
@@ -322,7 +323,7 @@ export type Database = {
         // Breath-group segmented (Principle 3) — distinct from the
         // Learning tab's `chunks` table above. is_quotation, audio_url/
         // audio_source, english_text/english_generated_at added — see
-        // 0006 / PRD Section 6a.
+        // 0006 / PRD Section 6a. gist_prompt added — see 0007.
         Row: {
           id: string;
           workspace_item_id: string;
@@ -336,6 +337,7 @@ export type Database = {
           audio_source: "tts" | "native" | null;
           english_text: string | null;
           english_generated_at: string | null;
+          gist_prompt: string | null;
           created_at: string;
         };
         Insert: {
@@ -351,6 +353,7 @@ export type Database = {
           audio_source?: "tts" | "native" | null;
           english_text?: string | null;
           english_generated_at?: string | null;
+          gist_prompt?: string | null;
           created_at?: string;
         };
         Update: Partial<
@@ -370,6 +373,9 @@ export type Database = {
         // Drives weak-spot-first resurfacing (Principle 5). Note: 1:1 with
         // rehearsal_chunks in practice — see Flag 3 in migration 0003.
         // last_self_rating/restart_count added — see 0006 / PRD Section 6a.
+        // rep_count added — see 0007 (the no-look-at-text mastery gate
+        // needs rep_count >= 2 AND mastery_status != 'weak'; restart_count
+        // is a distinct signal, not a stand-in for total reps completed).
         Row: {
           id: string;
           user_id: string;
@@ -380,6 +386,7 @@ export type Database = {
           mastery_status: "weak" | "developing" | "ready";
           last_self_rating: "struggled" | "okay" | "easy" | null;
           restart_count: number;
+          rep_count: number;
         };
         Insert: {
           id?: string;
@@ -391,6 +398,7 @@ export type Database = {
           mastery_status?: "weak" | "developing" | "ready";
           last_self_rating?: "struggled" | "okay" | "easy" | null;
           restart_count?: number;
+          rep_count?: number;
         };
         Update: Partial<
           Database["public"]["Tables"]["user_rehearsal_progress"]["Insert"]
