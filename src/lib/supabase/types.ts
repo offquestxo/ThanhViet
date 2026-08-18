@@ -1,7 +1,8 @@
 /**
  * Hand-written types matching supabase/migrations/0001_init.sql,
  * 0002_roles_and_approval.sql, 0003_chunks_and_workspace.sql,
- * 0004_collections.sql, and 0005_collection_presentation_metadata.sql.
+ * 0004_collections.sql, 0005_collection_presentation_metadata.sql, and
+ * 0006_workspace_schema_alignment.sql.
  *
  * Shape follows what @supabase/postgrest-js expects for type inference
  * (each table needs Row/Insert/Update/Relationships; the schema needs
@@ -277,14 +278,23 @@ export type Database = {
       };
       workspace_items: {
         // Talk Practice / Personal Workspace (Section 5.6) — supersedes the
-        // unused 0001 talk_practice_sets stub. See 0003.
+        // unused 0001 talk_practice_sets stub. See 0003. deadline_date
+        // nullable, item_type gains 'comment', archived_at (soft-delete)
+        // added — see 0006 / PRD Section 6a.
         Row: {
           id: string;
           user_id: string;
           title: string;
           source_text: string;
-          item_type: "talk" | "demo" | "prayer" | "reading" | "other";
-          deadline_date: string;
+          item_type:
+            | "talk"
+            | "demo"
+            | "prayer"
+            | "reading"
+            | "comment"
+            | "other";
+          deadline_date: string | null;
+          archived_at: string | null;
           created_at: string;
         };
         Insert: {
@@ -292,8 +302,15 @@ export type Database = {
           user_id: string;
           title: string;
           source_text: string;
-          item_type?: "talk" | "demo" | "prayer" | "reading" | "other";
-          deadline_date: string;
+          item_type?:
+            | "talk"
+            | "demo"
+            | "prayer"
+            | "reading"
+            | "comment"
+            | "other";
+          deadline_date?: string | null;
+          archived_at?: string | null;
           created_at?: string;
         };
         Update: Partial<
@@ -303,7 +320,9 @@ export type Database = {
       };
       rehearsal_chunks: {
         // Breath-group segmented (Principle 3) — distinct from the
-        // Learning tab's `chunks` table above.
+        // Learning tab's `chunks` table above. is_quotation, audio_url/
+        // audio_source, english_text/english_generated_at added — see
+        // 0006 / PRD Section 6a.
         Row: {
           id: string;
           workspace_item_id: string;
@@ -312,6 +331,11 @@ export type Database = {
           tier: "verbatim" | "gist";
           is_opener: boolean;
           is_closer: boolean;
+          is_quotation: boolean;
+          audio_url: string | null;
+          audio_source: "tts" | "native" | null;
+          english_text: string | null;
+          english_generated_at: string | null;
           created_at: string;
         };
         Insert: {
@@ -322,6 +346,11 @@ export type Database = {
           tier?: "verbatim" | "gist";
           is_opener?: boolean;
           is_closer?: boolean;
+          is_quotation?: boolean;
+          audio_url?: string | null;
+          audio_source?: "tts" | "native" | null;
+          english_text?: string | null;
+          english_generated_at?: string | null;
           created_at?: string;
         };
         Update: Partial<
@@ -340,6 +369,7 @@ export type Database = {
       user_rehearsal_progress: {
         // Drives weak-spot-first resurfacing (Principle 5). Note: 1:1 with
         // rehearsal_chunks in practice — see Flag 3 in migration 0003.
+        // last_self_rating/restart_count added — see 0006 / PRD Section 6a.
         Row: {
           id: string;
           user_id: string;
@@ -348,6 +378,8 @@ export type Database = {
           avg_hesitation_ms: number | null;
           last_practiced_at: string | null;
           mastery_status: "weak" | "developing" | "ready";
+          last_self_rating: "struggled" | "okay" | "easy" | null;
+          restart_count: number;
         };
         Insert: {
           id?: string;
@@ -357,6 +389,8 @@ export type Database = {
           avg_hesitation_ms?: number | null;
           last_practiced_at?: string | null;
           mastery_status?: "weak" | "developing" | "ready";
+          last_self_rating?: "struggled" | "okay" | "easy" | null;
+          restart_count?: number;
         };
         Update: Partial<
           Database["public"]["Tables"]["user_rehearsal_progress"]["Insert"]
@@ -533,6 +567,35 @@ export type Database = {
           name: string;
           total_points: number;
           current_streak: number;
+        };
+        Relationships: [];
+      };
+      admin_workspace_progress_view: {
+        // Section 6a admin visibility — rolled-up progress metadata only,
+        // never source_text/rehearsal_chunks.text/english_text. Gated by a
+        // WHERE clause inside the view itself (current_user_role() in
+        // ('admin','ceo')), not RLS — see Flag 4 in migration 0006. A
+        // non-admin querying this gets zero rows, not an error.
+        Row: {
+          workspace_item_id: string;
+          user_id: string;
+          item_type:
+            | "talk"
+            | "demo"
+            | "prayer"
+            | "reading"
+            | "comment"
+            | "other";
+          title: string;
+          deadline_date: string | null;
+          archived_at: string | null;
+          created_at: string;
+          total_chunks: number;
+          weak_chunks: number;
+          developing_chunks: number;
+          ready_chunks: number;
+          last_practiced_at: string | null;
+          successful_run_throughs: number;
         };
         Relationships: [];
       };

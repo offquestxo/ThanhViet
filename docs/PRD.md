@@ -197,8 +197,9 @@ Krashen's original "i+1" has no built-in operational definition — this section
 
 **Material intake (MVP).**
 - Paste/type only. PDF/DOCX/image upload deferred to later (this corrects Section 4's MVP scope bullet, which previously listed file upload).
-- Vietnamese only — no English required at intake, and no auto-generated English reference (Practice doesn't build comprehension).
-- Imported/segmented Vietnamese text remains editable after processing — not locked.
+- Vietnamese only at intake — the learner never types or supplies English.
+- **Reversed from this section's original decision:** English *is* generated for the learner — automatically, via the Claude API, not learner-typed and not an on-demand MT lookup. Generated eagerly at intake (one batched call per item, immediately after auto-segmentation, so it's ready before the learner ever opens the per-group toggle — see Segmentation below) and persisted per breath group; not regenerated on each toggle-open. Generic translation quality is accepted as-is, **including for quoted-Scripture spans** — this is a rehearsal aid, not a doctrinal reference, and no JW-terminology-aware translation handling is in scope. Recorded here as a deliberate scope decision, not an accidental gap.
+- Imported/segmented Vietnamese text remains editable after processing — not locked. (Open question this reversal surfaces, not resolved here: whether the generated English text is likewise learner-editable, or read-only.)
 - Deadlines are optional per item; undated items are ongoing practice with no scheduling engine applied.
 
 **Segmentation.**
