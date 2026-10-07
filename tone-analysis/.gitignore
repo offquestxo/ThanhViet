@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+sample_audio/*.wav
+output/*.png
+
+# Real speaker recordings — never belongs in git history. See
+# reference-audio/README.md.
+reference-audio/*
+!reference-audio/README.md
