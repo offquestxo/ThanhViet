@@ -18,7 +18,11 @@ from __future__ import annotations
 SUPPORTED_FORMATS = {"WAV", "FLAC"}
 
 MIN_SAMPLE_RATE_HZ = 16_000
-RECOMMENDED_SAMPLE_RATE_HZ = 44_100
+# 16 kHz, not 44.1 kHz: the tone engine normalizes every upload to 16 kHz
+# mono (normalize.py) so Parselmouth, PhoWhisper and Parakeet all analyze
+# identical audio. A 44.1 kHz "recommended" bar would attach a warning to
+# every single engine request. 16 kHz is ample for F0 (60–500 Hz) analysis.
+RECOMMENDED_SAMPLE_RATE_HZ = 16_000
 
 # A single Vietnamese syllable is short. These bounds are deliberately
 # generous (not tuned against real recordings yet) — wide enough not to

@@ -10,3 +10,14 @@ soundfile>=0.12
 pydantic>=2.6,<3.0
 matplotlib>=3.8
 pytest>=8.0
+
+# Tone engine (deployed to Modal — see modal_app.py). The GPU-side model
+# stack (torch, transformers, librosa) is installed in the Modal image only,
+# not locally; local tests fake the model calls.
+modal>=1.6
+nvidia-riva-client>=2.17
+
+# Local test-only: static ffmpeg binary (the Modal image uses apt ffmpeg),
+# and the HTTP client FastAPI's TestClient needs.
+imageio-ffmpeg>=0.5
+httpx>=0.27

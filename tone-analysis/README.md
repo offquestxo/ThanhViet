@@ -1,11 +1,32 @@
-# tone-analysis (research harness)
+# tone-analysis (tone engine + research harness)
 
-A standalone FastAPI prototype for Vietnamese tone acoustic-feature
-extraction. **Isolated on purpose**: its own Python environment, its own
-dependencies, no imports to or from the Next.js app in the rest of this
-repo. Nothing here is wired into the Tone Tuner tab, the lesson Produce
-step, or any other user-facing surface — that's a later, separate,
-explicitly-approved task.
+The Python side of the Tone Tuner (beta). Its own Python environment and
+dependencies; the Next.js app reaches it only over HTTP, through a
+server-side route — never from the browser.
+
+## Tone engine (deployed to Modal)
+
+One Modal app (`modal_app.py`) serving `POST /analyze` (multipart `audio` +
+`target_text`), `POST /warm`, and `GET /health`:
+
+| Signal | Runs on | Role |
+|---|---|---|
+| Parselmouth harness (below) | Modal CPU | Pitch contour, duration, phonation/creak — **uncalibrated**, no pass/fail |
+| PhoWhisper-small (`phowhisper_service.py`, copied verbatim) | Modal GPU, scale-to-zero | Which syllable(s) a Vietnamese ear heard |
+| Parakeet-CTC-0.6B-vi (NVIDIA hosted NIM) | NVIDIA cloud, called from Modal | Second ASR opinion + word timestamps |
+
+Every upload is first normalized to 16 kHz mono 16-bit WAV (`normalize.py`).
+Both ASR transcripts go through the same `compare()`; `agreement.py`
+combines them. If either model errors or times out, its field is marked
+`unavailable` and everything else is still returned (`engine.py`).
+Multi-syllable targets skip the acoustic layer until Parakeet's word
+timestamps drive per-syllable segmentation.
+
+Deploy: `modal deploy modal_app.py` (from this folder). Secrets live in
+Modal only — `thanhviet-nvidia` (`NVIDIA_API_KEY`) and
+`thanhviet-tone-shared` (`TONE_ENGINE_SHARED_SECRET`) — never in git.
+
+## Research harness
 
 ## Scope of this pass
 
