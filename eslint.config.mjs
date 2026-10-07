@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Python tone engine — its .venv ships vendored JS (matplotlib) that
+    // isn't ours to lint.
+    "tone-analysis/**",
   ]),
 ]);
 
