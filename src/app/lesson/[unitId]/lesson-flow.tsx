@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useAudioRecorder } from "@/hooks/use-audio-recorder";
 import { completeChunk } from "../actions";
 import { Button } from "@/components/ui/button";
+import { Sparrow } from "@/components/mascot/sparrow";
 import { AppCard } from "@/components/ui/app-card";
 import { CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -336,7 +337,10 @@ export function LessonFlow({
                   </button>
                 )}
                 {recorder.error && (
-                  <p className="mt-2 text-xs text-destructive">{recorder.error}</p>
+                  <p className="mt-2 flex items-center gap-2 text-xs text-destructive">
+                    <Sparrow mood="worried" size={32} />
+                    {recorder.error}
+                  </p>
                 )}
               </div>
 
@@ -402,7 +406,10 @@ export function LessonFlow({
               )}
               {reviewState.status === "error" && (
                 <div className="flex flex-col gap-4">
-                  <p className="text-sm text-destructive">{reviewState.message}</p>
+                  <p className="flex items-center gap-3 text-sm text-destructive">
+                    <Sparrow mood="worried" size={40} />
+                    {reviewState.message}
+                  </p>
                   <div>
                     <Button variant="outline" onClick={() => void handleReviewEntered()}>
                       Try again
@@ -412,13 +419,16 @@ export function LessonFlow({
               )}
               {reviewState.status === "done" && (
                 <div className="flex flex-col gap-4">
-                  <div>
-                    <p className="text-lg font-semibold text-primary">
-                      +{reviewState.pointsAwarded} points
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      {reviewState.currentStreak}-day streak
-                    </p>
+                  <div className="flex items-center gap-4">
+                    <Sparrow mood="happy" size={64} />
+                    <div>
+                      <p className="text-lg font-semibold text-primary">
+                        +{reviewState.pointsAwarded} points
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {reviewState.currentStreak}-day streak
+                      </p>
+                    </div>
                   </div>
                   <div>
                     <Button onClick={goToNextChunk}>

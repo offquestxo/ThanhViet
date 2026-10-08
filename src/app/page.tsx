@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { Sparrow } from "@/components/mascot/sparrow";
 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-8 text-center">
+      <Sparrow mood="waving" size={96} className="mb-6" />
       <h1 className="text-3xl font-semibold mb-2">Thanh Việt</h1>
       <p className="text-gray-500 mb-8 max-w-sm">
         Learn Vietnamese vocabulary and tones, built for our congregation.

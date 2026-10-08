@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { PartyPopper } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Sparrow } from "@/components/mascot/sparrow";
 
 export function Finished({
   score,
@@ -15,7 +15,7 @@ export function Finished({
 }) {
   return (
     <div className="mx-auto flex w-full max-w-sm flex-col items-center gap-4 py-8 text-center">
-      <PartyPopper className="size-10 text-accent" />
+      <Sparrow mood="happy" size={88} />
       <p className="text-xl font-semibold">Nice work!</p>
       {score !== undefined && total !== undefined && (
         <p className="text-muted-foreground">

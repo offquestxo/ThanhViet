@@ -40,3 +40,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# mascot source art (final assets live in public/mascot)
+/mascot-inbox/

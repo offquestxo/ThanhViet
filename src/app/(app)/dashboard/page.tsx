@@ -8,6 +8,7 @@ import { AppCard } from "@/components/ui/app-card";
 import { CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { HeroCard } from "@/components/home/hero-card";
+import { Sparrow } from "@/components/mascot/sparrow";
 import { StatCards } from "@/components/home/stat-cards";
 import { CollectionsGrid } from "@/components/home/collections-grid";
 import { RecentlyPracticed } from "@/components/home/recently-practiced";
@@ -116,13 +117,16 @@ export default async function DashboardPage() {
     <div className="mx-auto flex max-w-6xl flex-col gap-8">
       {/* Greeting row */}
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold">
-            Xin chào{profile?.name ? `, ${profile.name}` : ""}! 👋
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Ready to continue your Vietnamese journey?
-          </p>
+        <div className="flex items-center gap-4">
+          <Sparrow mood="waving" size={56} />
+          <div>
+            <h1 className="text-2xl font-semibold">
+              Xin chào{profile?.name ? `, ${profile.name}` : ""}!
+            </h1>
+            <p className="text-sm text-muted-foreground">
+              Ready to continue your Vietnamese journey?
+            </p>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           {isStaff && (

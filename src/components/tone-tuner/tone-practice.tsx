@@ -1,9 +1,10 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Loader2, Mic, Square, Volume2, RotateCcw, ArrowRight, CheckCircle2, AlertTriangle } from "lucide-react";
+import { Mic, Square, Volume2, RotateCcw, ArrowRight, CheckCircle2, AlertTriangle } from "lucide-react";
 import { useAudioRecorder } from "@/hooks/use-audio-recorder";
 import { Button } from "@/components/ui/button";
+import { Sparrow } from "@/components/mascot/sparrow";
 import { TONE_LABELS, type Syllable, type ToneKey } from "@/lib/content";
 import { cn } from "@/lib/utils";
 import { PitchChart } from "./pitch-chart";
@@ -149,8 +150,9 @@ export function TonePractice({
       )}
 
       {phase.kind === "analyzing" && (
-        <div className="flex flex-col items-center gap-2 text-sm text-muted-foreground">
-          <Loader2 className="size-6 animate-spin text-primary" />
+        <div className="flex flex-col items-center gap-2 text-sm text-muted-foreground" aria-live="polite">
+          {/* Thinking while it listens; dozing once the cold-start note shows. */}
+          <Sparrow key={slow ? "sleeping" : "thinking"} mood={slow ? "sleeping" : "thinking"} size={64} />
           <p>Listening…</p>
           {slow && <p className="max-w-xs text-center text-xs">The engine is waking up — the first try can take up to a minute.</p>}
         </div>
@@ -158,7 +160,7 @@ export function TonePractice({
 
       {phase.kind === "error" && (
         <div className="flex max-w-sm flex-col items-center gap-3 text-center">
-          <AlertTriangle className="size-6 text-accent-orange" />
+          <Sparrow mood="worried" size={64} />
           <p className="text-sm">{phase.message}</p>
           <Button onClick={reset} variant="outline">
             <RotateCcw /> Try again
@@ -199,6 +201,7 @@ function Result({ result }: { result: AnalyzeResult }) {
       <div className="rounded-[var(--radius-card)] border border-border bg-card p-4">
         {agreed && summary.heard_as ? (
           <div className="flex flex-col items-center gap-1 text-center">
+            <Sparrow mood={matched ? "happy" : "surprised"} size={56} className="mb-1" />
             <p className="text-sm text-muted-foreground">Heard as</p>
             <p className="text-3xl font-semibold">{summary.heard_as}</p>
             <p className="text-xs text-muted-foreground">{heardTones(phowhisper.status === "ok" ? phowhisper : parakeet)}</p>
@@ -212,7 +215,10 @@ function Result({ result }: { result: AnalyzeResult }) {
             </p>
           </div>
         ) : summary.agreement === "unclear" ? (
-          <p className="text-center text-sm">Neither model could make out a word. Try again a little louder and closer.</p>
+          <div className="flex flex-col items-center gap-2 text-center">
+            <Sparrow mood="surprised" size={56} />
+            <p className="text-sm">Neither model could make out a word. Try again a little louder and closer.</p>
+          </div>
         ) : (
           <div className="flex flex-col gap-3">
             <p className="text-center text-sm font-medium">

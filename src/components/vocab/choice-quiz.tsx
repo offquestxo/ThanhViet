@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { CheckCircle2, Volume2, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Sparrow } from "@/components/mascot/sparrow";
 import type { VocabWord } from "@/lib/content";
 import { cn } from "@/lib/utils";
 import { choicesFor, shuffle, subSeed } from "./quiz";
@@ -102,7 +103,8 @@ export function ChoiceQuiz({
 
       {picked && (
         <div className="flex flex-col items-center gap-3">
-          <p className="text-sm text-muted-foreground">
+          <p className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Sparrow key={`${round.key}-${picked}`} mood={picked === round.answer.id ? "happy" : "surprised"} size={36} />
             {round.answer.text} — {round.answer.meaning}
           </p>
           <Button size="lg" onClick={() => { setPicked(null); setIndex((i) => i + 1); }}>
