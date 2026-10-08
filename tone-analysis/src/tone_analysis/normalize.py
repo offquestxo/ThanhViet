@@ -3,18 +3,16 @@ Audio normalization — the first step for every upload, before any model or
 the acoustic harness sees it.
 
 Whatever the browser recorded (Chrome/Firefox: webm/opus; Safari: mp4/AAC)
-is decoded twice:
+becomes 16 kHz mono 16-bit PCM WAV (to_wav16k_mono). Parakeet requires
+linear PCM, and Parselmouth and PhoWhisper analyze exactly the same audio,
+so there is one normalized copy and everything in the engine reads from it.
 
-  * to_wav16k_mono  — 16 kHz mono 16-bit PCM WAV for both ASR models
-    (Parakeet requires linear PCM; Whisper-family models expect 16 kHz).
-  * to_wav_acoustic — mono 16-bit PCM WAV at the upload's own sample rate
-    (capped at ACOUSTIC_MAX_RATE) for the Parselmouth harness only.
-
-Why two copies (decision 4, approved 2026-10-07): on the same synthetic
-audio, downsampling to 16 kHz made the harness find glottal voice breaks
-less often (ngã 8/8 seeds at 44.1 kHz vs 6/8 after 44.1->16 kHz; nặng 5/8
-vs 3/8). Creak is the signal the harness exists to preserve, so it gets the
-higher-rate copy; the ASR models still see identical 16 kHz audio.
+Decision 4 (a separate native-rate copy for the Parselmouth harness) was
+built on 2026-10-07 and reverted on 2026-10-08: on real speech it roughly
+doubled false creak alarms (voice breaks reported on tones that have none),
+which outweighed the small gain in catching real ngã/nặng breaks seen on
+synthetic audio. to_wav_acoustic remains for offline tools only (the lesson
+-recording splitter cuts clips at the source rate); the engine never uses it.
 
 The input is written to a temp file rather than piped to ffmpeg's stdin:
 Safari's mp4 output can place the `moov` atom at the end of the file, which
@@ -85,8 +83,8 @@ def to_wav16k_mono(raw: bytes, timeout_s: float = 20.0) -> bytes:
 
 
 def to_wav_acoustic(raw: bytes, timeout_s: float = 20.0) -> bytes:
-    """Mono s16le WAV at the upload's own rate (<= ACOUSTIC_MAX_RATE) for the
-    Parselmouth harness. Never upsampled: a 16 kHz source stays 16 kHz."""
+    """Mono s16le WAV at the source's own rate (<= ACOUSTIC_MAX_RATE). Offline
+    tools only — not used by the engine. Never upsampled."""
     wav = _decode_to_wav(raw, None, timeout_s)
     if wav_sample_rate(wav) > ACOUSTIC_MAX_RATE:
         wav = _decode_to_wav(raw, ACOUSTIC_MAX_RATE, timeout_s)

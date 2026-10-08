@@ -30,7 +30,6 @@ from .normalize import (
     MAX_UPLOAD_BYTES,
     AudioNormalizationError,
     to_wav16k_mono,
-    to_wav_acoustic,
     wav_duration_s,
 )
 
@@ -85,7 +84,6 @@ def create_app(
 
         try:
             wav = to_wav16k_mono(raw)
-            acoustic_wav = to_wav_acoustic(raw)
         except AudioNormalizationError as exc:
             raise HTTPException(status_code=422, detail=f"unreadable audio: {exc}") from exc
 
@@ -95,9 +93,7 @@ def create_app(
                 status_code=422, detail=f"recording too long ({duration:.1f}s > {MAX_DURATION_S:.0f}s)"
             )
 
-        result = await engine.analyze(
-            wav, target_text, phowhisper=phowhisper, parakeet=parakeet, acoustic_wav=acoustic_wav
-        )
+        result = await engine.analyze(wav, target_text, phowhisper=phowhisper, parakeet=parakeet)
         result["input"] = {
             "content_type": audio.content_type,
             "bytes": len(raw),

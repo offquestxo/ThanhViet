@@ -68,9 +68,9 @@ def test_analyze_ok(client, synthetic_wavs):
     body = r.json()
     assert body["summary"]["agreement"] == "both_match"
     assert body["acoustic"]["status"] == "ok"
-    # Decision 4: the harness analyzed the 44.1 kHz upload at its own rate,
-    # not the 16 kHz copy the ASR models get.
-    assert body["acoustic"]["sample_rate_hz"] == 44_100
+    # Decision 4 reverted: the harness analyzes the same 16 kHz copy the ASR
+    # models get, even for a 44.1 kHz upload.
+    assert body["acoustic"]["sample_rate_hz"] == 16_000
     assert body["input"]["content_type"] == "audio/wav"
 
 

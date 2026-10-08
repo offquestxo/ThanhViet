@@ -72,7 +72,7 @@ def test_empty_rejected():
         to_wav16k_mono(b"")
 
 
-# --- decision 4: the Parselmouth harness gets its own higher-rate copy ---
+# --- to_wav_acoustic: source-rate decode for offline tools (the splitter) ---
 
 from tone_analysis.normalize import ACOUSTIC_MAX_RATE, to_wav_acoustic, wav_sample_rate  # noqa: E402
 

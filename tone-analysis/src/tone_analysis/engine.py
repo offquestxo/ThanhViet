@@ -142,15 +142,13 @@ async def analyze(
     *,
     phowhisper: PhoWhisperCall,
     parakeet: ParakeetCall,
-    acoustic_wav: bytes | None = None,
 ) -> dict:
-    """`wav` is the 16 kHz copy both ASR models see (normalize.to_wav16k_mono).
-    `acoustic_wav` is the higher-rate copy for the Parselmouth harness
-    (normalize.to_wav_acoustic); falls back to `wav` when not given."""
+    """`wav` must already be normalized (normalize.to_wav16k_mono); both ASR
+    models and the Parselmouth harness read this same copy."""
     start = time.perf_counter()
     syllables = target_syllables(target_text)
 
-    acoustic_task = asyncio.to_thread(_acoustic, acoustic_wav or wav, len(syllables))
+    acoustic_task = asyncio.to_thread(_acoustic, wav, len(syllables))
     pho_task = _phowhisper_opinion(phowhisper, wav, target_text)
     par_task = _parakeet_opinion(parakeet, wav, target_text)
     acoustic, pho, par = await asyncio.gather(acoustic_task, pho_task, par_task, return_exceptions=True)
