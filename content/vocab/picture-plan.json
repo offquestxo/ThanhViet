@@ -1,0 +1,486 @@
+{
+  "_about": "Hand-curated picture plan for picture-vocabulary collections (read by tone-analysis/scripts/build_app_content.py). Key: 'Vietnamese | English' exactly as in thanh-viet-lessons-import.xlsx. Each row gets a Twemoji codepoint (CC BY 4.0, release 17.0.3) or is left out with a reason. Every sheet row of a planned collection must appear here — the builder stops on a row with no decision.",
+  "collections": {
+    "The Body": {
+      "id": "body",
+      "title_vi": "Cơ thể",
+      "rows": {
+        "cơ thể | body": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "bộ phận cơ thể | body parts": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "đầu | head": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "mặt | face": {
+          "twemoji": "1f642",
+          "audio_file": "body_mat-face.wav",
+          "note": "sheet gives body_mat.wav to both mặt and mắt"
+        },
+        "trán | forehead": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "má | cheek": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "quai hàm | jaw": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "cằm | chin": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "tai | ear": {
+          "twemoji": "1f442"
+        },
+        "mắt | eye": {
+          "twemoji": "1f441",
+          "audio_file": "body_mat-eye.wav",
+          "note": "sheet gives body_mat.wav to both mặt and mắt"
+        },
+        "mũi | nose": {
+          "twemoji": "1f443"
+        },
+        "miệng | mouth": {
+          "twemoji": "1f444"
+        },
+        "môi | lip": {
+          "skip": "the only lips emoji (👄) is used for miệng (mouth); waits for custom art"
+        },
+        "lưỡi | tongue": {
+          "twemoji": "1f445"
+        },
+        "răng | tooth": {
+          "twemoji": "1f9b7"
+        },
+        "mỏ | beak": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "vòi | trunk": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "sừng | horn": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "cổ | neck": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "tóc | hair": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "ria | mustache": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "râu quai nón | beard": {
+          "twemoji": "1f9d4"
+        },
+        "lông | fur": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "lông vũ | feather": {
+          "twemoji": "1fab6"
+        },
+        "cánh tay | arm": {
+          "skip": "the only arm emoji (💪) is used for cơ bắp (muscle); waits for custom art"
+        },
+        "bàn tay | hand": {
+          "twemoji": "270b"
+        },
+        "cổ tay | wrist": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "ngón tay | finger": {
+          "twemoji": "261d"
+        },
+        "ngón tay cái | thumb": {
+          "twemoji": "1f44d"
+        },
+        "móng tay | fingernail": {
+          "skip": "closest emoji is nail polish (💅) — misleading; waits for custom art"
+        },
+        "dấu vân tay | fingerprint": {
+          "twemoji": "1fac6"
+        },
+        "chân | leg": {
+          "twemoji": "1f9b5"
+        },
+        "đùi | thigh": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "đầu gối | knee": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "bàn chân | foot": {
+          "twemoji": "1f9b6"
+        },
+        "gót chân | heel": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "ngón chân | toe": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "dấu chân | footprint": {
+          "twemoji": "1f463"
+        },
+        "bàn chân | paw": {
+          "skip": "duplicate Vietnamese (bàn chân) — kept 'foot' for drills"
+        },
+        "móng vuốt | claw": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "cánh | wing": {
+          "twemoji": "1fabd"
+        },
+        "đuôi | tail": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "lưng | back": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "bụng | stomach": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "ngực | chest": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "vai | shoulder": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "xương | bone": {
+          "twemoji": "1f9b4"
+        },
+        "vỏ ốc | shell": {
+          "twemoji": "1f41a"
+        },
+        "cơ bắp | muscle": {
+          "twemoji": "1f4aa"
+        }
+      }
+    },
+    "Clothing and Personal Items": {
+      "id": "clothing",
+      "title_vi": "Quần áo và đồ dùng",
+      "rows": {
+        "quần áo | clothes": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "áo choàng | coat": {
+          "skip": "duplicate Vietnamese (áo choàng: coat / cloak) and the coat emoji (🧥) is used for áo khoác — both meanings wait for custom art"
+        },
+        "áo khoác | jacket (casual)": {
+          "twemoji": "1f9e5"
+        },
+        "áo khoác | jacket (blazer or part of a suit)": {
+          "skip": "duplicate Vietnamese (áo khoác) — kept 'jacket (casual)' for drills"
+        },
+        "áo choàng | cloak": {
+          "skip": "duplicate Vietnamese (áo choàng: coat / cloak) and the coat emoji (🧥) is used for áo khoác — both meanings wait for custom art"
+        },
+        "bộ com-lê | suit": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "áo đầm | dress": {
+          "twemoji": "1f457"
+        },
+        "áo sơ-mi | shirt": {
+          "skip": "👕 is a t-shirt (used for áo thun) and 👔 is a necktie (used for cà-vạt) — no distinct shirt picture; waits for custom art"
+        },
+        "áo cánh | blouse": {
+          "twemoji": "1f45a"
+        },
+        "áo thun | t-shirt": {
+          "twemoji": "1f455"
+        },
+        "áo len | sweater": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "quần tây | pants": {
+          "skip": "the only trousers emoji (👖) is jeans, used for quần jean; waits for custom art"
+        },
+        "váy | skirt": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "quần jean | jeans": {
+          "twemoji": "1f456"
+        },
+        "quần đùi | shorts": {
+          "twemoji": "1fa73"
+        },
+        "đồ ngủ | pajamas": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "áo đầm ngủ | nightgown": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "tã lót | diaper": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "nón | hat": {
+          "twemoji": "1f452"
+        },
+        "mũ lưỡi trai | cap": {
+          "twemoji": "1f9e2"
+        },
+        "cà-vạt | tie": {
+          "twemoji": "1f454"
+        },
+        "khăn choàng cổ | scarf": {
+          "twemoji": "1f9e3"
+        },
+        "găng tay | glove": {
+          "twemoji": "1f9e4"
+        },
+        "nút áo | button": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "dây kéo | zipper": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "túi áo | pocket": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "dây nịt | belt": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "giày | shoe": {
+          "twemoji": "1f45e"
+        },
+        "ủng | boot": {
+          "twemoji": "1f462"
+        },
+        "xăng-đan | sandal": {
+          "twemoji": "1f461"
+        },
+        "vớ | sock": {
+          "twemoji": "1f9e6"
+        },
+        "dây chuyền | necklace": {
+          "skip": "closest emoji is prayer beads (📿) — misleading; waits for custom art"
+        },
+        "bông tai | earring": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "vòng tay | bracelet": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "đồng hồ đeo tay | watch": {
+          "twemoji": "231a"
+        },
+        "nhẫn | ring": {
+          "twemoji": "1f48d"
+        },
+        "huy hiệu | badge": {
+          "skip": "closest emoji is a Japanese name tag (📛) — misleading; waits for custom art"
+        },
+        "túi xách | bag": {
+          "skip": "the handbag emoji (👜) is used for giỏ xách tay (handbag); waits for custom art"
+        },
+        "giỏ xách tay | handbag": {
+          "twemoji": "1f45c"
+        },
+        "ba-lô | backpack": {
+          "twemoji": "1f392"
+        },
+        "túi nhựa | plastic bag": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "cặp | briefcase": {
+          "twemoji": "1f4bc"
+        },
+        "va-li | suitcase": {
+          "twemoji": "1f9f3"
+        },
+        "ví tiền | wallet": {
+          "skip": "the purse emoji (👛) is used for túi tiền (purse); no wallet emoji; waits for custom art"
+        },
+        "túi tiền | purse": {
+          "twemoji": "1f45b"
+        },
+        "điện thoại di động | cell phone": {
+          "twemoji": "1f4f1"
+        },
+        "mắt kính | glasses": {
+          "twemoji": "1f453"
+        },
+        "cây gậy | staff": {
+          "skip": "closest emoji is a white cane (🦯) — misleading; waits for custom art"
+        },
+        "yếm | bib": {
+          "skip": "no clear picture — waits for custom art"
+        }
+      }
+    },
+    "Home and Furniture": {
+      "id": "home",
+      "title_vi": "Nhà cửa và đồ đạc",
+      "rows": {
+        "phòng | rooms": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "phòng tắm | bathroom": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "phòng ngủ | bedroom": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "phòng bếp | kitchen": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "sân | yard": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "tường nhà | wall": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "tường bao quanh nhà | wall (around the house)": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "hàng rào | fence": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "mái nhà | roof": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "trần nhà | ceiling": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "sàn nhà | floor": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "ống khói | chimney": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "cửa sổ | window": {
+          "twemoji": "1fa9f"
+        },
+        "cửa | door": {
+          "twemoji": "1f6aa"
+        },
+        "núm cửa | door handle": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "cổng | gate": {
+          "skip": "closest emoji is a Shinto shrine gate (⛩️) — misleading; waits for custom art"
+        },
+        "chìa khóa | key": {
+          "twemoji": "1f511"
+        },
+        "lỗ khóa | keyhole": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "chốt cửa | bolt": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "ổ khóa | lock": {
+          "twemoji": "1f512"
+        },
+        "cầu thang | stairs": {
+          "skip": "closest emoji is a ladder (🪜) — misleading; waits for custom art"
+        },
+        "đồ nội thất | furniture": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "ghế | chair": {
+          "twemoji": "1fa91"
+        },
+        "ghế bành | armchair": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "ghế sô-pha | sofa": {
+          "twemoji": "1f6cb"
+        },
+        "ghế băng | bench": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "ghế cao | high chair": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "ghế đẩu | stool": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "bàn | table": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "bàn học | desk": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "quầy | counter": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "tủ có ngăn kéo | chest of drawers": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "ngăn tủ | drawer": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "tủ | cupboard": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "tủ quần áo | wardrobe": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "kệ | shelf": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "giường | bed": {
+          "twemoji": "1f6cf"
+        },
+        "vòi sen | shower": {
+          "twemoji": "1f6bf"
+        },
+        "bồn rửa chén | sink": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "bồn rửa mặt | washbasin": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "vòi nước | faucet": {
+          "twemoji": "1f6b0"
+        },
+        "bồn vệ sinh | toilet": {
+          "twemoji": "1f6bd"
+        },
+        "tranh | picture": {
+          "twemoji": "1f5bc"
+        },
+        "khung tranh | frame": {
+          "skip": "the framed-picture emoji (🖼️) is used for tranh (picture); waits for custom art"
+        },
+        "áp-phích | poster": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "gương | mirror": {
+          "twemoji": "1fa9e"
+        },
+        "thảm | carpet": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "tấm thảm | rug": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "rèm cửa | curtain": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "mành cửa | blind": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "khăn trải bàn | tablecloth": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "gối | cushion": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "gối ngủ | pillow": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "mền | blanket": {
+          "skip": "no clear picture — waits for custom art"
+        },
+        "ga trải giường | sheet": {
+          "skip": "no clear picture — waits for custom art"
+        }
+      }
+    }
+  }
+}

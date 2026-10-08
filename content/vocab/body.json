@@ -1,0 +1,576 @@
+{
+  "id": "body",
+  "title": "The Body",
+  "source": "thanh-viet-lessons-import.xlsx (All Words)",
+  "words": [
+    {
+      "id": "mat--nang",
+      "text": "mặt",
+      "meaning": "face",
+      "syllables": [
+        {
+          "text": "mặt",
+          "tone": "nang",
+          "mark_index": 1
+        }
+      ],
+      "audio_file": "body_mat-face.wav",
+      "audio": "/audio/vocab/body/body_mat-face.wav",
+      "image": "/vocab/body/mat--nang.svg",
+      "twemoji": "1f642",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    },
+    {
+      "id": "tai--ngang",
+      "text": "tai",
+      "meaning": "ear",
+      "syllables": [
+        {
+          "text": "tai",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "audio_file": "body_tai.wav",
+      "audio": null,
+      "image": "/vocab/body/tai--ngang.svg",
+      "twemoji": "1f442"
+    },
+    {
+      "id": "mat--sac",
+      "text": "mắt",
+      "meaning": "eye",
+      "syllables": [
+        {
+          "text": "mắt",
+          "tone": "sac",
+          "mark_index": 1
+        }
+      ],
+      "audio_file": "body_mat-eye.wav",
+      "audio": "/audio/vocab/body/body_mat-eye.wav",
+      "image": "/vocab/body/mat--sac.svg",
+      "twemoji": "1f441",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    },
+    {
+      "id": "mui--nga",
+      "text": "mũi",
+      "meaning": "nose",
+      "syllables": [
+        {
+          "text": "mũi",
+          "tone": "nga",
+          "mark_index": 1
+        }
+      ],
+      "audio_file": "body_mui.wav",
+      "audio": "/audio/vocab/body/body_mui.wav",
+      "image": "/vocab/body/mui--nga.svg",
+      "twemoji": "1f443",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    },
+    {
+      "id": "mieng--nang",
+      "text": "miệng",
+      "meaning": "mouth",
+      "syllables": [
+        {
+          "text": "miệng",
+          "tone": "nang",
+          "mark_index": 2
+        }
+      ],
+      "audio_file": "body_mieng.wav",
+      "audio": "/audio/vocab/body/body_mieng.wav",
+      "image": "/vocab/body/mieng--nang.svg",
+      "twemoji": "1f444",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    },
+    {
+      "id": "luoi--nga",
+      "text": "lưỡi",
+      "meaning": "tongue",
+      "syllables": [
+        {
+          "text": "lưỡi",
+          "tone": "nga",
+          "mark_index": 2
+        }
+      ],
+      "audio_file": "body_luoi.wav",
+      "audio": "/audio/vocab/body/body_luoi.wav",
+      "image": "/vocab/body/luoi--nga.svg",
+      "twemoji": "1f445",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    },
+    {
+      "id": "rang--ngang",
+      "text": "răng",
+      "meaning": "tooth",
+      "syllables": [
+        {
+          "text": "răng",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "audio_file": "body_rang.wav",
+      "audio": null,
+      "image": "/vocab/body/rang--ngang.svg",
+      "twemoji": "1f9b7"
+    },
+    {
+      "id": "rau-quai-non--ngang-ngang-sac",
+      "text": "râu quai nón",
+      "meaning": "beard",
+      "syllables": [
+        {
+          "text": "râu",
+          "tone": "ngang",
+          "mark_index": -1
+        },
+        {
+          "text": "quai",
+          "tone": "ngang",
+          "mark_index": -1
+        },
+        {
+          "text": "nón",
+          "tone": "sac",
+          "mark_index": 1
+        }
+      ],
+      "audio_file": "body_rau-quai-non.wav",
+      "audio": "/audio/vocab/body/body_rau-quai-non.wav",
+      "image": "/vocab/body/rau-quai-non--ngang-ngang-sac.svg",
+      "twemoji": "1f9d4",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    },
+    {
+      "id": "long-vu--ngang-nga",
+      "text": "lông vũ",
+      "meaning": "feather",
+      "syllables": [
+        {
+          "text": "lông",
+          "tone": "ngang",
+          "mark_index": -1
+        },
+        {
+          "text": "vũ",
+          "tone": "nga",
+          "mark_index": 1
+        }
+      ],
+      "audio_file": "body_long-vu.wav",
+      "audio": "/audio/vocab/body/body_long-vu.wav",
+      "image": "/vocab/body/long-vu--ngang-nga.svg",
+      "twemoji": "1fab6",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    },
+    {
+      "id": "ban-tay--huyen-ngang",
+      "text": "bàn tay",
+      "meaning": "hand",
+      "syllables": [
+        {
+          "text": "bàn",
+          "tone": "huyen",
+          "mark_index": 1
+        },
+        {
+          "text": "tay",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "audio_file": "body_ban-tay.wav",
+      "audio": "/audio/vocab/body/body_ban-tay.wav",
+      "image": "/vocab/body/ban-tay--huyen-ngang.svg",
+      "twemoji": "270b",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    },
+    {
+      "id": "ngon-tay--sac-ngang",
+      "text": "ngón tay",
+      "meaning": "finger",
+      "syllables": [
+        {
+          "text": "ngón",
+          "tone": "sac",
+          "mark_index": 2
+        },
+        {
+          "text": "tay",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "audio_file": "body_ngon-tay.wav",
+      "audio": "/audio/vocab/body/body_ngon-tay.wav",
+      "image": "/vocab/body/ngon-tay--sac-ngang.svg",
+      "twemoji": "261d",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    },
+    {
+      "id": "ngon-tay-cai--sac-ngang-sac",
+      "text": "ngón tay cái",
+      "meaning": "thumb",
+      "syllables": [
+        {
+          "text": "ngón",
+          "tone": "sac",
+          "mark_index": 2
+        },
+        {
+          "text": "tay",
+          "tone": "ngang",
+          "mark_index": -1
+        },
+        {
+          "text": "cái",
+          "tone": "sac",
+          "mark_index": 1
+        }
+      ],
+      "audio_file": "body_ngon-tay-cai.wav",
+      "audio": "/audio/vocab/body/body_ngon-tay-cai.wav",
+      "image": "/vocab/body/ngon-tay-cai--sac-ngang-sac.svg",
+      "twemoji": "1f44d",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    },
+    {
+      "id": "dau-van-tay--sac-ngang-ngang",
+      "text": "dấu vân tay",
+      "meaning": "fingerprint",
+      "syllables": [
+        {
+          "text": "dấu",
+          "tone": "sac",
+          "mark_index": 1
+        },
+        {
+          "text": "vân",
+          "tone": "ngang",
+          "mark_index": -1
+        },
+        {
+          "text": "tay",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "audio_file": "body_dau-van-tay.wav",
+      "audio": "/audio/vocab/body/body_dau-van-tay.wav",
+      "image": "/vocab/body/dau-van-tay--sac-ngang-ngang.svg",
+      "twemoji": "1fac6",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    },
+    {
+      "id": "chan--ngang",
+      "text": "chân",
+      "meaning": "leg",
+      "syllables": [
+        {
+          "text": "chân",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "audio_file": "body_chan.wav",
+      "audio": "/audio/vocab/body/body_chan.wav",
+      "image": "/vocab/body/chan--ngang.svg",
+      "twemoji": "1f9b5",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    },
+    {
+      "id": "ban-chan--huyen-ngang",
+      "text": "bàn chân",
+      "meaning": "foot",
+      "syllables": [
+        {
+          "text": "bàn",
+          "tone": "huyen",
+          "mark_index": 1
+        },
+        {
+          "text": "chân",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "audio_file": "body_ban-chan-1.wav",
+      "audio": "/audio/vocab/body/body_ban-chan-1.wav",
+      "image": "/vocab/body/ban-chan--huyen-ngang.svg",
+      "twemoji": "1f9b6",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    },
+    {
+      "id": "dau-chan--sac-ngang",
+      "text": "dấu chân",
+      "meaning": "footprint",
+      "syllables": [
+        {
+          "text": "dấu",
+          "tone": "sac",
+          "mark_index": 1
+        },
+        {
+          "text": "chân",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "audio_file": "body_dau-chan.wav",
+      "audio": "/audio/vocab/body/body_dau-chan.wav",
+      "image": "/vocab/body/dau-chan--sac-ngang.svg",
+      "twemoji": "1f463",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    },
+    {
+      "id": "canh--sac",
+      "text": "cánh",
+      "meaning": "wing",
+      "syllables": [
+        {
+          "text": "cánh",
+          "tone": "sac",
+          "mark_index": 1
+        }
+      ],
+      "audio_file": "body_canh.wav",
+      "audio": "/audio/vocab/body/body_canh.wav",
+      "image": "/vocab/body/canh--sac.svg",
+      "twemoji": "1fabd",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    },
+    {
+      "id": "xuong--ngang",
+      "text": "xương",
+      "meaning": "bone",
+      "syllables": [
+        {
+          "text": "xương",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "audio_file": "body_xuong.wav",
+      "audio": "/audio/vocab/body/body_xuong.wav",
+      "image": "/vocab/body/xuong--ngang.svg",
+      "twemoji": "1f9b4",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    },
+    {
+      "id": "vo-oc--hoi-sac",
+      "text": "vỏ ốc",
+      "meaning": "shell",
+      "syllables": [
+        {
+          "text": "vỏ",
+          "tone": "hoi",
+          "mark_index": 1
+        },
+        {
+          "text": "ốc",
+          "tone": "sac",
+          "mark_index": 0
+        }
+      ],
+      "audio_file": "body_vo-oc.wav",
+      "audio": "/audio/vocab/body/body_vo-oc.wav",
+      "image": "/vocab/body/vo-oc--hoi-sac.svg",
+      "twemoji": "1f41a",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    },
+    {
+      "id": "co-bap--ngang-sac",
+      "text": "cơ bắp",
+      "meaning": "muscle",
+      "syllables": [
+        {
+          "text": "cơ",
+          "tone": "ngang",
+          "mark_index": -1
+        },
+        {
+          "text": "bắp",
+          "tone": "sac",
+          "mark_index": 1
+        }
+      ],
+      "audio_file": "body_co-bap.wav",
+      "audio": "/audio/vocab/body/body_co-bap.wav",
+      "image": "/vocab/body/co-bap--ngang-sac.svg",
+      "twemoji": "1f4aa",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    }
+  ],
+  "title_vi": "Cơ thể",
+  "left_out": [
+    {
+      "text": "cơ thể",
+      "meaning": "body",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "bộ phận cơ thể",
+      "meaning": "body parts",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "đầu",
+      "meaning": "head",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "trán",
+      "meaning": "forehead",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "má",
+      "meaning": "cheek",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "quai hàm",
+      "meaning": "jaw",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "cằm",
+      "meaning": "chin",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "môi",
+      "meaning": "lip",
+      "reason": "the only lips emoji (👄) is used for miệng (mouth); waits for custom art"
+    },
+    {
+      "text": "mỏ",
+      "meaning": "beak",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "vòi",
+      "meaning": "trunk",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "sừng",
+      "meaning": "horn",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "cổ",
+      "meaning": "neck",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "tóc",
+      "meaning": "hair",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "ria",
+      "meaning": "mustache",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "lông",
+      "meaning": "fur",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "cánh tay",
+      "meaning": "arm",
+      "reason": "the only arm emoji (💪) is used for cơ bắp (muscle); waits for custom art"
+    },
+    {
+      "text": "cổ tay",
+      "meaning": "wrist",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "móng tay",
+      "meaning": "fingernail",
+      "reason": "closest emoji is nail polish (💅) — misleading; waits for custom art"
+    },
+    {
+      "text": "đùi",
+      "meaning": "thigh",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "đầu gối",
+      "meaning": "knee",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "gót chân",
+      "meaning": "heel",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "ngón chân",
+      "meaning": "toe",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "bàn chân",
+      "meaning": "paw",
+      "reason": "duplicate Vietnamese (bàn chân) — kept 'foot' for drills"
+    },
+    {
+      "text": "móng vuốt",
+      "meaning": "claw",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "đuôi",
+      "meaning": "tail",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "lưng",
+      "meaning": "back",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "bụng",
+      "meaning": "stomach",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "ngực",
+      "meaning": "chest",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "vai",
+      "meaning": "shoulder",
+      "reason": "no clear picture — waits for custom art"
+    }
+  ]
+}

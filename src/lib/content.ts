@@ -10,6 +10,9 @@
 import toneTunerFile from "../../content/tone-tuner/items.json";
 import foodFile from "../../content/vocab/food.json";
 import colorsFile from "../../content/vocab/colors.json";
+import bodyFile from "../../content/vocab/body.json";
+import clothingFile from "../../content/vocab/clothing.json";
+import homeFile from "../../content/vocab/home.json";
 
 export type ToneKey = "ngang" | "huyen" | "sac" | "hoi" | "nga" | "nang";
 
@@ -36,10 +39,18 @@ export type VocabWord = {
   audio_source?: "google-tts" | "native";
   audio_voice?: string;
   image?: string;
+  /** Twemoji codepoint the image came from (attribution: public/vocab/SOURCES.md). */
+  twemoji?: string;
   swatch?: string;
 };
 
-export type VocabCollection = { id: string; title: string; words: VocabWord[] };
+export type VocabCollection = {
+  id: string;
+  title: string;
+  words: VocabWord[];
+  /** Sheet rows with no clear picture yet: never drilled, waiting for custom art. */
+  left_out?: { text: string; meaning: string; reason: string }[];
+};
 
 export const TONE_LABELS: Record<ToneKey, { vi: string; en: string }> = {
   ngang: { vi: "ngang", en: "level" },
@@ -55,12 +66,18 @@ export const toneTunerItems = toneTunerFile.items as ToneTunerItem[];
 export const vocabCollections: VocabCollection[] = [
   foodFile as VocabCollection,
   colorsFile as VocabCollection,
+  bodyFile as VocabCollection,
+  clothingFile as VocabCollection,
+  homeFile as VocabCollection,
 ];
 
 /** Vietnamese titles for the collections shown in the app. */
 export const COLLECTION_TITLES: Record<string, string> = {
   food: "Thức ăn",
   colors: "Màu sắc",
+  body: bodyFile.title_vi,
+  clothing: clothingFile.title_vi,
+  home: homeFile.title_vi,
 };
 
 export function getCollection(id: string): VocabCollection | undefined {

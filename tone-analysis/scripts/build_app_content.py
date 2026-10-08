@@ -4,7 +4,14 @@ Builds the app's preset content files from the two source spreadsheets:
 
     content/tone-tuner/items.json   <- tone-tuner-word-list.xlsx ("Word List")
     content/vocab/<collection>.json <- thanh-viet-lessons-import.xlsx
-                                       (rows with "Demo tomorrow" = Yes)
+                                       (rows with "Demo tomorrow" = Yes, plus
+                                       every collection in
+                                       content/vocab/picture-plan.json)
+
+Planned collections take one decision per sheet row from the picture plan:
+a Twemoji picture (downloaded once into public/vocab/<id>/) or "left out"
+with a reason. Left-out rows are kept in the content file under
+`left_out` (for custom art later) but never appear in drills.
 
 Tones are computed here with phowhisper_service.syllable_tone() — the same
 function the engine uses — never copied from the sheets' hand-entered tone
@@ -24,6 +31,7 @@ from __future__ import annotations
 
 import json
 import re
+import urllib.request
 import sys
 import unicodedata
 import zipfile
@@ -77,7 +85,9 @@ def read_sheet(path: str, sheet_name: str) -> list[dict]:
 
 def syllables(text: str) -> list[dict]:
     out = []
-    for raw in text.split():
+    # Hyphenated loanwords (cà-vạt, va-li, sô-pha) are one syllable per
+    # hyphen-separated part — the engine's _clean() splits them the same way.
+    for raw in re.split(r"[\s-]+", text):
         syl = unicodedata.normalize("NFC", raw.strip(".,?!"))
         if not syl:
             continue
@@ -143,35 +153,78 @@ def build_tone_tuner(path: str) -> None:
     print(f"wrote {out.relative_to(REPO)}: {len(items)} items")
 
 
+TWEMOJI = "https://cdn.jsdelivr.net/gh/jdecked/twemoji@17.0.3/assets/svg/{}.svg"
+
+
+def fetch_twemoji(codepoint: str, dest: Path) -> None:
+    if dest.exists():
+        return
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    with urllib.request.urlopen(TWEMOJI.format(codepoint), timeout=30) as r:
+        data = r.read()
+    assert data.lstrip().startswith(b"<svg"), f"not an SVG: {codepoint}"
+    dest.write_bytes(data)
+
+
 def build_vocab(path: str) -> None:
-    rows = [r for r in read_sheet(path, "All Words") if r["Demo tomorrow"].strip().lower() == "yes"]
+    plan = json.loads((REPO / "content/vocab/picture-plan.json").read_text())["collections"]
+    rows = [r for r in read_sheet(path, "All Words")
+            if r["Demo tomorrow"].strip().lower() == "yes" or r["Collection"] in plan]
     by_collection: dict[str, list[dict]] = {}
+    left_out: dict[str, list[dict]] = {}
     for row in rows:
         text = row["Vietnamese"]
         syl = syllables(text)
         check(f"vocab {row['Collection']} #{row['#']} {text}", syl, row["Tones"])
-        by_collection.setdefault(row["Collection"], []).append({
+        word = {
             "id": item_id(text, syl),
             "text": text,
             "meaning": row["English"],
             "syllables": syl,
             "audio_file": row["Audio file"],
             "audio": None,  # set by split_collection_recording.py / generate_tts_audio.py --publish
-        })
+        }
+        cplan = plan.get(row["Collection"])
+        if cplan:
+            key = f"{text} | {row['English']}"
+            decision = cplan["rows"].get(key)
+            if decision is None:
+                sys.exit(f"STOP: no picture-plan decision for {row['Collection']} row #{row['#']} ({key!r})")
+            if "skip" in decision:
+                left_out.setdefault(row["Collection"], []).append(
+                    {"text": text, "meaning": row["English"], "reason": decision["skip"]})
+                continue
+            word["audio_file"] = decision.get("audio_file", word["audio_file"])
+            # Named by word id, not slug: mặt and mắt share the slug "mat".
+            img = f"vocab/{cplan['id']}/{word['id']}.svg"
+            fetch_twemoji(decision["twemoji"], REPO / "public" / img)
+            word["image"] = "/" + img
+            word["twemoji"] = decision["twemoji"]
+        by_collection.setdefault(row["Collection"], []).append(word)
     for collection, words in by_collection.items():
-        out = REPO / f"content/vocab/{slugify(collection)}.json"
+        cid = plan[collection]["id"] if collection in plan else slugify(collection)
+        ids = [w["id"] for w in words]
+        assert len(ids) == len(set(ids)), f"duplicate ids in {collection}"
+        files = [w["audio_file"] for w in words]
+        assert len(files) == len(set(files)), f"duplicate audio file names in {collection}"
+        images = [w["image"] for w in words if "image" in w]
+        assert len(images) == len(set(images)), f"duplicate image paths in {collection}"
+        out = REPO / f"content/vocab/{cid}.json"
         existing = json.loads(out.read_text()) if out.exists() else {}
         # Preserve hand-curated presentation fields (image/swatch) and any
         # already-verified audio paths across re-imports.
         prior = {w["id"]: w for w in existing.get("words", [])}
         for w in words:
             for key in ("image", "swatch", "audio", "audio_source", "audio_voice"):
-                if key in prior.get(w["id"], {}):
+                if key in prior.get(w["id"], {}) and w.get(key) is None:
                     w[key] = prior[w["id"]][key]
-        out.write_text(json.dumps({"id": slugify(collection), "title": collection,
-                                   "source": "thanh-viet-lessons-import.xlsx (All Words)",
-                                   "words": words}, ensure_ascii=False, indent=2) + "\n")
-        print(f"wrote {out.relative_to(REPO)}: {len(words)} words")
+        doc = {"id": cid, "title": collection, "source": "thanh-viet-lessons-import.xlsx (All Words)", "words": words}
+        if collection in plan:
+            doc["title_vi"] = plan[collection]["title_vi"]
+            doc["left_out"] = left_out.get(collection, [])
+        out.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n")
+        print(f"wrote {out.relative_to(REPO)}: {len(words)} words" +
+              (f", {len(doc['left_out'])} left out" if collection in plan else ""))
 
 
 if __name__ == "__main__":

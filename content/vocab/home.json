@@ -1,0 +1,480 @@
+{
+  "id": "home",
+  "title": "Home and Furniture",
+  "source": "thanh-viet-lessons-import.xlsx (All Words)",
+  "words": [
+    {
+      "id": "cua-so--hoi-hoi",
+      "text": "cửa sổ",
+      "meaning": "window",
+      "syllables": [
+        {
+          "text": "cửa",
+          "tone": "hoi",
+          "mark_index": 1
+        },
+        {
+          "text": "sổ",
+          "tone": "hoi",
+          "mark_index": 1
+        }
+      ],
+      "audio_file": "home_cua-so.wav",
+      "audio": "/audio/vocab/home/home_cua-so.wav",
+      "image": "/vocab/home/cua-so--hoi-hoi.svg",
+      "twemoji": "1fa9f",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    },
+    {
+      "id": "cua--hoi",
+      "text": "cửa",
+      "meaning": "door",
+      "syllables": [
+        {
+          "text": "cửa",
+          "tone": "hoi",
+          "mark_index": 1
+        }
+      ],
+      "audio_file": "home_cua.wav",
+      "audio": "/audio/vocab/home/home_cua.wav",
+      "image": "/vocab/home/cua--hoi.svg",
+      "twemoji": "1f6aa",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    },
+    {
+      "id": "chia-khoa--huyen-sac",
+      "text": "chìa khóa",
+      "meaning": "key",
+      "syllables": [
+        {
+          "text": "chìa",
+          "tone": "huyen",
+          "mark_index": 2
+        },
+        {
+          "text": "khóa",
+          "tone": "sac",
+          "mark_index": 2
+        }
+      ],
+      "audio_file": "home_chia-khoa.wav",
+      "audio": "/audio/vocab/home/home_chia-khoa.wav",
+      "image": "/vocab/home/chia-khoa--huyen-sac.svg",
+      "twemoji": "1f511",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    },
+    {
+      "id": "o-khoa--hoi-sac",
+      "text": "ổ khóa",
+      "meaning": "lock",
+      "syllables": [
+        {
+          "text": "ổ",
+          "tone": "hoi",
+          "mark_index": 0
+        },
+        {
+          "text": "khóa",
+          "tone": "sac",
+          "mark_index": 2
+        }
+      ],
+      "audio_file": "home_o-khoa.wav",
+      "audio": null,
+      "image": "/vocab/home/o-khoa--hoi-sac.svg",
+      "twemoji": "1f512"
+    },
+    {
+      "id": "ghe--sac",
+      "text": "ghế",
+      "meaning": "chair",
+      "syllables": [
+        {
+          "text": "ghế",
+          "tone": "sac",
+          "mark_index": 2
+        }
+      ],
+      "audio_file": "home_ghe.wav",
+      "audio": "/audio/vocab/home/home_ghe.wav",
+      "image": "/vocab/home/ghe--sac.svg",
+      "twemoji": "1fa91",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    },
+    {
+      "id": "ghe-so-pha--sac-ngang-ngang",
+      "text": "ghế sô-pha",
+      "meaning": "sofa",
+      "syllables": [
+        {
+          "text": "ghế",
+          "tone": "sac",
+          "mark_index": 2
+        },
+        {
+          "text": "sô",
+          "tone": "ngang",
+          "mark_index": -1
+        },
+        {
+          "text": "pha",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "audio_file": "home_ghe-so-pha.wav",
+      "audio": null,
+      "image": "/vocab/home/ghe-so-pha--sac-ngang-ngang.svg",
+      "twemoji": "1f6cb"
+    },
+    {
+      "id": "giuong--huyen",
+      "text": "giường",
+      "meaning": "bed",
+      "syllables": [
+        {
+          "text": "giường",
+          "tone": "huyen",
+          "mark_index": 3
+        }
+      ],
+      "audio_file": "home_giuong.wav",
+      "audio": "/audio/vocab/home/home_giuong.wav",
+      "image": "/vocab/home/giuong--huyen.svg",
+      "twemoji": "1f6cf",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    },
+    {
+      "id": "voi-sen--huyen-ngang",
+      "text": "vòi sen",
+      "meaning": "shower",
+      "syllables": [
+        {
+          "text": "vòi",
+          "tone": "huyen",
+          "mark_index": 1
+        },
+        {
+          "text": "sen",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "audio_file": "home_voi-sen.wav",
+      "audio": "/audio/vocab/home/home_voi-sen.wav",
+      "image": "/vocab/home/voi-sen--huyen-ngang.svg",
+      "twemoji": "1f6bf",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    },
+    {
+      "id": "voi-nuoc--huyen-sac",
+      "text": "vòi nước",
+      "meaning": "faucet",
+      "syllables": [
+        {
+          "text": "vòi",
+          "tone": "huyen",
+          "mark_index": 1
+        },
+        {
+          "text": "nước",
+          "tone": "sac",
+          "mark_index": 2
+        }
+      ],
+      "audio_file": "home_voi-nuoc.wav",
+      "audio": "/audio/vocab/home/home_voi-nuoc.wav",
+      "image": "/vocab/home/voi-nuoc--huyen-sac.svg",
+      "twemoji": "1f6b0",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    },
+    {
+      "id": "bon-ve-sinh--huyen-nang-ngang",
+      "text": "bồn vệ sinh",
+      "meaning": "toilet",
+      "syllables": [
+        {
+          "text": "bồn",
+          "tone": "huyen",
+          "mark_index": 1
+        },
+        {
+          "text": "vệ",
+          "tone": "nang",
+          "mark_index": 1
+        },
+        {
+          "text": "sinh",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "audio_file": "home_bon-ve-sinh.wav",
+      "audio": "/audio/vocab/home/home_bon-ve-sinh.wav",
+      "image": "/vocab/home/bon-ve-sinh--huyen-nang-ngang.svg",
+      "twemoji": "1f6bd",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    },
+    {
+      "id": "tranh--ngang",
+      "text": "tranh",
+      "meaning": "picture",
+      "syllables": [
+        {
+          "text": "tranh",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "audio_file": "home_tranh.wav",
+      "audio": null,
+      "image": "/vocab/home/tranh--ngang.svg",
+      "twemoji": "1f5bc"
+    },
+    {
+      "id": "guong--ngang",
+      "text": "gương",
+      "meaning": "mirror",
+      "syllables": [
+        {
+          "text": "gương",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "audio_file": "home_guong.wav",
+      "audio": "/audio/vocab/home/home_guong.wav",
+      "image": "/vocab/home/guong--ngang.svg",
+      "twemoji": "1fa9e",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
+    }
+  ],
+  "title_vi": "Nhà cửa và đồ đạc",
+  "left_out": [
+    {
+      "text": "phòng",
+      "meaning": "rooms",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "phòng tắm",
+      "meaning": "bathroom",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "phòng ngủ",
+      "meaning": "bedroom",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "phòng bếp",
+      "meaning": "kitchen",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "sân",
+      "meaning": "yard",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "tường nhà",
+      "meaning": "wall",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "tường bao quanh nhà",
+      "meaning": "wall (around the house)",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "hàng rào",
+      "meaning": "fence",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "mái nhà",
+      "meaning": "roof",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "trần nhà",
+      "meaning": "ceiling",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "sàn nhà",
+      "meaning": "floor",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "ống khói",
+      "meaning": "chimney",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "núm cửa",
+      "meaning": "door handle",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "cổng",
+      "meaning": "gate",
+      "reason": "closest emoji is a Shinto shrine gate (⛩️) — misleading; waits for custom art"
+    },
+    {
+      "text": "lỗ khóa",
+      "meaning": "keyhole",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "chốt cửa",
+      "meaning": "bolt",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "cầu thang",
+      "meaning": "stairs",
+      "reason": "closest emoji is a ladder (🪜) — misleading; waits for custom art"
+    },
+    {
+      "text": "đồ nội thất",
+      "meaning": "furniture",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "ghế bành",
+      "meaning": "armchair",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "ghế băng",
+      "meaning": "bench",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "ghế cao",
+      "meaning": "high chair",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "ghế đẩu",
+      "meaning": "stool",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "bàn",
+      "meaning": "table",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "bàn học",
+      "meaning": "desk",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "quầy",
+      "meaning": "counter",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "tủ có ngăn kéo",
+      "meaning": "chest of drawers",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "ngăn tủ",
+      "meaning": "drawer",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "tủ",
+      "meaning": "cupboard",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "tủ quần áo",
+      "meaning": "wardrobe",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "kệ",
+      "meaning": "shelf",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "bồn rửa chén",
+      "meaning": "sink",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "bồn rửa mặt",
+      "meaning": "washbasin",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "khung tranh",
+      "meaning": "frame",
+      "reason": "the framed-picture emoji (🖼️) is used for tranh (picture); waits for custom art"
+    },
+    {
+      "text": "áp-phích",
+      "meaning": "poster",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "thảm",
+      "meaning": "carpet",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "tấm thảm",
+      "meaning": "rug",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "rèm cửa",
+      "meaning": "curtain",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "mành cửa",
+      "meaning": "blind",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "khăn trải bàn",
+      "meaning": "tablecloth",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "gối",
+      "meaning": "cushion",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "gối ngủ",
+      "meaning": "pillow",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "mền",
+      "meaning": "blanket",
+      "reason": "no clear picture — waits for custom art"
+    },
+    {
+      "text": "ga trải giường",
+      "meaning": "sheet",
+      "reason": "no clear picture — waits for custom art"
+    }
+  ]
+}

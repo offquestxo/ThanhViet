@@ -55,9 +55,11 @@ def main():
     ap.add_argument("--voice", required=True)
     ap.add_argument("--rate", type=float, default=1.0, help="speaking rate (1.0 = voice default)")
     ap.add_argument("--out-dir", type=Path)
-    ap.add_argument("--tries", type=int, default=5, help="max syntheses per word while looking for a take both models hear")
+    ap.add_argument("--tries", type=int, default=8, help="max syntheses per word while looking for a take both models hear")
     ap.add_argument("--no-check", action="store_true", help="skip the ASR check on the tone engine")
     ap.add_argument("--publish", action="store_true")
+    ap.add_argument("--publish-flagged", action="store_true",
+                    help="also publish clips the models did not both hear correctly (default: those stay unpublished)")
     args = ap.parse_args()
 
     credentials_outside_repo()
@@ -98,6 +100,7 @@ def main():
             wav = synth()
             print(f"  {w['text']:16s} -> {w['audio_file']}")
         (out_dir / w["audio_file"]).write_bytes(wav)
+        row["passed"] = (res["pho_match"] and res["par_match"]) if check else None
         report.append(row)
 
     (out_dir / "tts-report.json").write_text(json.dumps({"voice": args.voice, "rate": args.rate, "words": report},
@@ -109,15 +112,32 @@ def main():
             print("  FLAG", f)
 
     if args.publish:
+        # Only clips both models heard as the target word go into the app
+        # (Hear it is built on verified audio). A flagged word keeps no audio
+        # until a person checks it, unless --publish-flagged.
+        if check is None and not args.publish_flagged:
+            sys.exit("Refusing to publish unchecked clips: drop --no-check, or add --publish-flagged.")
+        passed = {r["word"] for r in report if r["passed"] or args.publish_flagged}
         pub = REPO / f"public/audio/vocab/{args.collection}"
         pub.mkdir(parents=True, exist_ok=True)
         for w in words:
-            shutil.copy2(out_dir / w["audio_file"], pub / w["audio_file"])
-            w["audio"] = f"/audio/vocab/{args.collection}/{w['audio_file']}"
-            w["audio_source"] = "google-tts"
-            w["audio_voice"] = args.voice
+            if w.get("audio_source") == "native":
+                continue  # never overwrite a native recording with TTS
+            if w["text"] in passed:
+                shutil.copy2(out_dir / w["audio_file"], pub / w["audio_file"])
+                w["audio"] = f"/audio/vocab/{args.collection}/{w['audio_file']}"
+                w["audio_source"] = "google-tts"
+                w["audio_voice"] = args.voice
+            else:
+                (pub / w["audio_file"]).unlink(missing_ok=True)
+                w["audio"] = None
+                w.pop("audio_source", None)
+                w.pop("audio_voice", None)
         content_path.write_text(json.dumps(content, ensure_ascii=False, indent=2) + "\n")
-        print(f"published to {pub.relative_to(REPO)} and updated {content_path.relative_to(REPO)}")
+        held = [w["text"] for w in words if w["text"] not in passed]
+        print(f"published {len(words) - len(held)} clips to {pub.relative_to(REPO)} and updated {content_path.relative_to(REPO)}")
+        if held:
+            print("held back (flagged, no audio in the app until checked): " + ", ".join(held))
 
 
 if __name__ == "__main__":
