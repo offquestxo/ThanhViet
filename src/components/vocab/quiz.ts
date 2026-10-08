@@ -2,11 +2,20 @@
 // down, so the server render and the browser's hydration produce the same
 // order (an unseeded Math.random() here caused a hydration mismatch).
 export function shuffle<T>(items: readonly T[], seed: number): T[] {
+  // mulberry32: 32-bit integer math via Math.imul. (The previous LCG
+  // multiplied past 2^53, lost its low bits, and put the quiz answer last
+  // ~99.7% of the time.)
+  let s = Math.floor(seed * 2 ** 32) >>> 0;
+  const next = () => {
+    s = (s + 0x6d2b79f5) >>> 0;
+    let t = s;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 2 ** 32;
+  };
   const a = [...items];
-  let s = Math.floor(seed * 2 ** 31) || 1;
   for (let i = a.length - 1; i > 0; i--) {
-    s = (s * 1103515245 + 12345) % 2 ** 31;
-    const j = s % (i + 1);
+    const j = Math.floor(next() * (i + 1));
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
