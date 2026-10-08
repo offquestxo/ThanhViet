@@ -14,6 +14,7 @@ import { RecentlyPracticed } from "@/components/home/recently-practiced";
 import { TodayGoal } from "@/components/home/today-goal";
 import { WeakWordsCard } from "@/components/home/weak-words-card";
 import { computeUnitProgression } from "@/lib/lesson-progression";
+import { liveStreakDays } from "@/lib/streak";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -36,6 +37,15 @@ export default async function DashboardPage() {
     .single();
 
   const isStaff = profile?.role === "admin" || profile?.role === "ceo";
+
+  // Own streak row (RLS: own-row select). Lessons and the Tone Tuner both
+  // bump it (src/lib/streak.ts).
+  const { data: streak } = await supabase
+    .from("user_streaks")
+    .select("current_streak, last_activity_date")
+    .eq("user_id", user.id)
+    .maybeSingle();
+  const liveStreak = liveStreakDays(streak);
 
   // Only chunk *counts* here now, not the chunks themselves — showing full
   // vietnamese_text/english_text pairs on the dashboard (the old behavior)
@@ -142,7 +152,7 @@ export default async function DashboardPage() {
             </AppCard>
           )}
 
-          <StatCards totalPoints={profile?.total_points ?? 0} />
+          <StatCards totalPoints={profile?.total_points ?? 0} streakDays={liveStreak} />
 
           {units && units.length > 0 && (
             <Section title="Lessons">

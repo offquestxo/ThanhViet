@@ -27,3 +27,20 @@ unmodified from the maintained fork, pinned to release 17.0.3:
 Generated colour swatches (CSS), no image files and no third-party art.
 
 No images from the JW Language app are used anywhere.
+
+## Audio — `public/audio/vocab/<collection>/*.wav`
+
+**Placeholder computer voice**, until the native speaker's recordings
+replace it. Generated with Google Cloud Text-to-Speech, voice
+`vi-VN-Chirp3-HD-Leda` (chosen as the most Northern-sounding candidate by
+an acoustic check of hỏi / ngã / nặng; awaiting a native speaker's
+confirmation), 24 kHz mono. Each clip was synthesized up to five times and
+the first take that both ASR models (PhoWhisper and Parakeet) heard as the
+target word was kept — all 23 passed. Script:
+`tone-analysis/scripts/generate_tts_audio.py`. Each word is marked
+`"audio_source": "google-tts"` in `content/vocab/<collection>.json`, and
+the collection page says the audio is a computer voice.
+
+Native recordings go through `tone-analysis/scripts/split_collection_recording.py`,
+which overwrites these files and sets `"audio_source": "native"` — only
+with the speaker's consent to publish.

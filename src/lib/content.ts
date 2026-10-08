@@ -32,6 +32,9 @@ export type VocabWord = {
   syllables: Syllable[];
   audio_file: string;
   audio: string | null;
+  /** Who is speaking in `audio`: placeholder TTS until the native recordings replace it. */
+  audio_source?: "google-tts" | "native";
+  audio_voice?: string;
   image?: string;
   swatch?: string;
 };

@@ -156,7 +156,7 @@ def build_vocab(path: str) -> None:
             "meaning": row["English"],
             "syllables": syl,
             "audio_file": row["Audio file"],
-            "audio": None,  # set by split_collection_recording.py once verified audio exists
+            "audio": None,  # set by split_collection_recording.py / generate_tts_audio.py --publish
         })
     for collection, words in by_collection.items():
         out = REPO / f"content/vocab/{slugify(collection)}.json"
@@ -165,7 +165,7 @@ def build_vocab(path: str) -> None:
         # already-verified audio paths across re-imports.
         prior = {w["id"]: w for w in existing.get("words", [])}
         for w in words:
-            for key in ("image", "swatch", "audio"):
+            for key in ("image", "swatch", "audio", "audio_source", "audio_voice"):
                 if key in prior.get(w["id"], {}):
                     w[key] = prior[w["id"]][key]
         out.write_text(json.dumps({"id": slugify(collection), "title": collection,

@@ -20,8 +20,10 @@
         }
       ],
       "audio_file": "food_trai-cay.wav",
-      "audio": null,
-      "image": "/vocab/food/trai-cay.svg"
+      "audio": "/audio/vocab/food/food_trai-cay.wav",
+      "image": "/vocab/food/trai-cay.svg",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
     },
     {
       "id": "dau--nang",
@@ -35,8 +37,10 @@
         }
       ],
       "audio_file": "food_dau.wav",
-      "audio": null,
-      "image": "/vocab/food/dau.svg"
+      "audio": "/audio/vocab/food/food_dau.wav",
+      "image": "/vocab/food/dau.svg",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
     },
     {
       "id": "le--ngang",
@@ -50,8 +54,10 @@
         }
       ],
       "audio_file": "food_le.wav",
-      "audio": null,
-      "image": "/vocab/food/le.svg"
+      "audio": "/audio/vocab/food/food_le.wav",
+      "image": "/vocab/food/le.svg",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
     },
     {
       "id": "tao--sac",
@@ -65,8 +71,10 @@
         }
       ],
       "audio_file": "food_tao.wav",
-      "audio": null,
-      "image": "/vocab/food/tao.svg"
+      "audio": "/audio/vocab/food/food_tao.wav",
+      "image": "/vocab/food/tao.svg",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
     },
     {
       "id": "rau-cu--ngang-hoi",
@@ -85,8 +93,10 @@
         }
       ],
       "audio_file": "food_rau-cu.wav",
-      "audio": null,
-      "image": "/vocab/food/rau-cu.svg"
+      "audio": "/audio/vocab/food/food_rau-cu.wav",
+      "image": "/vocab/food/rau-cu.svg",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
     },
     {
       "id": "dau-tay--ngang-ngang",
@@ -105,8 +115,10 @@
         }
       ],
       "audio_file": "food_dau-tay.wav",
-      "audio": null,
-      "image": "/vocab/food/dau-tay.svg"
+      "audio": "/audio/vocab/food/food_dau-tay.wav",
+      "image": "/vocab/food/dau-tay.svg",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
     },
     {
       "id": "cam--ngang",
@@ -120,8 +132,10 @@
         }
       ],
       "audio_file": "food_cam.wav",
-      "audio": null,
-      "image": "/vocab/food/cam.svg"
+      "audio": "/audio/vocab/food/food_cam.wav",
+      "image": "/vocab/food/cam.svg",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
     },
     {
       "id": "bap-cai--sac-hoi",
@@ -140,8 +154,10 @@
         }
       ],
       "audio_file": "food_bap-cai.wav",
-      "audio": null,
-      "image": "/vocab/food/bap-cai.svg"
+      "audio": "/audio/vocab/food/food_bap-cai.wav",
+      "image": "/vocab/food/bap-cai.svg",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
     },
     {
       "id": "xa-lach--huyen-sac",
@@ -160,8 +176,10 @@
         }
       ],
       "audio_file": "food_xa-lach.wav",
-      "audio": null,
-      "image": "/vocab/food/xa-lach.svg"
+      "audio": "/audio/vocab/food/food_xa-lach.wav",
+      "image": "/vocab/food/xa-lach.svg",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
     },
     {
       "id": "hanh-tay--huyen-ngang",
@@ -180,8 +198,10 @@
         }
       ],
       "audio_file": "food_hanh-tay.wav",
-      "audio": null,
-      "image": "/vocab/food/hanh-tay.svg"
+      "audio": "/audio/vocab/food/food_hanh-tay.wav",
+      "image": "/vocab/food/hanh-tay.svg",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
     },
     {
       "id": "lua-gao--sac-nang",
@@ -200,8 +220,10 @@
         }
       ],
       "audio_file": "food_lua-gao.wav",
-      "audio": null,
-      "image": "/vocab/food/lua-gao.svg"
+      "audio": "/audio/vocab/food/food_lua-gao.wav",
+      "image": "/vocab/food/lua-gao.svg",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
     }
   ]
 }

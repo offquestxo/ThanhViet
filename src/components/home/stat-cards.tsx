@@ -40,23 +40,23 @@ function StatCard({
 }
 
 /**
- * Four compact stat cards (Section 5a). Streak stays placeholder — never
- * fetched anywhere (see WeeklyProgress's note). XP reuses `totalPoints`,
+ * Four compact stat cards (Section 5a). Streak is the caller's own
+ * user_streaks row (bumped by lessons and Tone Tuner practice). XP reuses `totalPoints`,
  * already fetched by the Home page's existing profile query — not new
  * wiring. Tone Accuracy and Reading Readiness are genuinely undefined
  * (Tone Tuner engine doesn't exist yet; Reading Readiness has no formula
  * or source table — PRD Section 8) — shown muted with a dash rather than
  * hidden outright, so the four-card rhythm holds without faking numbers.
  */
-export function StatCards({ totalPoints }: { totalPoints: number }) {
+export function StatCards({ totalPoints, streakDays }: { totalPoints: number; streakDays: number }) {
   return (
     <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
       <StatCard
         icon={Flame}
         iconClassName="bg-accent-orange/15 text-accent-orange"
-        value="—"
+        value={String(streakDays)}
         label="Day Streak"
-        hint="Not tracked yet"
+        hint={streakDays > 0 ? "Lessons and Tone Tuner practice count" : "Practice today to start one"}
       />
       <StatCard
         icon={Star}

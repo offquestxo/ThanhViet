@@ -21,3 +21,7 @@ nvidia-riva-client>=2.17
 # and the HTTP client FastAPI's TestClient needs.
 imageio-ffmpeg>=0.5
 httpx>=0.27
+
+# Local-only: placeholder lesson audio (scripts/generate_tts_audio.py). The
+# service-account key lives outside the repo; never in Vercel or Modal.
+google-cloud-texttospeech>=2.20

@@ -56,6 +56,9 @@ export async function POST(request: Request) {
   if (res.status === 413 || res.status === 422) {
     // Engine-side validation (unreadable audio, recording too long).
     const body = await res.json().catch(() => ({}));
+    // Metadata only (never the audio): enough to tell a browser-format
+    // problem from a silent or empty recording in the server logs.
+    console.warn("tone engine rejected audio", { status: res.status, detail: body?.detail, type: audio.type, bytes: audio.size });
     return Response.json({ error: "bad_audio", detail: body?.detail ?? null }, { status: 422 });
   }
   if (!res.ok) {

@@ -4,7 +4,7 @@ import { ArrowLeft, Ear, Eye, Mic, Puzzle } from "lucide-react";
 import { COLLECTION_TITLES, getCollection, vocabCollections } from "@/lib/content";
 import { WordPicture } from "@/components/vocab/word-picture";
 import { PlayWord } from "@/components/vocab/play-word";
-import { hasEnoughAudio } from "@/components/vocab/audio";
+import { hasEnoughAudio, usesComputerVoice } from "@/components/vocab/audio";
 
 export function generateStaticParams() {
   return vocabCollections.map((c) => ({ collection: c.id }));
@@ -15,7 +15,8 @@ export default async function CollectionPage({ params }: PageProps<"/collections
   const collection = getCollection(id);
   if (!collection) notFound();
 
-  // "Hear it" only exists once real, verified audio does — never faked.
+  // "Hear it" only exists once verified audio does (each clip checked against
+  // the word by both ASR models) — never faked.
   const activities = [
     { slug: "see", label: "See it", hint: "Picture → pick the word", icon: Eye },
     ...(hasEnoughAudio(collection.words) ? [{ slug: "hear", label: "Hear it", hint: "Listen → pick the picture", icon: Ear }] : []),
@@ -24,13 +25,16 @@ export default async function CollectionPage({ params }: PageProps<"/collections
   ];
 
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-6">
+    <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
       <div>
         <Link href="/collections" className="mb-2 inline-flex items-center gap-1 text-sm text-muted-foreground">
           <ArrowLeft className="size-4" /> Collections
         </Link>
         <h1 className="text-2xl font-semibold">{COLLECTION_TITLES[collection.id] ?? collection.title}</h1>
         <p className="text-sm text-muted-foreground">{collection.title}</p>
+        {usesComputerVoice(collection.words) && (
+          <p className="mt-1 text-xs text-muted-foreground">Audio is a computer voice for now — native recordings are coming.</p>
+        )}
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">

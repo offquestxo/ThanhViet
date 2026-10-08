@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import type { VocabWord } from "@/lib/content";
 import { cn } from "@/lib/utils";
 import { Finished } from "./finished";
-import { shuffle } from "./quiz";
+import { shuffle, subSeed } from "./quiz";
 import { WordPicture } from "./word-picture";
 
 const PAIRS_PER_ROUND = 6;
@@ -17,7 +17,7 @@ export function MatchGame({ words, seed, backHref }: { words: VocabWord[]; seed:
     for (let i = 0; i < order.length; i += PAIRS_PER_ROUND) out.push(order.slice(i, i + PAIRS_PER_ROUND));
     // Avoid a lonely 1-pair final round: fold it into the previous one.
     if (out.length > 1 && out[out.length - 1].length < 2) out[out.length - 2].push(...out.pop()!);
-    return out.map((r, i) => ({ pictures: r, labels: shuffle(r, (seed * 7 + i + 1) % 1) }));
+    return out.map((r, i) => ({ pictures: r, labels: shuffle(r, subSeed(seed, i + 1)) }));
   }, [words, seed]);
 
   const [round, setRound] = useState(0);
@@ -46,7 +46,7 @@ export function MatchGame({ words, seed, backHref }: { words: VocabWord[]; seed:
   };
 
   return (
-    <div className="mx-auto flex max-w-md flex-col gap-5">
+    <div className="mx-auto flex w-full max-w-md flex-col gap-5">
       <p className="text-center text-sm text-muted-foreground">
         Tap a picture, then its word. Round {round + 1} / {rounds.length}
       </p>

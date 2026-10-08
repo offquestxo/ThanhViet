@@ -20,8 +20,10 @@
         }
       ],
       "audio_file": "colors_mau-sac.wav",
-      "audio": null,
-      "swatch": "rainbow"
+      "audio": "/audio/vocab/colors/colors_mau-sac.wav",
+      "swatch": "rainbow",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
     },
     {
       "id": "mau-do--huyen-hoi",
@@ -40,8 +42,10 @@
         }
       ],
       "audio_file": "colors_mau-do.wav",
-      "audio": null,
-      "swatch": "#E53935"
+      "audio": "/audio/vocab/colors/colors_mau-do.wav",
+      "swatch": "#E53935",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
     },
     {
       "id": "mau-cam--huyen-ngang",
@@ -60,8 +64,10 @@
         }
       ],
       "audio_file": "colors_mau-cam.wav",
-      "audio": null,
-      "swatch": "#FB8C00"
+      "audio": "/audio/vocab/colors/colors_mau-cam.wav",
+      "swatch": "#FB8C00",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
     },
     {
       "id": "mau-vang--huyen-huyen",
@@ -80,8 +86,10 @@
         }
       ],
       "audio_file": "colors_mau-vang.wav",
-      "audio": null,
-      "swatch": "#FDD835"
+      "audio": "/audio/vocab/colors/colors_mau-vang.wav",
+      "swatch": "#FDD835",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
     },
     {
       "id": "mau-xanh-la--huyen-ngang-sac",
@@ -105,8 +113,10 @@
         }
       ],
       "audio_file": "colors_mau-xanh-la.wav",
-      "audio": null,
-      "swatch": "#43A047"
+      "audio": "/audio/vocab/colors/colors_mau-xanh-la.wav",
+      "swatch": "#43A047",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
     },
     {
       "id": "mau-xanh-duong--huyen-ngang-ngang",
@@ -130,8 +140,10 @@
         }
       ],
       "audio_file": "colors_mau-xanh-duong.wav",
-      "audio": null,
-      "swatch": "#1E88E5"
+      "audio": "/audio/vocab/colors/colors_mau-xanh-duong.wav",
+      "swatch": "#1E88E5",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
     },
     {
       "id": "mau-tim--huyen-sac",
@@ -150,8 +162,10 @@
         }
       ],
       "audio_file": "colors_mau-tim.wav",
-      "audio": null,
-      "swatch": "#8E24AA"
+      "audio": "/audio/vocab/colors/colors_mau-tim.wav",
+      "swatch": "#8E24AA",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
     },
     {
       "id": "mau-hong--huyen-huyen",
@@ -170,8 +184,10 @@
         }
       ],
       "audio_file": "colors_mau-hong.wav",
-      "audio": null,
-      "swatch": "#F06292"
+      "audio": "/audio/vocab/colors/colors_mau-hong.wav",
+      "swatch": "#F06292",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
     },
     {
       "id": "mau-nau--huyen-ngang",
@@ -190,8 +206,10 @@
         }
       ],
       "audio_file": "colors_mau-nau.wav",
-      "audio": null,
-      "swatch": "#795548"
+      "audio": "/audio/vocab/colors/colors_mau-nau.wav",
+      "swatch": "#795548",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
     },
     {
       "id": "mau-den--huyen-ngang",
@@ -210,8 +228,10 @@
         }
       ],
       "audio_file": "colors_mau-den.wav",
-      "audio": null,
-      "swatch": "#212121"
+      "audio": "/audio/vocab/colors/colors_mau-den.wav",
+      "swatch": "#212121",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
     },
     {
       "id": "mau-xam--huyen-sac",
@@ -230,8 +250,10 @@
         }
       ],
       "audio_file": "colors_mau-xam.wav",
-      "audio": null,
-      "swatch": "#9E9E9E"
+      "audio": "/audio/vocab/colors/colors_mau-xam.wav",
+      "swatch": "#9E9E9E",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
     },
     {
       "id": "mau-trang--huyen-sac",
@@ -250,8 +272,10 @@
         }
       ],
       "audio_file": "colors_mau-trang.wav",
-      "audio": null,
-      "swatch": "#FFFFFF"
+      "audio": "/audio/vocab/colors/colors_mau-trang.wav",
+      "swatch": "#FFFFFF",
+      "audio_source": "google-tts",
+      "audio_voice": "vi-VN-Chirp3-HD-Leda"
     }
   ]
 }

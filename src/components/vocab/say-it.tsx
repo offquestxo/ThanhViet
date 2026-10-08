@@ -14,7 +14,7 @@ export function SayIt({ words, backHref }: { words: VocabWord[]; backHref: strin
   if (index >= words.length) return <Finished backHref={backHref} onRestart={() => setIndex(0)} />;
   const w = words[index];
   return (
-    <div className="mx-auto flex max-w-md flex-col items-center gap-4">
+    <div className="mx-auto flex w-full max-w-md flex-col items-center gap-4">
       <p className="text-xs text-muted-foreground">
         {index + 1} / {words.length}
       </p>

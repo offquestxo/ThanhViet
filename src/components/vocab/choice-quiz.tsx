@@ -5,7 +5,7 @@ import { CheckCircle2, Volume2, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { VocabWord } from "@/lib/content";
 import { cn } from "@/lib/utils";
-import { choicesFor, shuffle } from "./quiz";
+import { choicesFor, shuffle, subSeed } from "./quiz";
 import { WordPicture } from "./word-picture";
 import { Finished } from "./finished";
 
@@ -25,7 +25,7 @@ export function ChoiceQuiz({
   backHref: string;
 }) {
   const rounds = useMemo(
-    () => shuffle(words, seed).map((w, i) => ({ answer: w, choices: choicesFor(w, words, 4) , key: `${w.id}-${i}` })),
+    () => shuffle(words, seed).map((w, i) => ({ answer: w, choices: choicesFor(w, words, 4, subSeed(seed, i + 3)), key: `${w.id}-${i}` })),
     [words, seed]
   );
   const [index, setIndex] = useState(0);
@@ -45,7 +45,7 @@ export function ChoiceQuiz({
   };
 
   return (
-    <div className="mx-auto flex max-w-md flex-col items-center gap-6">
+    <div className="mx-auto flex w-full max-w-md flex-col items-center gap-6">
       <p className="text-xs text-muted-foreground">
         {index + 1} / {rounds.length}
       </p>
@@ -75,15 +75,26 @@ export function ChoiceQuiz({
               type="button"
               onClick={() => choose(c.id)}
               className={cn(
-                "flex items-center justify-center gap-2 rounded-xl border-2 bg-card p-3 text-lg font-medium transition-colors",
+                "relative flex items-center justify-center gap-2 rounded-xl border-2 bg-card p-3 text-lg font-medium transition-colors",
                 state === "idle" && "border-border hover:bg-muted",
                 state === "right" && "border-success bg-success/10",
                 state === "wrong" && "border-destructive bg-destructive/10"
               )}
             >
-              {mode === "see" ? c.text : <WordPicture word={c} className="max-w-24" />}
-              {state === "right" && <CheckCircle2 className="size-5 shrink-0 text-success" />}
-              {state === "wrong" && <XCircle className="size-5 shrink-0 text-destructive" />}
+              {mode === "see" ? (
+                c.text
+              ) : (
+                // Fixed-size box: a swatch is an empty div with no intrinsic width.
+                <div className="w-full max-w-28">
+                  <WordPicture word={c} />
+                </div>
+              )}
+              {state === "right" && (
+                <CheckCircle2 className={cn("size-5 shrink-0 text-success", mode === "hear" && "absolute right-2 top-2")} />
+              )}
+              {state === "wrong" && (
+                <XCircle className={cn("size-5 shrink-0 text-destructive", mode === "hear" && "absolute right-2 top-2")} />
+              )}
             </button>
           );
         })}

@@ -32,7 +32,7 @@ export default async function ActivityPage({ params }: PageProps<"/collections/[
   else body = <SayIt words={collection.words} backHref={backHref} />;
 
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-6">
+    <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
       <div>
         <Link href={backHref} className="mb-2 inline-flex items-center gap-1 text-sm text-muted-foreground">
           <ArrowLeft className="size-4" /> {COLLECTION_TITLES[collection.id] ?? collection.title}

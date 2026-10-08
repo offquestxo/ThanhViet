@@ -49,3 +49,20 @@ export async function bumpDailyStreak(
 
   return currentStreak;
 }
+
+/**
+ * The streak to display: only "live" if the last active day is today or
+ * yesterday (UTC) — otherwise it has lapsed and shows 0, even though the
+ * stored current_streak is only reset on the next practice.
+ */
+export function liveStreakDays(
+  row: { current_streak: number; last_activity_date: string | null } | null,
+  now: Date = new Date()
+): number {
+  if (!row?.last_activity_date) return 0;
+  const today = now.toISOString().slice(0, 10);
+  const yesterday = new Date(now);
+  yesterday.setUTCDate(yesterday.getUTCDate() - 1);
+  const live = row.last_activity_date === today || row.last_activity_date === yesterday.toISOString().slice(0, 10);
+  return live ? row.current_streak : 0;
+}

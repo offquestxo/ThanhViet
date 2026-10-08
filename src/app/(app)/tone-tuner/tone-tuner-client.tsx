@@ -28,7 +28,7 @@ export function ToneTunerClient({ items, initialId }: { items: ToneTunerItem[]; 
   }, [items]);
 
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-6">
+    <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
       <div className="flex items-baseline justify-between gap-3">
         <h1 className="text-2xl font-semibold">
           Tone Tuner <span className="align-middle text-xs font-medium text-accent-orange">beta</span>

@@ -7,7 +7,7 @@ export const metadata = { title: "Collections · Thanh Việt" };
 
 export default function CollectionsPage() {
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-6">
+    <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
       <h1 className="text-2xl font-semibold">Collections</h1>
       <div className="grid gap-4 sm:grid-cols-2">
         {vocabCollections.map((c) => (

@@ -20,9 +20,10 @@ Steps:
 
 Output stays in the gitignored test-audio/ folder by default. `--publish`
 copies the kept clips into the app (public/audio/vocab/<collection>/) and
-sets each word's `audio` path in content/vocab/<collection>.json. Publishing
-is deliberately opt-in: the repo is public, so committing these files makes
-the speaker's voice public — get their consent first.
+sets each word's `audio` path in content/vocab/<collection>.json. This replaces
+any placeholder Google TTS clips (audio_source becomes "native"). Publishing
+is deliberately opt-in: committed files are served publicly by the app, so
+this makes the speaker's voice public — get their consent first.
 
 Usage (from tone-analysis/, venv active):
     python scripts/split_collection_recording.py food path/to/food.m4a
@@ -198,6 +199,8 @@ def main():
         for w in words:
             shutil.copy2(out_dir / w["audio_file"], pub / w["audio_file"])
             w["audio"] = f"/audio/vocab/{args.collection}/{w['audio_file']}"
+            w["audio_source"] = "native"  # replaces any placeholder google-tts clip
+            w.pop("audio_voice", None)
         content_path.write_text(json.dumps(content, ensure_ascii=False, indent=2) + "\n")
         print(f"published to {pub.relative_to(REPO)} and updated {content_path.relative_to(REPO)}")
 

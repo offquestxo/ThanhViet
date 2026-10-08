@@ -14,7 +14,7 @@ export function Finished({
   onRestart: () => void;
 }) {
   return (
-    <div className="mx-auto flex max-w-sm flex-col items-center gap-4 py-8 text-center">
+    <div className="mx-auto flex w-full max-w-sm flex-col items-center gap-4 py-8 text-center">
       <PartyPopper className="size-10 text-accent" />
       <p className="text-xl font-semibold">Nice work!</p>
       {score !== undefined && total !== undefined && (
