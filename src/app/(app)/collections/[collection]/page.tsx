@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Ear, Eye, Mic, Puzzle } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Ear, Eye, Mic, Puzzle } from "lucide-react";
 import { COLLECTION_TITLES, getCollection, vocabCollections } from "@/lib/content";
 import { WordPicture } from "@/components/vocab/word-picture";
 import { PlayWord } from "@/components/vocab/play-word";
 import { hasEnoughAudio, usesComputerVoice } from "@/components/vocab/audio";
+import { createClient } from "@/lib/supabase/server";
+import { getVocabProgress, type VocabActivity } from "@/lib/vocab-progress";
 
 export function generateStaticParams() {
   return vocabCollections.map((c) => ({ collection: c.id }));
@@ -23,6 +25,7 @@ export default async function CollectionPage({ params }: PageProps<"/collections
     { slug: "match", label: "Match", hint: "Pair pictures and words", icon: Puzzle },
     { slug: "say", label: "Say it", hint: "Each word through the Tone Tuner", icon: Mic },
   ];
+  const done = (await getVocabProgress(await createClient())).get(collection.id);
 
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
@@ -38,17 +41,23 @@ export default async function CollectionPage({ params }: PageProps<"/collections
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        {activities.map((a) => (
-          <Link
-            key={a.slug}
-            href={`/collections/${collection.id}/${a.slug}`}
-            className="flex flex-col gap-1 rounded-[var(--radius-card)] border border-border bg-card p-4 shadow-[var(--shadow-card)] transition-colors hover:bg-muted/50"
-          >
-            <a.icon className="size-5 text-primary" />
-            <span className="font-semibold">{a.label}</span>
-            <span className="text-xs text-muted-foreground">{a.hint}</span>
-          </Link>
-        ))}
+        {activities.map((a) => {
+          const p = done?.get(a.slug as VocabActivity);
+          return (
+            <Link
+              key={a.slug}
+              href={`/collections/${collection.id}/${a.slug}`}
+              className="relative flex flex-col gap-1 rounded-[var(--radius-card)] border border-border bg-card p-4 shadow-[var(--shadow-card)] transition-colors hover:bg-muted/50"
+            >
+              {p && <CheckCircle2 className="absolute right-3 top-3 size-4.5 text-success" aria-label="Done" />}
+              <a.icon className="size-5 text-primary" />
+              <span className="font-semibold">{a.label}</span>
+              <span className="text-xs text-muted-foreground">
+                {p?.best_score != null && p.total ? `Best ${p.best_score} / ${p.total}` : a.hint}
+              </span>
+            </Link>
+          );
+        })}
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">

@@ -99,3 +99,15 @@ export async function demoteToMember(targetUserId: string) {
   if (error) throw new Error(error.message);
   revalidatePath("/admin");
 }
+
+/** Beta feedback triage (migration 0008): new -> seen -> resolved. */
+export async function setFeedbackStatus(feedbackId: string, status: "new" | "seen" | "resolved") {
+  await requireStaff();
+  if (!["new", "seen", "resolved"].includes(status)) throw new Error("Bad status.");
+
+  const admin = createAdminClient();
+  const { error } = await admin.from("beta_feedback").update({ status }).eq("id", feedbackId);
+
+  if (error) throw new Error(error.message);
+  revalidatePath("/admin");
+}

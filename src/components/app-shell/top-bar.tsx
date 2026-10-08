@@ -2,6 +2,7 @@ import { Bell, Flame, Leaf, Search, Star } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { ReportProblem } from "@/components/feedback/report-problem";
 
 // Placeholder-only, per Stage 2 scope — no real user/profile/streak data is
 // fetched here (that's Stage 3). Streak/XP/avatar are static stand-ins so
@@ -37,6 +38,8 @@ export function TopBar() {
         <Button variant="ghost" size="icon" aria-label="Notifications" disabled className="hidden md:inline-flex">
           <Bell className="size-4.5" strokeWidth={1.75} />
         </Button>
+
+        <ReportProblem />
 
         <Avatar className="size-8">
           <AvatarFallback className="bg-secondary text-secondary-foreground">

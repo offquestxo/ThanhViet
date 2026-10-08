@@ -19,11 +19,13 @@ export function ChoiceQuiz({
   words,
   seed,
   backHref,
+  collectionId,
 }: {
   mode: "see" | "hear";
   words: VocabWord[];
   seed: number;
   backHref: string;
+  collectionId: string;
 }) {
   const rounds = useMemo(
     () => shuffle(words, seed).map((w, i) => ({ answer: w, choices: choicesFor(w, words, 4, subSeed(seed, i + 3)), key: `${w.id}-${i}` })),
@@ -34,7 +36,15 @@ export function ChoiceQuiz({
   const [score, setScore] = useState(0);
 
   if (index >= rounds.length) {
-    return <Finished score={score} total={rounds.length} backHref={backHref} onRestart={() => { setIndex(0); setScore(0); setPicked(null); }} />;
+    return (
+      <Finished
+        score={score}
+        total={rounds.length}
+        backHref={backHref}
+        onRestart={() => { setIndex(0); setScore(0); setPicked(null); }}
+        completion={{ collectionId, activity: mode }}
+      />
+    );
   }
   const round = rounds[index];
   const play = () => round.answer.audio && new Audio(round.answer.audio).play();

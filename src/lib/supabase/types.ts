@@ -567,6 +567,58 @@ export type Database = {
         >;
         Relationships: [];
       };
+      // Migration 0008. Insert: own rows, any signed-in user. Select: admin/ceo.
+      beta_feedback: {
+        Row: {
+          id: string;
+          user_id: string | null;
+          note: string;
+          page_path: string;
+          device: string | null;
+          status: "new" | "seen" | "resolved";
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string | null;
+          note: string;
+          page_path: string;
+          device?: string | null;
+          status?: "new" | "seen" | "resolved";
+          created_at?: string;
+        };
+        Update: Partial<
+          Database["public"]["Tables"]["beta_feedback"]["Insert"]
+        >;
+        Relationships: [];
+      };
+      // Migration 0009. Own rows only. collection_id is a content-file id.
+      vocab_activity_progress: {
+        Row: {
+          user_id: string;
+          collection_id: string;
+          activity: "see" | "hear" | "match" | "say";
+          times_completed: number;
+          best_score: number | null;
+          total: number | null;
+          first_completed_at: string;
+          last_completed_at: string;
+        };
+        Insert: {
+          user_id: string;
+          collection_id: string;
+          activity: "see" | "hear" | "match" | "say";
+          times_completed?: number;
+          best_score?: number | null;
+          total?: number | null;
+          first_completed_at?: string;
+          last_completed_at?: string;
+        };
+        Update: Partial<
+          Database["public"]["Tables"]["vocab_activity_progress"]["Insert"]
+        >;
+        Relationships: [];
+      };
     };
     Views: {
       leaderboard: {

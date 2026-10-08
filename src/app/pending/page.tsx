@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { SignOutButton } from "@/components/sign-out-button";
+import { ReportProblem } from "@/components/feedback/report-problem";
 
 export default async function PendingPage() {
   const supabase = await createClient();
@@ -47,6 +48,9 @@ export default async function PendingPage() {
           </p>
         )}
         <SignOutButton />
+        <div className="mt-6">
+          <ReportProblem variant="link" />
+        </div>
       </div>
     </main>
   );

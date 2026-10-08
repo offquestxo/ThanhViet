@@ -10,7 +10,17 @@ import { WordPicture } from "./word-picture";
 const PAIRS_PER_ROUND = 6;
 
 /** Match pictures to words: tap a picture, then its word. */
-export function MatchGame({ words, seed, backHref }: { words: VocabWord[]; seed: number; backHref: string }) {
+export function MatchGame({
+  words,
+  seed,
+  backHref,
+  collectionId,
+}: {
+  words: VocabWord[];
+  seed: number;
+  backHref: string;
+  collectionId: string;
+}) {
   const rounds = useMemo(() => {
     const order = shuffle(words, seed);
     const out: VocabWord[][] = [];
@@ -26,7 +36,13 @@ export function MatchGame({ words, seed, backHref }: { words: VocabWord[]; seed:
   const [wrong, setWrong] = useState<string | null>(null);
 
   if (round >= rounds.length) {
-    return <Finished backHref={backHref} onRestart={() => { setRound(0); setMatched(new Set()); }} />;
+    return (
+      <Finished
+        backHref={backHref}
+        onRestart={() => { setRound(0); setMatched(new Set()); }}
+        completion={{ collectionId, activity: "match" }}
+      />
+    );
   }
   const { pictures, labels } = rounds[round];
 

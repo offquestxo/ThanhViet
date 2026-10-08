@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { selectChunksForLesson } from "@/lib/chunk-selection";
+import { ReportProblem } from "@/components/feedback/report-problem";
 import { LessonFlow, type LessonChunk } from "./lesson-flow";
 
 export default async function LessonPage({
@@ -85,5 +86,12 @@ export default async function LessonPage({
   // beyond a plain status message (a countdown, hiding the entry point on
   // the dashboard, a "practice anyway" override) is a separate open
   // question, flagged not decided, independent of this fix.
-  return <LessonFlow unitTitle={unit.title} chunks={chunks} />;
+  return (
+    <>
+      <LessonFlow unitTitle={unit.title} chunks={chunks} />
+      <div className="flex justify-center pb-[calc(env(safe-area-inset-bottom)+1.5rem)]">
+        <ReportProblem variant="link" />
+      </div>
+    </>
+  );
 }

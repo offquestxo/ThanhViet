@@ -8,10 +8,11 @@ import { Finished } from "./finished";
 import { WordPicture } from "./word-picture";
 
 /** Say each word through the Tone Tuner (same engine, same results screen). */
-export function SayIt({ words, backHref }: { words: VocabWord[]; backHref: string }) {
+export function SayIt({ words, backHref, collectionId }: { words: VocabWord[]; backHref: string; collectionId: string }) {
   const [index, setIndex] = useState(0);
   useWarmEngine();
-  if (index >= words.length) return <Finished backHref={backHref} onRestart={() => setIndex(0)} />;
+  if (index >= words.length)
+    return <Finished backHref={backHref} onRestart={() => setIndex(0)} completion={{ collectionId, activity: "say" }} />;
   const w = words[index];
   return (
     <div className="mx-auto flex w-full max-w-md flex-col items-center gap-4">

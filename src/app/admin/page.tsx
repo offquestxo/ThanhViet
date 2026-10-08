@@ -5,7 +5,9 @@ import {
   rejectUser,
   promoteToAdmin,
   demoteToMember,
+  setFeedbackStatus,
 } from "./actions";
+import { ReportProblem } from "@/components/feedback/report-problem";
 
 export default async function AdminPage() {
   const supabase = await createClient();
@@ -47,12 +49,57 @@ export default async function AdminPage() {
         .order("name", { ascending: true })
     : { data: null };
 
+  // Beta feedback (RLS: staff-only select). Newest first; resolved notes
+  // drop off the list. The note author's name comes from a separate
+  // profiles read (staff can see every profile).
+  const { data: feedback } = await supabase
+    .from("beta_feedback")
+    .select("id, user_id, note, page_path, device, status, created_at")
+    .neq("status", "resolved")
+    .order("created_at", { ascending: false })
+    .limit(50);
+  const authorIds = [...new Set((feedback ?? []).map((f) => f.user_id).filter((id): id is string => !!id))];
+  const { data: authors } = authorIds.length
+    ? await supabase.from("profiles").select("id, name").in("id", authorIds)
+    : { data: [] as { id: string; name: string }[] };
+  const authorName = new Map((authors ?? []).map((a) => [a.id, a.name]));
+
   return (
     <main className="min-h-screen p-8 max-w-2xl mx-auto">
       <h1 className="text-2xl font-semibold mb-1">Admin</h1>
       <p className="text-sm text-gray-500 mb-8">
-        Signed in as {viewer.role}.
+        Signed in as {viewer.role}. <ReportProblem variant="link" className="ml-2" />
       </p>
+
+      <section className="mb-10">
+        <h2 className="text-lg font-medium mb-3">Beta feedback</h2>
+        {!feedback || feedback.length === 0 ? (
+          <p className="text-sm text-gray-500">No open reports.</p>
+        ) : (
+          <ul className="flex flex-col gap-3">
+            {feedback.map((f) => (
+              <li key={f.id} className="border rounded-md p-3 flex flex-col gap-2">
+                <p className="text-sm whitespace-pre-wrap">{f.note}</p>
+                <p className="text-xs text-gray-500">
+                  {(f.user_id && authorName.get(f.user_id)) || "Deleted account"} · {f.page_path}
+                  {f.device ? ` · ${f.device}` : ""} · {new Date(f.created_at).toLocaleString()}
+                  {f.status === "seen" ? " · seen" : ""}
+                </p>
+                <div className="flex gap-2">
+                  {f.status === "new" && (
+                    <form action={setFeedbackStatus.bind(null, f.id, "seen")}>
+                      <button className="border rounded-md px-3 py-1.5 text-sm">Mark seen</button>
+                    </form>
+                  )}
+                  <form action={setFeedbackStatus.bind(null, f.id, "resolved")}>
+                    <button className="border rounded-md px-3 py-1.5 text-sm">Resolve</button>
+                  </form>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
 
       <section className="mb-10">
         <h2 className="text-lg font-medium mb-3">Pending approvals</h2>

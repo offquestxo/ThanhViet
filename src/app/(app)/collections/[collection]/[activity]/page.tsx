@@ -23,13 +23,13 @@ export default async function ActivityPage({ params }: PageProps<"/collections/[
   const seed = Math.random();
 
   let body: React.ReactNode;
-  if (activity === "see") body = <ChoiceQuiz mode="see" words={collection.words} seed={seed} backHref={backHref} />;
+  if (activity === "see") body = <ChoiceQuiz mode="see" words={collection.words} seed={seed} backHref={backHref} collectionId={collection.id} />;
   else if (activity === "hear") {
     const withAudio = collection.words.filter((w) => w.audio);
     if (!hasEnoughAudio(collection.words)) notFound();
-    body = <ChoiceQuiz mode="hear" words={withAudio} seed={seed} backHref={backHref} />;
-  } else if (activity === "match") body = <MatchGame words={collection.words} seed={seed} backHref={backHref} />;
-  else body = <SayIt words={collection.words} backHref={backHref} />;
+    body = <ChoiceQuiz mode="hear" words={withAudio} seed={seed} backHref={backHref} collectionId={collection.id} />;
+  } else if (activity === "match") body = <MatchGame words={collection.words} seed={seed} backHref={backHref} collectionId={collection.id} />;
+  else body = <SayIt words={collection.words} backHref={backHref} collectionId={collection.id} />;
 
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
