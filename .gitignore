@@ -43,3 +43,6 @@ next-env.d.ts
 
 # mascot source art (final assets live in public/mascot)
 /mascot-inbox/
+
+# Playwright MCP console logs (local tool output)
+/.playwright-mcp/

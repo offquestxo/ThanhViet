@@ -5,7 +5,8 @@
 // The source sheet lives in mascot-inbox/ (git-ignored). Needs macOS: the
 // subject cut-out uses Vision's foreground mask via cut.swift (no installs).
 // Writes:
-//   public/mascot/full/sparrow-<pose>.png   full-resolution transparent PNGs
+//   mascot-inbox/full/sparrow-<pose>.png    full-resolution transparent PNGs
+//                                           (git-ignored, local only — not deployed)
 //   public/mascot/sparrow-<pose>.png        web-sized copies (used by the app)
 //   public/icons/*, public/apple-touch-icon.png, src/app/favicon.ico
 import { execFileSync } from "node:child_process";
@@ -74,7 +75,8 @@ async function cutOut(name, { rect, decor }) {
 }
 
 const CLEAR = { r: 0, g: 0, b: 0, alpha: 0 };
-fs.mkdirSync(path.join(PUB, "mascot/full"), { recursive: true });
+const FULL = path.join(ROOT, "mascot-inbox/full"); // originals stay local, never in public/
+fs.mkdirSync(FULL, { recursive: true });
 let main;
 for (const [name, pose] of Object.entries(POSES)) {
   let img = await cutOut(name, pose);
@@ -90,7 +92,7 @@ for (const [name, pose] of Object.entries(POSES)) {
       .png()
       .toBuffer();
   }
-  await sharp(img).png({ compressionLevel: 9 }).toFile(path.join(PUB, `mascot/full/sparrow-${name}.png`));
+  await sharp(img).png({ compressionLevel: 9 }).toFile(path.join(FULL, `sparrow-${name}.png`));
   const web = name === "main" ? sharp(img).resize({ height: 400 }) : sharp(img).resize(160, 160);
   await web.png({ palette: true, quality: 92, effort: 10 }).toFile(path.join(PUB, `mascot/sparrow-${name}.png`));
 }
@@ -121,7 +123,7 @@ const rounded = async (size) => {
   const r = Buffer.from(`<svg width="${size}" height="${size}"><rect width="${size}" height="${size}" rx="${size * 0.225}" fill="#fff"/></svg>`);
   return sharp(await sharp(square).resize(size, size).png().toBuffer()).composite([{ input: r, blend: "dest-in" }]).png().toBuffer();
 };
-await sharp(square).png({ compressionLevel: 9 }).toFile(path.join(PUB, "mascot/full/app-icon-1024.png"));
+await sharp(square).png({ compressionLevel: 9 }).toFile(path.join(FULL, "app-icon-1024.png"));
 // iOS: opaque, full-bleed square; iOS rounds the corners itself.
 for (const f of ["icons/apple-touch-icon.png", "apple-touch-icon.png"])
   await sharp(square).resize(180, 180).png({ palette: true, quality: 95 }).toFile(path.join(PUB, f));
