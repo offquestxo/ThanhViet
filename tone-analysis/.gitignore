@@ -9,3 +9,8 @@ output/*.png
 # reference-audio/README.md.
 reference-audio/*
 !reference-audio/README.md
+
+# Openly licensed test audio (Lingua Libre, Wikimedia Commons, FLEURS) —
+# test data only, never committed or bundled. See test-audio/SOURCES.md.
+test-audio/*
+!test-audio/SOURCES.md

@@ -70,3 +70,38 @@ def test_garbage_rejected():
 def test_empty_rejected():
     with pytest.raises(AudioNormalizationError):
         to_wav16k_mono(b"")
+
+
+# --- decision 4: the Parselmouth harness gets its own higher-rate copy ---
+
+from tone_analysis.normalize import ACOUSTIC_MAX_RATE, to_wav_acoustic, wav_sample_rate  # noqa: E402
+
+
+def _resampled(wav: bytes, rate: int) -> bytes:
+    return _encode(wav, "wav", ["-ar", str(rate)])
+
+
+def test_acoustic_copy_keeps_native_rate(ngang_wav):
+    out = to_wav_acoustic(ngang_wav)  # synthetic fixture is 44.1 kHz
+    assert wav_sample_rate(out) == 44_100
+    with wave.open(io.BytesIO(out), "rb") as w:
+        assert w.getnchannels() == 1 and w.getsampwidth() == 2
+
+
+def test_acoustic_copy_from_browser_opus_is_48k(ngang_wav):
+    webm = _encode(ngang_wav, "webm", ["-c:a", "libopus"])
+    assert wav_sample_rate(to_wav_acoustic(webm)) == 48_000  # opus decodes at 48 kHz
+
+
+def test_acoustic_copy_capped(ngang_wav):
+    hi = _resampled(ngang_wav, 96_000)
+    assert wav_sample_rate(to_wav_acoustic(hi)) == ACOUSTIC_MAX_RATE
+
+
+def test_acoustic_copy_never_upsampled(ngang_wav):
+    lo = _resampled(ngang_wav, 16_000)
+    assert wav_sample_rate(to_wav_acoustic(lo)) == 16_000
+
+
+def test_asr_copy_unchanged_by_decision_4(ngang_wav):
+    assert wav_sample_rate(to_wav16k_mono(ngang_wav)) == 16_000

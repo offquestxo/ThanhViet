@@ -69,6 +69,7 @@ def _acoustic(wav: bytes, n_syllables: int) -> dict:
     return {
         "status": "ok",
         "calibrated": False,
+        "sample_rate_hz": result.validation.sample_rate_hz,
         "pitch_contour": [
             {"t_ms": round((offset_s + f.time_s) * 1000), "f0_hz": f.f0_hz}
             for f in result.pitch.frames
@@ -141,12 +142,15 @@ async def analyze(
     *,
     phowhisper: PhoWhisperCall,
     parakeet: ParakeetCall,
+    acoustic_wav: bytes | None = None,
 ) -> dict:
-    """`wav` must already be normalized (normalize.to_wav16k_mono)."""
+    """`wav` is the 16 kHz copy both ASR models see (normalize.to_wav16k_mono).
+    `acoustic_wav` is the higher-rate copy for the Parselmouth harness
+    (normalize.to_wav_acoustic); falls back to `wav` when not given."""
     start = time.perf_counter()
     syllables = target_syllables(target_text)
 
-    acoustic_task = asyncio.to_thread(_acoustic, wav, len(syllables))
+    acoustic_task = asyncio.to_thread(_acoustic, acoustic_wav or wav, len(syllables))
     pho_task = _phowhisper_opinion(phowhisper, wav, target_text)
     par_task = _parakeet_opinion(parakeet, wav, target_text)
     acoustic, pho, par = await asyncio.gather(acoustic_task, pho_task, par_task, return_exceptions=True)

@@ -15,6 +15,18 @@ type=offline" — for both raw PCM and full-WAV payloads. The hosted function
 serves streaming recognition only, so the whole clip is streamed in chunks
 and only final results are kept.
 
+Word timestamps — verified limits (2026-10-07, real FLEURS speech):
+  * They are 80 ms CTC frame positions (FastConformer's 8x downsampling),
+    not word boundaries: the median word "span" is exactly one frame. Cut
+    between consecutive positions, never on [start, end].
+  * Around punctuation the word list can drift from the model's own
+    transcript: "...cho viết, Vụ va chạm đã gây..." came back as words
+    "viết, đã, Vụ, va, chạm, ., gây" (labels shifted, a "." token in a word
+    slot). Turning enable_automatic_punctuation off has no effect on the
+    hosted function — punctuation is part of the model's output. Anything
+    that segments by these timestamps must check that the word list matches
+    the transcript first.
+
 The API key comes from the environment (a Modal secret in production) and
 is never logged or returned.
 """
