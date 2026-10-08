@@ -1,0 +1,207 @@
+{
+  "id": "food",
+  "title": "Food",
+  "source": "thanh-viet-lessons-import.xlsx (All Words)",
+  "words": [
+    {
+      "id": "trai-cay--sac-ngang",
+      "text": "trái cây",
+      "meaning": "fruits",
+      "syllables": [
+        {
+          "text": "trái",
+          "tone": "sac",
+          "mark_index": 2
+        },
+        {
+          "text": "cây",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "audio_file": "food_trai-cay.wav",
+      "audio": null,
+      "image": "/vocab/food/trai-cay.svg"
+    },
+    {
+      "id": "dau--nang",
+      "text": "đậu",
+      "meaning": "beans",
+      "syllables": [
+        {
+          "text": "đậu",
+          "tone": "nang",
+          "mark_index": 1
+        }
+      ],
+      "audio_file": "food_dau.wav",
+      "audio": null,
+      "image": "/vocab/food/dau.svg"
+    },
+    {
+      "id": "le--ngang",
+      "text": "lê",
+      "meaning": "pear",
+      "syllables": [
+        {
+          "text": "lê",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "audio_file": "food_le.wav",
+      "audio": null,
+      "image": "/vocab/food/le.svg"
+    },
+    {
+      "id": "tao--sac",
+      "text": "táo",
+      "meaning": "apple",
+      "syllables": [
+        {
+          "text": "táo",
+          "tone": "sac",
+          "mark_index": 1
+        }
+      ],
+      "audio_file": "food_tao.wav",
+      "audio": null,
+      "image": "/vocab/food/tao.svg"
+    },
+    {
+      "id": "rau-cu--ngang-hoi",
+      "text": "rau củ",
+      "meaning": "vegetables",
+      "syllables": [
+        {
+          "text": "rau",
+          "tone": "ngang",
+          "mark_index": -1
+        },
+        {
+          "text": "củ",
+          "tone": "hoi",
+          "mark_index": 1
+        }
+      ],
+      "audio_file": "food_rau-cu.wav",
+      "audio": null,
+      "image": "/vocab/food/rau-cu.svg"
+    },
+    {
+      "id": "dau-tay--ngang-ngang",
+      "text": "dâu tây",
+      "meaning": "strawberry",
+      "syllables": [
+        {
+          "text": "dâu",
+          "tone": "ngang",
+          "mark_index": -1
+        },
+        {
+          "text": "tây",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "audio_file": "food_dau-tay.wav",
+      "audio": null,
+      "image": "/vocab/food/dau-tay.svg"
+    },
+    {
+      "id": "cam--ngang",
+      "text": "cam",
+      "meaning": "orange",
+      "syllables": [
+        {
+          "text": "cam",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "audio_file": "food_cam.wav",
+      "audio": null,
+      "image": "/vocab/food/cam.svg"
+    },
+    {
+      "id": "bap-cai--sac-hoi",
+      "text": "bắp cải",
+      "meaning": "cabbage",
+      "syllables": [
+        {
+          "text": "bắp",
+          "tone": "sac",
+          "mark_index": 1
+        },
+        {
+          "text": "cải",
+          "tone": "hoi",
+          "mark_index": 1
+        }
+      ],
+      "audio_file": "food_bap-cai.wav",
+      "audio": null,
+      "image": "/vocab/food/bap-cai.svg"
+    },
+    {
+      "id": "xa-lach--huyen-sac",
+      "text": "xà lách",
+      "meaning": "lettuce",
+      "syllables": [
+        {
+          "text": "xà",
+          "tone": "huyen",
+          "mark_index": 1
+        },
+        {
+          "text": "lách",
+          "tone": "sac",
+          "mark_index": 1
+        }
+      ],
+      "audio_file": "food_xa-lach.wav",
+      "audio": null,
+      "image": "/vocab/food/xa-lach.svg"
+    },
+    {
+      "id": "hanh-tay--huyen-ngang",
+      "text": "hành tây",
+      "meaning": "onion",
+      "syllables": [
+        {
+          "text": "hành",
+          "tone": "huyen",
+          "mark_index": 1
+        },
+        {
+          "text": "tây",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "audio_file": "food_hanh-tay.wav",
+      "audio": null,
+      "image": "/vocab/food/hanh-tay.svg"
+    },
+    {
+      "id": "lua-gao--sac-nang",
+      "text": "lúa gạo",
+      "meaning": "rice",
+      "syllables": [
+        {
+          "text": "lúa",
+          "tone": "sac",
+          "mark_index": 1
+        },
+        {
+          "text": "gạo",
+          "tone": "nang",
+          "mark_index": 1
+        }
+      ],
+      "audio_file": "food_lua-gao.wav",
+      "audio": null,
+      "image": "/vocab/food/lua-gao.svg"
+    }
+  ]
+}

@@ -1,0 +1,745 @@
+{
+  "source": "tone-tuner-word-list.xlsx (Word List)",
+  "items": [
+    {
+      "id": "ma--ngang",
+      "text": "ma",
+      "meaning": "ghost",
+      "kind": "word",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "ma",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "ba--ngang",
+      "text": "ba",
+      "meaning": "three / dad",
+      "kind": "word",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "ba",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "xa--ngang",
+      "text": "xa",
+      "meaning": "far",
+      "kind": "word",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "xa",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "khoa--ngang",
+      "text": "khoa",
+      "meaning": "subject / lock",
+      "kind": "word",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "khoa",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "anh--ngang",
+      "text": "anh",
+      "meaning": "older brother / you (m.)",
+      "kind": "word",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "anh",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "em--ngang",
+      "text": "em",
+      "meaning": "younger sibling / you",
+      "kind": "word",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "em",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "ma--huyen",
+      "text": "mà",
+      "meaning": "but / that",
+      "kind": "word",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "mà",
+          "tone": "huyen",
+          "mark_index": 1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "ba--huyen",
+      "text": "bà",
+      "meaning": "grandmother",
+      "kind": "word",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "bà",
+          "tone": "huyen",
+          "mark_index": 1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "la--huyen",
+      "text": "là",
+      "meaning": "to be",
+      "kind": "word",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "là",
+          "tone": "huyen",
+          "mark_index": 1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "nha--huyen",
+      "text": "nhà",
+      "meaning": "house",
+      "kind": "word",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "nhà",
+          "tone": "huyen",
+          "mark_index": 2
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "chao--huyen",
+      "text": "chào",
+      "meaning": "hello / greet",
+      "kind": "word",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "chào",
+          "tone": "huyen",
+          "mark_index": 2
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "ca-phe--huyen-ngang",
+      "text": "cà phê",
+      "meaning": "coffee",
+      "kind": "phrase",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "cà",
+          "tone": "huyen",
+          "mark_index": 1
+        },
+        {
+          "text": "phê",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "ma--sac",
+      "text": "má",
+      "meaning": "mother / cheek",
+      "kind": "word",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "má",
+          "tone": "sac",
+          "mark_index": 1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "ca--sac",
+      "text": "cá",
+      "meaning": "fish",
+      "kind": "word",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "cá",
+          "tone": "sac",
+          "mark_index": 1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "banh--sac",
+      "text": "bánh",
+      "meaning": "cake / bread",
+      "kind": "word",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "bánh",
+          "tone": "sac",
+          "mark_index": 1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "sang--sac",
+      "text": "sáng",
+      "meaning": "morning / bright",
+      "kind": "word",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "sáng",
+          "tone": "sac",
+          "mark_index": 1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "nuoc--sac",
+      "text": "nước",
+      "meaning": "water / country",
+      "kind": "word",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "nước",
+          "tone": "sac",
+          "mark_index": 2
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "sach--sac",
+      "text": "sách",
+      "meaning": "book",
+      "kind": "word",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "sách",
+          "tone": "sac",
+          "mark_index": 1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "ma--hoi",
+      "text": "mả",
+      "meaning": "grave / tomb",
+      "kind": "word",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "mả",
+          "tone": "hoi",
+          "mark_index": 1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "bao--hoi",
+      "text": "bảo",
+      "meaning": "to tell",
+      "kind": "word",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "bảo",
+          "tone": "hoi",
+          "mark_index": 1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "khoe--hoi",
+      "text": "khỏe",
+      "meaning": "healthy",
+      "kind": "word",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "khỏe",
+          "tone": "hoi",
+          "mark_index": 2
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "cam--hoi",
+      "text": "cảm",
+      "meaning": "to feel",
+      "kind": "word",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "cảm",
+          "tone": "hoi",
+          "mark_index": 1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "hoi--hoi",
+      "text": "hỏi",
+      "meaning": "to ask",
+      "kind": "word",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "hỏi",
+          "tone": "hoi",
+          "mark_index": 1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "nghi--hoi",
+      "text": "nghỉ",
+      "meaning": "to rest",
+      "kind": "word",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "nghỉ",
+          "tone": "hoi",
+          "mark_index": 3
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "ma--nga",
+      "text": "mã",
+      "meaning": "code / horse",
+      "kind": "word",
+      "glottalization_target": true,
+      "syllables": [
+        {
+          "text": "mã",
+          "tone": "nga",
+          "mark_index": 1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "da--nga",
+      "text": "đã",
+      "meaning": "already (past marker)",
+      "kind": "word",
+      "glottalization_target": true,
+      "syllables": [
+        {
+          "text": "đã",
+          "tone": "nga",
+          "mark_index": 1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "cung--nga",
+      "text": "cũng",
+      "meaning": "also / too",
+      "kind": "word",
+      "glottalization_target": true,
+      "syllables": [
+        {
+          "text": "cũng",
+          "tone": "nga",
+          "mark_index": 1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "nua--nga",
+      "text": "nữa",
+      "meaning": "more",
+      "kind": "word",
+      "glottalization_target": true,
+      "syllables": [
+        {
+          "text": "nữa",
+          "tone": "nga",
+          "mark_index": 1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "sua--nga",
+      "text": "sữa",
+      "meaning": "milk",
+      "kind": "word",
+      "glottalization_target": true,
+      "syllables": [
+        {
+          "text": "sữa",
+          "tone": "nga",
+          "mark_index": 1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "ngu--nga",
+      "text": "ngữ",
+      "meaning": "language (in 'ngôn ngữ')",
+      "kind": "word",
+      "glottalization_target": true,
+      "syllables": [
+        {
+          "text": "ngữ",
+          "tone": "nga",
+          "mark_index": 2
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "ma--nang",
+      "text": "mạ",
+      "meaning": "rice seedling",
+      "kind": "word",
+      "glottalization_target": true,
+      "syllables": [
+        {
+          "text": "mạ",
+          "tone": "nang",
+          "mark_index": 1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "la--nang",
+      "text": "lạ",
+      "meaning": "strange / unfamiliar",
+      "kind": "word",
+      "glottalization_target": true,
+      "syllables": [
+        {
+          "text": "lạ",
+          "tone": "nang",
+          "mark_index": 1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "nang--nang",
+      "text": "nặng",
+      "meaning": "heavy",
+      "kind": "word",
+      "glottalization_target": true,
+      "syllables": [
+        {
+          "text": "nặng",
+          "tone": "nang",
+          "mark_index": 1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "hoc--nang",
+      "text": "học",
+      "meaning": "to study",
+      "kind": "word",
+      "glottalization_target": true,
+      "syllables": [
+        {
+          "text": "học",
+          "tone": "nang",
+          "mark_index": 1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "mot--nang",
+      "text": "một",
+      "meaning": "one (number)",
+      "kind": "word",
+      "glottalization_target": true,
+      "syllables": [
+        {
+          "text": "một",
+          "tone": "nang",
+          "mark_index": 1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "hen--nang",
+      "text": "hẹn",
+      "meaning": "appointment / to promise to meet",
+      "kind": "word",
+      "glottalization_target": true,
+      "syllables": [
+        {
+          "text": "hẹn",
+          "tone": "nang",
+          "mark_index": 1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "xin-chao--ngang-huyen",
+      "text": "Xin chào",
+      "meaning": "Hello",
+      "kind": "phrase",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "Xin",
+          "tone": "ngang",
+          "mark_index": -1
+        },
+        {
+          "text": "chào",
+          "tone": "huyen",
+          "mark_index": 2
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "cam-on--hoi-ngang",
+      "text": "Cảm ơn",
+      "meaning": "Thank you",
+      "kind": "phrase",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "Cảm",
+          "tone": "hoi",
+          "mark_index": 1
+        },
+        {
+          "text": "ơn",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "khong-sao--ngang-ngang",
+      "text": "Không sao",
+      "meaning": "No problem / it's okay",
+      "kind": "phrase",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "Không",
+          "tone": "ngang",
+          "mark_index": -1
+        },
+        {
+          "text": "sao",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "tam-biet--nang-nang",
+      "text": "Tạm biệt",
+      "meaning": "Goodbye",
+      "kind": "phrase",
+      "glottalization_target": true,
+      "syllables": [
+        {
+          "text": "Tạm",
+          "tone": "nang",
+          "mark_index": 1
+        },
+        {
+          "text": "biệt",
+          "tone": "nang",
+          "mark_index": 2
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "ban-khoe-khong--nang-hoi-ngang",
+      "text": "Bạn khỏe không?",
+      "meaning": "How are you?",
+      "kind": "sentence",
+      "glottalization_target": true,
+      "syllables": [
+        {
+          "text": "Bạn",
+          "tone": "nang",
+          "mark_index": 1
+        },
+        {
+          "text": "khỏe",
+          "tone": "hoi",
+          "mark_index": 2
+        },
+        {
+          "text": "không",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "toi-la-nguoi-viet-nam--ngang-huyen-huyen-nang-ngang",
+      "text": "Tôi là người Việt Nam",
+      "meaning": "I am Vietnamese",
+      "kind": "sentence",
+      "glottalization_target": true,
+      "syllables": [
+        {
+          "text": "Tôi",
+          "tone": "ngang",
+          "mark_index": -1
+        },
+        {
+          "text": "là",
+          "tone": "huyen",
+          "mark_index": 1
+        },
+        {
+          "text": "người",
+          "tone": "huyen",
+          "mark_index": 3
+        },
+        {
+          "text": "Việt",
+          "tone": "nang",
+          "mark_index": 2
+        },
+        {
+          "text": "Nam",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "anh-yeu-em--ngang-ngang-ngang",
+      "text": "Anh yêu em",
+      "meaning": "I love you",
+      "kind": "sentence",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "Anh",
+          "tone": "ngang",
+          "mark_index": -1
+        },
+        {
+          "text": "yêu",
+          "tone": "ngang",
+          "mark_index": -1
+        },
+        {
+          "text": "em",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "reference_audio": null
+    },
+    {
+      "id": "chuc-mung-nam-moi--sac-huyen-ngang-sac",
+      "text": "Chúc mừng năm mới",
+      "meaning": "Happy New Year",
+      "kind": "sentence",
+      "glottalization_target": false,
+      "syllables": [
+        {
+          "text": "Chúc",
+          "tone": "sac",
+          "mark_index": 2
+        },
+        {
+          "text": "mừng",
+          "tone": "huyen",
+          "mark_index": 1
+        },
+        {
+          "text": "năm",
+          "tone": "ngang",
+          "mark_index": -1
+        },
+        {
+          "text": "mới",
+          "tone": "sac",
+          "mark_index": 1
+        }
+      ],
+      "reference_audio": null
+    }
+  ]
+}

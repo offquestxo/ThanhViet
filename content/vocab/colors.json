@@ -1,0 +1,257 @@
+{
+  "id": "colors",
+  "title": "Colors",
+  "source": "thanh-viet-lessons-import.xlsx (All Words)",
+  "words": [
+    {
+      "id": "mau-sac--huyen-sac",
+      "text": "màu sắc",
+      "meaning": "colors",
+      "syllables": [
+        {
+          "text": "màu",
+          "tone": "huyen",
+          "mark_index": 1
+        },
+        {
+          "text": "sắc",
+          "tone": "sac",
+          "mark_index": 1
+        }
+      ],
+      "audio_file": "colors_mau-sac.wav",
+      "audio": null,
+      "swatch": "rainbow"
+    },
+    {
+      "id": "mau-do--huyen-hoi",
+      "text": "màu đỏ",
+      "meaning": "red",
+      "syllables": [
+        {
+          "text": "màu",
+          "tone": "huyen",
+          "mark_index": 1
+        },
+        {
+          "text": "đỏ",
+          "tone": "hoi",
+          "mark_index": 1
+        }
+      ],
+      "audio_file": "colors_mau-do.wav",
+      "audio": null,
+      "swatch": "#E53935"
+    },
+    {
+      "id": "mau-cam--huyen-ngang",
+      "text": "màu cam",
+      "meaning": "orange",
+      "syllables": [
+        {
+          "text": "màu",
+          "tone": "huyen",
+          "mark_index": 1
+        },
+        {
+          "text": "cam",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "audio_file": "colors_mau-cam.wav",
+      "audio": null,
+      "swatch": "#FB8C00"
+    },
+    {
+      "id": "mau-vang--huyen-huyen",
+      "text": "màu vàng",
+      "meaning": "yellow",
+      "syllables": [
+        {
+          "text": "màu",
+          "tone": "huyen",
+          "mark_index": 1
+        },
+        {
+          "text": "vàng",
+          "tone": "huyen",
+          "mark_index": 1
+        }
+      ],
+      "audio_file": "colors_mau-vang.wav",
+      "audio": null,
+      "swatch": "#FDD835"
+    },
+    {
+      "id": "mau-xanh-la--huyen-ngang-sac",
+      "text": "màu xanh lá",
+      "meaning": "green",
+      "syllables": [
+        {
+          "text": "màu",
+          "tone": "huyen",
+          "mark_index": 1
+        },
+        {
+          "text": "xanh",
+          "tone": "ngang",
+          "mark_index": -1
+        },
+        {
+          "text": "lá",
+          "tone": "sac",
+          "mark_index": 1
+        }
+      ],
+      "audio_file": "colors_mau-xanh-la.wav",
+      "audio": null,
+      "swatch": "#43A047"
+    },
+    {
+      "id": "mau-xanh-duong--huyen-ngang-ngang",
+      "text": "màu xanh dương",
+      "meaning": "blue",
+      "syllables": [
+        {
+          "text": "màu",
+          "tone": "huyen",
+          "mark_index": 1
+        },
+        {
+          "text": "xanh",
+          "tone": "ngang",
+          "mark_index": -1
+        },
+        {
+          "text": "dương",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "audio_file": "colors_mau-xanh-duong.wav",
+      "audio": null,
+      "swatch": "#1E88E5"
+    },
+    {
+      "id": "mau-tim--huyen-sac",
+      "text": "màu tím",
+      "meaning": "purple",
+      "syllables": [
+        {
+          "text": "màu",
+          "tone": "huyen",
+          "mark_index": 1
+        },
+        {
+          "text": "tím",
+          "tone": "sac",
+          "mark_index": 1
+        }
+      ],
+      "audio_file": "colors_mau-tim.wav",
+      "audio": null,
+      "swatch": "#8E24AA"
+    },
+    {
+      "id": "mau-hong--huyen-huyen",
+      "text": "màu hồng",
+      "meaning": "pink",
+      "syllables": [
+        {
+          "text": "màu",
+          "tone": "huyen",
+          "mark_index": 1
+        },
+        {
+          "text": "hồng",
+          "tone": "huyen",
+          "mark_index": 1
+        }
+      ],
+      "audio_file": "colors_mau-hong.wav",
+      "audio": null,
+      "swatch": "#F06292"
+    },
+    {
+      "id": "mau-nau--huyen-ngang",
+      "text": "màu nâu",
+      "meaning": "brown",
+      "syllables": [
+        {
+          "text": "màu",
+          "tone": "huyen",
+          "mark_index": 1
+        },
+        {
+          "text": "nâu",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "audio_file": "colors_mau-nau.wav",
+      "audio": null,
+      "swatch": "#795548"
+    },
+    {
+      "id": "mau-den--huyen-ngang",
+      "text": "màu đen",
+      "meaning": "black",
+      "syllables": [
+        {
+          "text": "màu",
+          "tone": "huyen",
+          "mark_index": 1
+        },
+        {
+          "text": "đen",
+          "tone": "ngang",
+          "mark_index": -1
+        }
+      ],
+      "audio_file": "colors_mau-den.wav",
+      "audio": null,
+      "swatch": "#212121"
+    },
+    {
+      "id": "mau-xam--huyen-sac",
+      "text": "màu xám",
+      "meaning": "gray",
+      "syllables": [
+        {
+          "text": "màu",
+          "tone": "huyen",
+          "mark_index": 1
+        },
+        {
+          "text": "xám",
+          "tone": "sac",
+          "mark_index": 1
+        }
+      ],
+      "audio_file": "colors_mau-xam.wav",
+      "audio": null,
+      "swatch": "#9E9E9E"
+    },
+    {
+      "id": "mau-trang--huyen-sac",
+      "text": "màu trắng",
+      "meaning": "white",
+      "syllables": [
+        {
+          "text": "màu",
+          "tone": "huyen",
+          "mark_index": 1
+        },
+        {
+          "text": "trắng",
+          "tone": "sac",
+          "mark_index": 2
+        }
+      ],
+      "audio_file": "colors_mau-trang.wav",
+      "audio": null,
+      "swatch": "#FFFFFF"
+    }
+  ]
+}

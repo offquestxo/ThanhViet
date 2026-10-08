@@ -1,12 +1,10 @@
-import { AudioWaveform } from "lucide-react";
-import { ComingSoon } from "@/components/app-shell/coming-soon";
+import { toneTunerItems } from "@/lib/content";
+import { ToneTunerClient } from "./tone-tuner-client";
 
-export default function ToneTunerPage() {
-  return (
-    <ComingSoon
-      title="Tone Tuner"
-      description="Gated on Phase 1b's reference recordings — not built yet."
-      icon={AudioWaveform}
-    />
-  );
+export const metadata = { title: "Tone Tuner · Thanh Việt" };
+
+export default async function ToneTunerPage({ searchParams }: PageProps<"/tone-tuner">) {
+  const { item } = await searchParams;
+  const initialId = typeof item === "string" ? item : undefined;
+  return <ToneTunerClient items={toneTunerItems} initialId={initialId} />;
 }

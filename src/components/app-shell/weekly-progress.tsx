@@ -1,4 +1,4 @@
-import { Flame, Star, Award, Medal } from "lucide-react";
+import { Flame, Star, Medal } from "lucide-react";
 import { AppCard } from "@/components/ui/app-card";
 import { CardContent } from "@/components/ui/card";
 
@@ -37,10 +37,7 @@ export function WeeklyProgress() {
           <span className="text-muted-foreground">Journeys Completed</span>
           <span className="ml-auto font-medium">—</span>
         </div>
-        <div className="mt-1 flex items-center gap-2 border-t border-border pt-3 text-xs">
-          <Award className="size-4 text-accent" strokeWidth={1.75} />
-          <span className="text-muted-foreground">Next badge: Confident Reader</span>
-        </div>
+        {/* "Next badge" line hidden for now — badges are a placeholder. */}
       </CardContent>
     </AppCard>
   );

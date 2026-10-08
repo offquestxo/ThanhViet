@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { bumpDailyStreak } from "@/lib/streak";
 
 // Fixed award per completed chunk (Section 10: "production > recognition"
 // isn't yet reflected as a variable weight — this session's Review step is
@@ -88,40 +89,8 @@ export async function completeChunk(chunkId: string, noticeCorrect: boolean) {
     .eq("id", user.id);
   if (pointsError) throw new Error(pointsError.message);
 
-  // --- Streak: day-level (Section 10 — "daily practice streak"), so this
-  // only bumps once per calendar day no matter how many chunks get
-  // completed that day. UTC date, matching the DB's `date` column type.
-  const today = now.toISOString().slice(0, 10);
-  const { data: streak, error: readStreakError } = await supabase
-    .from("user_streaks")
-    .select("current_streak, longest_streak, last_activity_date")
-    .eq("user_id", user.id)
-    .maybeSingle();
-  if (readStreakError) throw new Error(readStreakError.message);
-
-  let currentStreak = streak?.current_streak ?? 0;
-  let longestStreak = streak?.longest_streak ?? 0;
-
-  if (streak?.last_activity_date !== today) {
-    const yesterday = new Date(now);
-    yesterday.setUTCDate(yesterday.getUTCDate() - 1);
-    const yesterdayStr = yesterday.toISOString().slice(0, 10);
-
-    currentStreak =
-      streak?.last_activity_date === yesterdayStr ? currentStreak + 1 : 1;
-    longestStreak = Math.max(longestStreak, currentStreak);
-
-    const { error: streakError } = await supabase.from("user_streaks").upsert(
-      {
-        user_id: user.id,
-        current_streak: currentStreak,
-        longest_streak: longestStreak,
-        last_activity_date: today,
-      },
-      { onConflict: "user_id" }
-    );
-    if (streakError) throw new Error(streakError.message);
-  }
+  // --- Streak: day-level, shared with the Tone Tuner — see src/lib/streak.ts.
+  const currentStreak = await bumpDailyStreak(supabase, user.id, now);
 
   revalidatePath("/dashboard");
 

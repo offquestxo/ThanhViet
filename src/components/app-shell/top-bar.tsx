@@ -1,4 +1,4 @@
-import { Bell, Flame, Search, Star } from "lucide-react";
+import { Bell, Flame, Leaf, Search, Star } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -9,8 +9,13 @@ import { Button } from "@/components/ui/button";
 // this is wired to anything yet.
 export function TopBar() {
   return (
-    <header className="flex items-center gap-4 border-b border-border px-6 py-4">
-      <div className="relative max-w-sm flex-1">
+    <header className="flex items-center gap-4 border-b border-border px-4 pt-[calc(env(safe-area-inset-top)+0.75rem)] pb-3 md:px-6 md:py-4">
+      {/* Phones: app name instead of the (disabled, placeholder) search. */}
+      <div className="flex items-center gap-2 md:hidden">
+        <Leaf className="size-5 text-primary" strokeWidth={2} />
+        <span className="text-base font-semibold">Thanh Việt</span>
+      </div>
+      <div className="relative hidden max-w-sm flex-1 md:block">
         <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           placeholder="Search words, phrases, or collections…"
@@ -29,7 +34,7 @@ export function TopBar() {
           <span data-placeholder="xp">—</span>
         </div>
 
-        <Button variant="ghost" size="icon" aria-label="Notifications" disabled>
+        <Button variant="ghost" size="icon" aria-label="Notifications" disabled className="hidden md:inline-flex">
           <Bell className="size-4.5" strokeWidth={1.75} />
         </Button>
 

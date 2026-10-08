@@ -12,7 +12,6 @@ import { StatCards } from "@/components/home/stat-cards";
 import { CollectionsGrid } from "@/components/home/collections-grid";
 import { RecentlyPracticed } from "@/components/home/recently-practiced";
 import { TodayGoal } from "@/components/home/today-goal";
-import { LeaderboardCard } from "@/components/home/leaderboard-card";
 import { WeakWordsCard } from "@/components/home/weak-words-card";
 import { computeUnitProgression } from "@/lib/lesson-progression";
 
@@ -215,7 +214,7 @@ export default async function DashboardPage() {
         {/* Right rail */}
         <div className="flex flex-col gap-8">
           <TodayGoal />
-          <LeaderboardCard />
+          {/* LeaderboardCard hidden for now — placeholder, no real standings yet. */}
           <WeakWordsCard />
         </div>
       </div>
