@@ -25,14 +25,22 @@ Exact files, sizes and source URLs: `manifest-commons.json`,
 
 ## B. Wikimedia Commons "Vi-hanoi" recordings — `vi-hanoi/`
 
-- **License:** CC BY-SA 3.0 / GFDL (multi-licensed by the author).
-- **Attribution:** recorded by Trần Thế Trung
-  ([User:Tttrung](https://commons.wikimedia.org/wiki/User:Tttrung)) with
-  Audacity on Linux.
+- **License:** CC BY-SA 3.0 (all 25 files; the 2006 uploads are also GFDL).
+- **Attribution — three uploaders, so up to four different voices:**
+  - [User:Tttrung](https://commons.wikimedia.org/wiki/User:Tttrung) (Trần
+    Thế Trung, 2006, Audacity on Linux) — 16 files: 14 male (`m-`) plus 2
+    by a female speaker (`f-quyền`, `f-tâm`).
+  - [User:Ruan123](https://commons.wikimedia.org/wiki/User:Ruan123) (2013)
+    — 8 male files: `m-có`, `m-khỉ`, `m-nay`, `m-rất`, `m-thay_đổi`,
+    `m-từ`, `m-xiếc`, `m-đầu`.
+  - [User:Fort123](https://commons.wikimedia.org/wiki/User:Fort123) (2013)
+    — 1 file: `nam-chè`.
+  (Corrected 2026-10-13: earlier this section credited all files to
+  Tttrung. The `m-` prefix does not mean one speaker.)
 - **Format:** isolated words, Ogg Vorbis (lossy), 25 files.
 - **Source pages:** `https://commons.wikimedia.org/wiki/File:Vi-hanoi-<…>.ogg`
-- **Accent:** labelled Hanoi by the uploader — still needs native-speaker
-  confirmation.
+- **Accent:** labelled Hanoi in the file names — still needs native-speaker
+  confirmation, per uploader (accent-check clips are split by uploader).
 
 ## C. Google FLEURS, Vietnamese dev split — `fleurs/`
 
