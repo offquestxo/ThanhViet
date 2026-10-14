@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sparrow } from "@/components/mascot/sparrow";
@@ -21,10 +21,13 @@ export function Finished({
   completion?: { collectionId: string; activity: VocabActivity };
 }) {
   const recorded = useRef(false);
+  const [notSaved, setNotSaved] = useState(false);
   useEffect(() => {
     if (!completion || recorded.current) return;
     recorded.current = true; // StrictMode runs effects twice in dev
-    void recordActivityCompletion(completion.collectionId, completion.activity, score, total);
+    recordActivityCompletion(completion.collectionId, completion.activity, score, total)
+      .then((r) => setNotSaved(!r.saved))
+      .catch(() => setNotSaved(true));
   }, [completion, score, total]);
 
   return (
@@ -35,6 +38,9 @@ export function Finished({
         <p className="text-muted-foreground">
           {score} / {total} right
         </p>
+      )}
+      {notSaved && (
+        <p className="text-xs text-muted-foreground">Your progress couldn&apos;t be saved this time.</p>
       )}
       <div className="flex gap-3">
         <Button variant="outline" onClick={onRestart}>

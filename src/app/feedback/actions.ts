@@ -21,14 +21,20 @@ export async function submitFeedback(note: string, pagePath: string, device: str
   } = await supabase.auth.getUser();
   if (!user) return { ok: false, error: "Your session has ended — sign in again to send a report." };
 
-  const { error } = await supabase.from("beta_feedback").insert({
-    user_id: user.id,
-    note: text,
-    page_path: pagePath.slice(0, 300) || "/",
-    device: device.slice(0, 200) || null,
-  });
-  if (error) {
-    console.warn("beta feedback insert failed", { code: error.code, message: error.message });
+  // "Sent" only when the database confirms exactly one row was written.
+  // (Members can't read reports back, so the row count is the proof —
+  // not the absence of an error.)
+  const { error, count } = await supabase.from("beta_feedback").insert(
+    {
+      user_id: user.id,
+      note: text,
+      page_path: pagePath.slice(0, 300) || "/",
+      device: device.slice(0, 200) || null,
+    },
+    { count: "exact" }
+  );
+  if (error || count !== 1) {
+    console.warn("beta feedback not saved", { code: error?.code, message: error?.message, count });
     return { ok: false, error: "Couldn't send that — try again in a moment." };
   }
   return { ok: true };

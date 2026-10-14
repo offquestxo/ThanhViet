@@ -60,7 +60,12 @@ export function ReportProblem({ variant = "icon", className }: { variant?: "icon
   const send = () =>
     startTransition(async () => {
       const page = pathname + (window.location.search || "");
-      const res = await submitFeedback(note, page, describeDevice());
+      // A thrown call (network drop, server error) is a failure too — never
+      // leave the panel looking as if it might have worked.
+      const res = await submitFeedback(note, page, describeDevice()).catch(() => ({
+        ok: false as const,
+        error: "Couldn't reach the server — check your connection and try again.",
+      }));
       if (res.ok) {
         setNote("");
         setStatus({ kind: "sent" });
