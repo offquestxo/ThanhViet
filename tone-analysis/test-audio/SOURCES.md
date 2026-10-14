@@ -39,8 +39,11 @@ Exact files, sizes and source URLs: `manifest-commons.json`,
   Tttrung. The `m-` prefix does not mean one speaker.)
 - **Format:** isolated words, Ogg Vorbis (lossy), 25 files.
 - **Source pages:** `https://commons.wikimedia.org/wiki/File:Vi-hanoi-<…>.ogg`
-- **Accent:** labelled Hanoi in the file names — still needs native-speaker
-  confirmation, per uploader (accent-check clips are split by uploader).
+- **Accent: Northern — confirmed by a native speaker (2026-10-13)** for all
+  three speakers (Tttrung, Ruan123, Fort123), from the per-uploader
+  accent-check clips. These recordings may count toward Northern reference
+  data. **Not yet confirmed:** the female speaker on the two Tttrung-uploaded
+  `f-` files (a different voice; her clip is `accent-check/vi-hanoi-f.wav`).
 
 ## C. Google FLEURS, Vietnamese dev split — `fleurs/`
 
