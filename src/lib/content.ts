@@ -14,7 +14,9 @@ import bodyFile from "../../content/vocab/body.json";
 import clothingFile from "../../content/vocab/clothing.json";
 import homeFile from "../../content/vocab/home.json";
 
-export type ToneKey = "ngang" | "huyen" | "sac" | "hoi" | "nga" | "nang";
+import { TONE_INFO, type ToneKey } from "./tones";
+
+export type { ToneKey };
 
 export type Syllable = { text: string; tone: ToneKey; mark_index: number };
 
@@ -52,14 +54,8 @@ export type VocabCollection = {
   left_out?: { text: string; meaning: string; reason: string }[];
 };
 
-export const TONE_LABELS: Record<ToneKey, { vi: string; en: string }> = {
-  ngang: { vi: "ngang", en: "level" },
-  huyen: { vi: "huyền", en: "falling" },
-  sac: { vi: "sắc", en: "rising" },
-  hoi: { vi: "hỏi", en: "dipping" },
-  nga: { vi: "ngã", en: "broken rising" },
-  nang: { vi: "nặng", en: "heavy" },
-};
+/** Tone names (one source of truth: src/lib/tones.ts). */
+export const TONE_LABELS: Record<ToneKey, { vi: string; en: string }> = TONE_INFO;
 
 export const toneTunerItems = toneTunerFile.items as ToneTunerItem[];
 

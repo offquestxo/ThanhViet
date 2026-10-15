@@ -32,8 +32,9 @@
   --popover: #ffffff;
   --popover-foreground: var(--foreground);
 
-  /* Primary: Emerald/Teal */
-  --primary: #0e9f7e;
+  /* Primary: Emerald/Teal. #0e7f66 (showcase redesign, Oct 2026): cream
+     text on it is 4.8:1; the old #0e9f7e was 3.2:1 and failed AA. */
+  --primary: #0e7f66;
   --primary-foreground: #fdfbf6;
 
   /* Secondary: Deep Jade */
@@ -59,7 +60,7 @@
 
   --border: #e6e1d4;
   --input: #e6e1d4;
-  --ring: #0e9f7e;
+  --ring: #0e7f66;
 
   /* Border radius — the doc gives ranges per component type (Cards 20–24px,
      Buttons 16–20px, Inputs 16px, Avatars circular), not a single scale.
@@ -76,6 +77,60 @@
      shadow-md utilities sufficient instead. Flagged as an open call. */
   --shadow-card: 0 1px 2px rgba(35, 43, 40, 0.04), 0 4px 16px rgba(35, 43, 40, 0.06);
   --shadow-hover: 0 2px 4px rgba(35, 43, 40, 0.06), 0 8px 24px rgba(35, 43, 40, 0.1);
+
+  /* ---- Tone colors (showcase redesign). Three variants per tone:
+     --tone-X       the tone letter in a word (used at >=24px; sắc #d9731f
+                    is 3.2:1 on cream, so it only passes as large text)
+     --tone-X-text  small labels (all >=4.5:1 on cream)
+     --tone-X-soft  tinted backgrounds (selected tone button, card tints)
+     Ngang has no tone mark, so in words it stays the normal text color;
+     --tone-ngang is for chips and keys. */
+  --tone-ngang: #5f6b66;
+  --tone-huyen: #2b6cb0;
+  --tone-sac: #d9731f;
+  --tone-hoi: #7a52c7;
+  --tone-nga: #c4473b;
+  --tone-nang: #14524a;
+  --tone-ngang-text: #5f6b66;
+  --tone-huyen-text: #2b6cb0;
+  --tone-sac-text: #9a4b0c;
+  --tone-hoi-text: #6b4fb0;
+  --tone-nga-text: #a8392e;
+  --tone-nang-text: #14524a;
+  --tone-ngang-soft: #eef0ed;
+  --tone-huyen-soft: #e7f0fa;
+  --tone-sac-soft: #fcebdc;
+  --tone-hoi-soft: #efe9fb;
+  --tone-nga-soft: #fde9e6;
+  --tone-nang-soft: #e6f4ee;
+
+  /* ---- Tuner panel: dark jade in both modes, so its tone colors are the
+     light-on-dark set (all >=5.4:1 on #123f39). */
+  --panel: #123f39;
+  --panel-foreground: #fdfbf6;
+  --panel-muted: #cfe5dd;
+  --panel-faint: #a9c7bd;
+  --panel-tone-ngang: #dfe6e2;
+  --panel-tone-huyen: #9cc6f2;
+  --panel-tone-sac: #f5b26e;
+  --panel-tone-hoi: #c9b1f2;
+  --panel-tone-nga: #f29a8f;
+  --panel-tone-nang: #9fe0c4;
+  --in-tune: #3fd19a;
+  --in-tune-foreground: #0c2e28;
+
+  /* ---- Hero (emerald "Continue" card), gold accents, feedback tints */
+  --hero: #0e7f66;
+  --hero-foreground: #fdfbf6;
+  --hero-muted: #d7f0e7;
+  --hero-accent: #f4c46a;
+  --gold-soft: #fbf3e4;
+  --gold-pill: #fbefd9;
+  --gold-text: #8a5a12;
+  --success-soft: #e6f4ee;
+  --success-strong: #0b5d4b;
+  --danger-soft: #fbe7e4;
+  --danger-strong: #8f2f26;
 }
 
 @theme inline {
@@ -103,13 +158,55 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
+  --color-tone-ngang: var(--tone-ngang);
+  --color-tone-huyen: var(--tone-huyen);
+  --color-tone-sac: var(--tone-sac);
+  --color-tone-hoi: var(--tone-hoi);
+  --color-tone-nga: var(--tone-nga);
+  --color-tone-nang: var(--tone-nang);
+  --color-tone-ngang-text: var(--tone-ngang-text);
+  --color-tone-huyen-text: var(--tone-huyen-text);
+  --color-tone-sac-text: var(--tone-sac-text);
+  --color-tone-hoi-text: var(--tone-hoi-text);
+  --color-tone-nga-text: var(--tone-nga-text);
+  --color-tone-nang-text: var(--tone-nang-text);
+  --color-tone-ngang-soft: var(--tone-ngang-soft);
+  --color-tone-huyen-soft: var(--tone-huyen-soft);
+  --color-tone-sac-soft: var(--tone-sac-soft);
+  --color-tone-hoi-soft: var(--tone-hoi-soft);
+  --color-tone-nga-soft: var(--tone-nga-soft);
+  --color-tone-nang-soft: var(--tone-nang-soft);
+  --color-panel: var(--panel);
+  --color-panel-foreground: var(--panel-foreground);
+  --color-panel-muted: var(--panel-muted);
+  --color-panel-faint: var(--panel-faint);
+  --color-panel-tone-ngang: var(--panel-tone-ngang);
+  --color-panel-tone-huyen: var(--panel-tone-huyen);
+  --color-panel-tone-sac: var(--panel-tone-sac);
+  --color-panel-tone-hoi: var(--panel-tone-hoi);
+  --color-panel-tone-nga: var(--panel-tone-nga);
+  --color-panel-tone-nang: var(--panel-tone-nang);
+  --color-in-tune: var(--in-tune);
+  --color-in-tune-foreground: var(--in-tune-foreground);
+  --color-hero: var(--hero);
+  --color-hero-foreground: var(--hero-foreground);
+  --color-hero-muted: var(--hero-muted);
+  --color-hero-accent: var(--hero-accent);
+  --color-gold-soft: var(--gold-soft);
+  --color-gold-pill: var(--gold-pill);
+  --color-gold-text: var(--gold-text);
+  --color-success-soft: var(--success-soft);
+  --color-success-strong: var(--success-strong);
+  --color-danger-soft: var(--danger-soft);
+  --color-danger-strong: var(--danger-strong);
+
   --radius-sm: calc(var(--radius) - 8px);
   --radius-md: calc(var(--radius) - 4px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   --radius-card: var(--radius-card);
 
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-app-sans);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -145,6 +242,37 @@
     --border: #2b332f;
     --input: #2b332f;
     --ring: #34c495;
+
+    /* Tones on the dark background: the light-on-dark set (all >=8:1 on
+       #171c1a), same for glyphs and small text. */
+    --tone-ngang: #dfe6e2;
+    --tone-huyen: #9cc6f2;
+    --tone-sac: #f5b26e;
+    --tone-hoi: #c9b1f2;
+    --tone-nga: #f29a8f;
+    --tone-nang: #9fe0c4;
+    --tone-ngang-text: #dfe6e2;
+    --tone-huyen-text: #9cc6f2;
+    --tone-sac-text: #f5b26e;
+    --tone-hoi-text: #c9b1f2;
+    --tone-nga-text: #f29a8f;
+    --tone-nang-text: #9fe0c4;
+    --tone-ngang-soft: #252c29;
+    --tone-huyen-soft: #1c2836;
+    --tone-sac-soft: #33261b;
+    --tone-hoi-soft: #2a2338;
+    --tone-nga-soft: #352321;
+    --tone-nang-soft: #1a302b;
+
+    --hero: #0f6b57;
+    --hero-muted: #c9ece0;
+    --gold-soft: #2a241a;
+    --gold-pill: #3a2e17;
+    --gold-text: #e5b968;
+    --success-soft: #18342c;
+    --success-strong: #7fdcb8;
+    --danger-soft: #3a2220;
+    --danger-strong: #f2a79e;
   }
 }
 
@@ -152,4 +280,41 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+/* ---- Tone Tuner needle. Rotates about the dial hub (165,180 in the SVG's
+   viewBox). Listening = gentle sweep; in tune = settle into the green zone
+   with a little overshoot. Reduced motion: no sweep, no overshoot. */
+.tuner-needle {
+  transform-box: view-box;
+  transform-origin: 165px 180px;
+  transform: rotate(0deg);
+  transition: transform 700ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 300ms ease;
+}
+.tuner-needle--in-tune {
+  transform: rotate(4deg);
+}
+.tuner-needle--sweep {
+  animation: tuner-sweep 1.6s ease-in-out infinite;
+}
+.tuner-needle--sweep-slow {
+  animation: tuner-sweep 3.2s ease-in-out infinite;
+}
+@keyframes tuner-sweep {
+  0%,
+  100% {
+    transform: rotate(-30deg);
+  }
+  50% {
+    transform: rotate(16deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tuner-needle--sweep,
+  .tuner-needle--sweep-slow {
+    animation: none;
+  }
+  .tuner-needle {
+    transition: opacity 300ms ease;
+  }
 }

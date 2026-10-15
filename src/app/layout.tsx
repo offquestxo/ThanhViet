@@ -1,11 +1,15 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Be_Vietnam_Pro, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+// Be Vietnam Pro: designed for Vietnamese, so stacked marks (ặ, ể, ữ, ờ)
+// sit cleanly even at the 64–88px tone-word sizes. Not a variable font —
+// each weight the UI uses is listed.
+const appSans = Be_Vietnam_Pro({
+  variable: "--font-app-sans",
+  subsets: ["latin", "vietnamese"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 const geistMono = Geist_Mono({
@@ -35,7 +39,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0e9f7e",
+  themeColor: "#0e7f66",
   width: "device-width",
   initialScale: 1,
   // Lets the layout use env(safe-area-inset-*) around the notch and home
@@ -47,7 +51,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${appSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <Providers>{children}</Providers>

@@ -26,8 +26,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <TopBar />
-        <main className="flex-1 overflow-y-auto bg-muted/30 p-4 pb-[calc(env(safe-area-inset-bottom)+5rem)] md:p-6">
+        {/* Desktop only: phones get each screen's own header (showcase design). */}
+        <div className="hidden md:block">
+          <TopBar />
+        </div>
+        <main className="flex-1 overflow-y-auto px-5 pt-[calc(env(safe-area-inset-top)+1rem)] pb-[calc(env(safe-area-inset-bottom)+6.5rem)] md:bg-muted/30 md:p-6">
           {children}
         </main>
       </div>
