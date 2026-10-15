@@ -1,25 +1,30 @@
+import Image from "next/image";
 import Link from "next/link";
-import { Sparrow } from "@/components/mascot/sparrow";
+import { JadeScreen, ToneRow, jadePrimary, jadeSecondary } from "@/components/auth/jade-screen";
 
+/** Signed-out landing (showcase "Welcome" design). */
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-8 text-center">
-      <Sparrow mood="waving" size={96} className="mb-6" />
-      <h1 className="text-3xl font-semibold mb-2">Thanh Việt</h1>
-      <p className="text-gray-500 mb-8 max-w-sm">
-        Learn Vietnamese vocabulary and tones, built for our congregation.
-      </p>
-      <div className="flex gap-3">
-        <Link
-          href="/login"
-          className="bg-black text-white rounded-md px-4 py-2"
-        >
-          Log in
+    <JadeScreen className="pt-[calc(env(safe-area-inset-top)+5rem)]">
+      <ToneRow />
+      <div className="flex justify-center">
+        <div className="flex size-[230px] items-end justify-center overflow-hidden rounded-full bg-[#1c6a5f]">
+          <Image src="/mascot/sparrow-main.png" alt="Thanh Việt's sparrow mascot" width={210} height={210} className="h-[210px] w-auto" unoptimized priority />
+        </div>
+      </div>
+      <div className="flex flex-col items-center gap-2.5 text-center">
+        <h1 className="text-[44px] leading-[1.05] font-extrabold tracking-[-0.03em]">Thanh Việt</h1>
+        <p className="max-w-[300px] text-lg leading-[1.45] text-[#cfe5dd]">Learn Vietnamese by ear, one tone at a time.</p>
+      </div>
+      <div className="flex-1" />
+      <div className="flex flex-col gap-3">
+        <Link href="/signup" className={jadePrimary}>
+          Get started
         </Link>
-        <Link href="/signup" className="border rounded-md px-4 py-2">
-          Sign up
+        <Link href="/login" className={jadeSecondary}>
+          I already have an account
         </Link>
       </div>
-    </main>
+    </JadeScreen>
   );
 }

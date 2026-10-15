@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import { JadeScreen, ToneRow, jadeInput, jadePrimary, jadeSecondary } from "@/components/auth/jade-screen";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -35,60 +36,54 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-8">
-      <div className="w-full max-w-sm">
-        <h1 className="text-2xl font-semibold mb-1">Thanh Việt</h1>
-        <p className="text-sm text-gray-500 mb-6">Log in to continue.</p>
-
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1">
-            <label htmlFor="email" className="text-sm font-medium">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              required
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="border rounded-md px-3 py-2"
-            />
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <label htmlFor="password" className="text-sm font-medium">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              required
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="border rounded-md px-3 py-2"
-            />
-          </div>
-
-          {error && <p className="text-sm text-red-600">{error}</p>}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="bg-black text-white rounded-md py-2 disabled:opacity-50"
-          >
-            {loading ? "Logging in…" : "Log in"}
-          </button>
-        </form>
-
-        <p className="text-sm text-gray-500 mt-4">
-          No account yet?{" "}
-          <Link href="/signup" className="underline">
-            Sign up
-          </Link>
-        </p>
+    <JadeScreen>
+      <ToneRow size="sm" />
+      <div className="flex flex-col gap-1.5">
+        <h1 className="text-[34px] leading-tight font-extrabold tracking-[-0.03em]">Welcome back</h1>
+        <p className="text-base text-[#cfe5dd]">Log in to keep practising.</p>
       </div>
-    </main>
+
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <label className="flex flex-col gap-1.5 text-sm font-semibold text-[#cfe5dd]">
+          Email
+          <input
+            id="email"
+            type="email"
+            required
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className={jadeInput}
+          />
+        </label>
+        <label className="flex flex-col gap-1.5 text-sm font-semibold text-[#cfe5dd]">
+          Password
+          <input
+            id="password"
+            type="password"
+            required
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className={jadeInput}
+          />
+        </label>
+
+        {error && (
+          <p role="alert" className="rounded-xl bg-[#3a2220] px-3 py-2 text-sm text-[#f2a79e]">
+            {error}
+          </p>
+        )}
+
+        <button type="submit" disabled={loading} className={`${jadePrimary} mt-2`}>
+          {loading ? "Logging in…" : "Log in"}
+        </button>
+      </form>
+
+      <div className="flex-1" />
+      <Link href="/signup" className={jadeSecondary}>
+        New here? Create an account
+      </Link>
+    </JadeScreen>
   );
 }

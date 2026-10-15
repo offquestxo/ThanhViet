@@ -4,7 +4,12 @@ import type { VocabCollection } from "@/lib/content";
 import { hasEnoughAudio } from "@/components/vocab/audio";
 
 export type VocabActivity = "see" | "hear" | "match" | "say";
-export type ActivityProgress = { times_completed: number; best_score: number | null; total: number | null };
+export type ActivityProgress = {
+  times_completed: number;
+  best_score: number | null;
+  total: number | null;
+  last_completed_at: string;
+};
 
 /** The activities a collection actually offers (Hear it needs verified audio). */
 export function availableActivities(collection: VocabCollection): VocabActivity[] {
@@ -26,7 +31,7 @@ export async function getVocabProgress(
   if (!user) return out;
   const { data, error } = await supabase
     .from("vocab_activity_progress")
-    .select("collection_id, activity, times_completed, best_score, total")
+    .select("collection_id, activity, times_completed, best_score, total, last_completed_at")
     .eq("user_id", user.id);
   if (error || !data) return out;
   for (const row of data) {
@@ -34,4 +39,17 @@ export async function getVocabProgress(
     out.get(row.collection_id)!.set(row.activity, row);
   }
   return out;
+}
+
+/** Activities finished in a collection, and when the latest one was. */
+export function collectionStatus(collection: VocabCollection, progress: Map<VocabActivity, ActivityProgress> | undefined) {
+  const available = availableActivities(collection);
+  const done = available.filter((a) => progress?.has(a));
+  const last = [...(progress?.values() ?? [])].map((p) => p.last_completed_at).sort().at(-1) ?? null;
+  return { available, done, total: available.length, last, finished: done.length === available.length };
+}
+
+/** The first activity not done yet, in the order the collection page lists them. */
+export function nextActivity(collection: VocabCollection, progress: Map<VocabActivity, ActivityProgress> | undefined) {
+  return availableActivities(collection).find((a) => !progress?.has(a)) ?? null;
 }

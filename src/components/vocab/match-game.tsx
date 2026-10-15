@@ -4,23 +4,16 @@ import { useMemo, useState } from "react";
 import type { VocabWord } from "@/lib/content";
 import { cn } from "@/lib/utils";
 import { Finished } from "./finished";
+import { ToneWord } from "@/components/tone/tone-word";
 import { shuffle, subSeed } from "./quiz";
 import { WordPicture } from "./word-picture";
+import { LessonTopBar } from "./lesson-chrome";
+import type { ActivityContext } from "./activity-context";
 
 const PAIRS_PER_ROUND = 6;
 
 /** Match pictures to words: tap a picture, then its word. */
-export function MatchGame({
-  words,
-  seed,
-  backHref,
-  collectionId,
-}: {
-  words: VocabWord[];
-  seed: number;
-  backHref: string;
-  collectionId: string;
-}) {
+export function MatchGame({ words, seed, ctx }: { words: VocabWord[]; seed: number; ctx: ActivityContext }) {
   const rounds = useMemo(() => {
     const order = shuffle(words, seed);
     const out: VocabWord[][] = [];
@@ -38,9 +31,14 @@ export function MatchGame({
   if (round >= rounds.length) {
     return (
       <Finished
-        backHref={backHref}
+        activity="match"
+        collectionTitle={ctx.collectionTitle}
+        wordsCount={words.length}
+        streakDays={ctx.streakDays}
+        next={ctx.next}
+        backHref={ctx.backHref}
         onRestart={() => { setRound(0); setMatched(new Set()); }}
-        completion={{ collectionId, activity: "match" }}
+        completion={{ collectionId: ctx.collectionId, activity: "match" }}
       />
     );
   }
@@ -63,9 +61,15 @@ export function MatchGame({
 
   return (
     <div className="mx-auto flex w-full max-w-md flex-col gap-5">
-      <p className="text-center text-sm text-muted-foreground">
-        Tap a picture, then its word. Round {round + 1} / {rounds.length}
-      </p>
+      <LessonTopBar
+        closeHref={ctx.backHref}
+        current={rounds.slice(0, round).reduce((n, r) => n + r.pictures.length, 0) + matched.size}
+        total={words.length}
+      />
+      <div className="flex flex-col gap-1">
+        <p className="text-[13px] font-bold tracking-[0.08em] text-primary uppercase">Match</p>
+        <p className="text-[17px] text-muted-foreground">Tap a picture, then its word.</p>
+      </div>
       <div className="grid grid-cols-3 gap-3">
         {pictures.map((p) => (
           <button
@@ -74,8 +78,12 @@ export function MatchGame({
             disabled={matched.has(p.id)}
             onClick={() => setSelectedPicture(p.id)}
             className={cn(
-              "rounded-xl border-2 bg-card p-2 transition",
-              matched.has(p.id) ? "border-success opacity-40" : selectedPicture === p.id ? "border-primary" : "border-border"
+              "rounded-[20px] bg-card p-2.5 transition",
+              matched.has(p.id)
+                ? "border-[3px] border-primary bg-success-soft opacity-50"
+                : selectedPicture === p.id
+                  ? "border-[3px] border-primary"
+                  : "border-2 border-border"
             )}
             aria-label={matched.has(p.id) ? `${p.meaning}, matched` : p.meaning}
           >
@@ -91,13 +99,13 @@ export function MatchGame({
             disabled={matched.has(w.id)}
             onClick={() => pickLabel(w.id)}
             className={cn(
-              "rounded-xl border-2 bg-card px-3 py-3 text-lg font-medium transition",
-              matched.has(w.id) && "border-success opacity-40",
-              wrong === w.id && "border-destructive bg-destructive/10",
-              !matched.has(w.id) && wrong !== w.id && "border-border hover:bg-muted"
+              "flex min-h-14 items-center justify-center rounded-[18px] bg-card px-3 py-3 transition",
+              matched.has(w.id) && "border-[3px] border-primary bg-success-soft opacity-50",
+              wrong === w.id && "border-[3px] border-tone-nga bg-danger-soft",
+              !matched.has(w.id) && wrong !== w.id && "border-2 border-border active:bg-muted"
             )}
           >
-            {w.text}
+            <ToneWord text={w.text} className="text-xl font-bold" />
           </button>
         ))}
       </div>

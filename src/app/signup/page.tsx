@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import { JadeScreen, ToneRow, jadeInput, jadePrimary, jadeSecondary } from "@/components/auth/jade-screen";
 
 export default function SignupPage() {
   const [name, setName] = useState("");
@@ -39,89 +40,69 @@ export default function SignupPage() {
 
   if (submitted) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center p-8">
-        <div className="w-full max-w-sm text-center">
-          <h1 className="text-2xl font-semibold mb-2">Check your email</h1>
-          <p className="text-sm text-gray-500">
-            We sent a confirmation link to <strong>{email}</strong>. Click it
-            to finish creating your account.
+      <JadeScreen>
+        <ToneRow size="sm" />
+        <div className="flex flex-col gap-2 text-center">
+          <h1 className="text-[30px] leading-tight font-extrabold tracking-[-0.02em]">Check your email</h1>
+          <p className="text-base text-[#cfe5dd]">
+            We sent a confirmation link to <strong className="text-[#fdfbf6]">{email}</strong>. Click it to finish creating your
+            account.
           </p>
         </div>
-      </main>
+        <div className="flex-1" />
+        <Link href="/login" className={jadeSecondary}>
+          Back to log in
+        </Link>
+      </JadeScreen>
     );
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-8">
-      <div className="w-full max-w-sm">
-        <h1 className="text-2xl font-semibold mb-1">Create an account</h1>
-        <p className="text-sm text-gray-500 mb-6">Join Thanh Việt.</p>
-
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1">
-            <label htmlFor="name" className="text-sm font-medium">
-              Name
-            </label>
-            <input
-              id="name"
-              type="text"
-              required
-              autoComplete="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="border rounded-md px-3 py-2"
-            />
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <label htmlFor="email" className="text-sm font-medium">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              required
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="border rounded-md px-3 py-2"
-            />
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <label htmlFor="password" className="text-sm font-medium">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              required
-              minLength={6}
-              autoComplete="new-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="border rounded-md px-3 py-2"
-            />
-          </div>
-
-          {error && <p className="text-sm text-red-600">{error}</p>}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="bg-black text-white rounded-md py-2 disabled:opacity-50"
-          >
-            {loading ? "Creating account…" : "Sign up"}
-          </button>
-        </form>
-
-        <p className="text-sm text-gray-500 mt-4">
-          Already have an account?{" "}
-          <Link href="/login" className="underline">
-            Log in
-          </Link>
-        </p>
+    <JadeScreen>
+      <ToneRow size="sm" />
+      <div className="flex flex-col gap-1.5">
+        <h1 className="text-[34px] leading-tight font-extrabold tracking-[-0.03em]">Get started</h1>
+        <p className="text-base text-[#cfe5dd]">Create your Thanh Việt account.</p>
       </div>
-    </main>
+
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <label className="flex flex-col gap-1.5 text-sm font-semibold text-[#cfe5dd]">
+          Name
+          <input id="name" type="text" required autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} className={jadeInput} />
+        </label>
+        <label className="flex flex-col gap-1.5 text-sm font-semibold text-[#cfe5dd]">
+          Email
+          <input id="email" type="email" required autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} className={jadeInput} />
+        </label>
+        <label className="flex flex-col gap-1.5 text-sm font-semibold text-[#cfe5dd]">
+          Password
+          <input
+            id="password"
+            type="password"
+            required
+            minLength={6}
+            autoComplete="new-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className={jadeInput}
+          />
+        </label>
+
+        {error && (
+          <p role="alert" className="rounded-xl bg-[#3a2220] px-3 py-2 text-sm text-[#f2a79e]">
+            {error}
+          </p>
+        )}
+
+        <button type="submit" disabled={loading} className={`${jadePrimary} mt-2`}>
+          {loading ? "Creating account…" : "Create account"}
+        </button>
+      </form>
+
+      <div className="flex-1" />
+      <Link href="/login" className={jadeSecondary}>
+        I already have an account
+      </Link>
+    </JadeScreen>
   );
 }
