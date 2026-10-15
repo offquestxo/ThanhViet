@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Tone Tuner — listening</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#0b7d63}a:hover{color:#075e4a}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #fdfbf6; font-family: 'Be Vietnam Pro', system-ui, sans-serif; color: #1f2a27; display: flex; flex-direction: column; overflow: hidden">
+  <div style="flex: 1; padding: 52px 20px 0; display: flex; flex-direction: column; gap: 14px">
+
+    <div style="display: flex; align-items: center; justify-content: space-between; height: 44px">
+      <a href="Main.dc.html" aria-label="Back" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: #1f2a27">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+      </a>
+      <div style="font-size: 17px; font-weight: 700">Tone Tuner</div>
+      <div style="font-size: 12px; font-weight: 700; color: #8a5a12; background: #fbefd9; padding: 5px 10px; border-radius: 999px">BETA</div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 8px">
+      <div style="font-size: 13px; font-weight: 600; color: #5d665f">Tone</div>
+      <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px">
+        <button type="button" aria-label="ngang" style="height: 52px; border-radius: 14px; border: 1.5px solid #e3dccd; background: #ffffff; font-family: inherit; font-size: 22px; font-weight: 700; color: #5f6b66; cursor: pointer">a</button>
+        <button type="button" aria-label="huyền" style="height: 52px; border-radius: 14px; border: 1.5px solid #e3dccd; background: #ffffff; font-family: inherit; font-size: 22px; font-weight: 700; color: #2b6cb0; cursor: pointer">à</button>
+        <button type="button" aria-label="sắc, selected" style="height: 52px; border-radius: 14px; border: 2.5px solid #d9731f; background: #fcebdc; font-family: inherit; font-size: 22px; font-weight: 800; color: #9a4b0c; cursor: pointer">á</button>
+        <button type="button" aria-label="hỏi" style="height: 52px; border-radius: 14px; border: 1.5px solid #e3dccd; background: #ffffff; font-family: inherit; font-size: 22px; font-weight: 700; color: #7a52c7; cursor: pointer">ả</button>
+        <button type="button" aria-label="ngã" style="height: 52px; border-radius: 14px; border: 1.5px solid #e3dccd; background: #ffffff; font-family: inherit; font-size: 22px; font-weight: 700; color: #c4473b; cursor: pointer">ã</button>
+        <button type="button" aria-label="nặng" style="height: 52px; border-radius: 14px; border: 1.5px solid #e3dccd; background: #ffffff; font-family: inherit; font-size: 22px; font-weight: 700; color: #14524a; cursor: pointer">ạ</button>
+      </div>
+    </div>
+
+    <div style="background: #123f39; border-radius: 28px; padding: 18px 16px 18px; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #fdfbf6">
+      <div style="display: flex; align-items: center; justify-content: space-between; width: 100%">
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: #cfe5dd">
+          <span style="width: 10px; height: 10px; border-radius: 999px; background: #f2786b; box-shadow: 0 0 0 4px rgba(242,120,107,0.25)"></span>Listening…
+        </div>
+        <div style="font-size: 14px; font-weight: 600; color: #f5b26e">Sắc · rising</div>
+      </div>
+      <svg width="330" height="196" viewBox="0 0 330 196" role="img" aria-label="Tuner needle left of center: not enough rise yet" style="display: block">
+        <path d="M 43.8 110 A 140 140 0 0 1 286.2 110" fill="none" stroke="rgba(207,229,221,0.18)" stroke-width="10" stroke-linecap="round"></path>
+        <path d="M 139 32.3 A 150 150 0 0 1 191 32.3" fill="none" stroke="rgba(63,209,154,0.35)" stroke-width="8" stroke-linecap="round"></path>
+        <g stroke="#cfe5dd" stroke-linecap="round">
+<line x1="43.8" y1="110.0" x2="59.3" y2="119.0" stroke-width="2.5"></line>
+<line x1="50.3" y1="99.7" x2="58.5" y2="105.4" stroke-width="1.5"></line>
+<line x1="57.8" y1="90.0" x2="65.4" y2="96.4" stroke-width="1.5"></line>
+<line x1="66.0" y1="81.0" x2="78.7" y2="93.7" stroke-width="2.5"></line>
+<line x1="75.0" y1="72.8" x2="81.4" y2="80.4" stroke-width="1.5"></line>
+<line x1="84.7" y1="65.3" x2="90.4" y2="73.5" stroke-width="1.5"></line>
+<line x1="95.0" y1="58.8" x2="104.0" y2="74.3" stroke-width="2.5"></line>
+<line x1="105.8" y1="53.1" x2="110.1" y2="62.2" stroke-width="1.5"></line>
+<line x1="117.1" y1="48.4" x2="120.5" y2="57.8" stroke-width="1.5"></line>
+<line x1="128.8" y1="44.8" x2="133.4" y2="62.2" stroke-width="2.5"></line>
+<line x1="140.7" y1="42.1" x2="142.4" y2="52.0" stroke-width="1.5"></line>
+<line x1="152.8" y1="40.5" x2="153.7" y2="50.5" stroke-width="1.5"></line>
+<line x1="165.0" y1="40.0" x2="165.0" y2="58.0" stroke-width="3" stroke="#3fd19a"></line>
+<line x1="177.2" y1="40.5" x2="176.3" y2="50.5" stroke-width="1.5"></line>
+<line x1="189.3" y1="42.1" x2="187.6" y2="52.0" stroke-width="1.5"></line>
+<line x1="201.2" y1="44.8" x2="196.6" y2="62.2" stroke-width="2.5"></line>
+<line x1="212.9" y1="48.4" x2="209.5" y2="57.8" stroke-width="1.5"></line>
+<line x1="224.2" y1="53.1" x2="219.9" y2="62.2" stroke-width="1.5"></line>
+<line x1="235.0" y1="58.8" x2="226.0" y2="74.3" stroke-width="2.5"></line>
+<line x1="245.3" y1="65.3" x2="239.6" y2="73.5" stroke-width="1.5"></line>
+<line x1="255.0" y1="72.8" x2="248.6" y2="80.4" stroke-width="1.5"></line>
+<line x1="264.0" y1="81.0" x2="251.3" y2="93.7" stroke-width="2.5"></line>
+<line x1="272.2" y1="90.0" x2="264.6" y2="96.4" stroke-width="1.5"></line>
+<line x1="279.7" y1="99.7" x2="271.5" y2="105.4" stroke-width="1.5"></line>
+<line x1="286.2" y1="110.0" x2="270.7" y2="119.0" stroke-width="2.5"></line>
+        </g>
+        <line x1="165" y1="180" x2="102.1" y2="61.7" stroke="#f5a25a" stroke-width="4" stroke-linecap="round"></line>
+        <circle cx="165" cy="180" r="11" fill="#f5a25a"></circle>
+        <circle cx="165" cy="180" r="4" fill="#123f39"></circle>
+      </svg>
+      <div style="display: flex; justify-content: space-between; width: 100%; font-size: 13px; font-weight: 600; color: #a9c7bd; margin-top: -10px">
+        <span>Rise more</span><span style="color: #3fd19a">In tune</span><span>Too much</span>
+      </div>
+      <div style="font-size: 64px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; margin-top: 6px">m<span style="color: #f5b26e">á</span></div>
+      <div style="font-size: 14px; color: #cfe5dd">mother · cheek</div>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 12px; padding: 0 4px">
+      <div style="width: 44px; height: 44px; border-radius: 999px; background: #f2eee4; display: flex; align-items: flex-end; justify-content: center; overflow: hidden; flex-shrink: 0">
+        <img src="/_blob/ed03105929c0aa9ea3ff5d56c30db040" alt="" style="width: 42px; height: 42px; object-fit: contain">
+      </div>
+      <div style="font-size: 15px; color: #3d4742">Start low, then glide up, like asking “huh?”</div>
+    </div>
+
+    <div style="flex: 1"></div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding-bottom: 18px">
+      <button type="button" aria-label="Stop recording" style="width: 84px; height: 84px; border-radius: 999px; border: 0; background: #c4473b; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 0 10px rgba(196,71,59,0.15), 0 10px 24px rgba(196,71,59,0.3)">
+        <span style="width: 26px; height: 26px; border-radius: 6px; background: #fdfbf6"></span>
+      </button>
+      <div style="font-size: 14px; font-weight: 600; color: #5d665f">Tap to stop</div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
