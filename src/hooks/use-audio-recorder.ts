@@ -110,5 +110,8 @@ export function useAudioRecorder() {
     setErrorKind(null);
   }, []);
 
-  return { isRecording, audioUrl, blob, error, errorKind, startRecording, stopRecording, reset };
+  /** The live microphone stream while recording (the Tone Tuner's needle listens to it too). */
+  const getStream = useCallback(() => streamRef.current, []);
+
+  return { isRecording, audioUrl, blob, error, errorKind, startRecording, stopRecording, reset, getStream };
 }

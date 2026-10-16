@@ -9,6 +9,7 @@ import { TONE_COACHING } from "@/lib/tone-coaching";
 import { cn } from "@/lib/utils";
 import { PitchChart } from "./pitch-chart";
 import { TunerDial, type DialState } from "./tuner-dial";
+import { settledDeflection, toneDeflection } from "@/lib/pitch";
 import type { AnalyzeResult, ModelOpinion } from "./types";
 
 const AGREED = new Set(["both_match", "both_tone_mismatch_same", "both_same_other_word"]);
@@ -56,7 +57,7 @@ export function TunerPractice({
   const tones = textTones(text);
   const single = tones.length === 1;
   const tone = tones[0] ?? "ngang";
-  const { phase, slow, start, stop, reset, micBlocked } = useToneAnalysis(text, tones.length);
+  const { phase, slow, start, stop, reset, micBlocked, liveNeedle } = useToneAnalysis(text, tones.length, tone);
 
   const result = phase.kind === "result" ? phase.result : null;
   const agreement = result?.summary.agreement;
@@ -65,18 +66,33 @@ export function TunerPractice({
     phase.kind === "recording" ? "listening" : phase.kind === "analyzing" ? "checking" : inTune ? "in-tune" : phase.kind === "idle" ? "idle" : "rest";
 
   const [left, right] = TONE_COACHING[tone].dial;
+
+  // After analysis (not in tune): settle the needle from the engine's pitch
+  // line — a hint, not a score — always outside the green zone.
+  let settled: number | null = null;
+  if (result && !inTune && single && result.acoustic.status === "ok" && result.acoustic.pitch_contour?.length) {
+    const trace = result.acoustic.pitch_contour.map((f) => ({ tMs: f.t_ms, hz: f.f0_hz }));
+    const raw = toneDeflection(tone, trace, (result.acoustic.voice_breaks?.length ?? 0) > 0);
+    if (raw !== null) settled = settledDeflection(raw);
+  }
+  const needle = phase.kind === "recording" ? liveNeedle : settled;
+  const side = (v: number) => (v < -0.17 ? left : v > 0.17 ? right : "In tune");
   const dialLabel = inTune
     ? "Tuner needle in the green centre zone: in tune"
     : phase.kind === "recording"
-      ? "Tuner needle moving while you speak"
-      : "Tuner needle at rest";
+      ? needle === null
+        ? "Tuner needle waiting for your voice"
+        : `Tuner needle following your voice: ${side(needle)}`
+      : needle !== null
+        ? `Tuner needle: ${side(needle)}`
+        : "Tuner needle at rest";
 
   return (
-    <div className="flex w-full flex-col gap-3">
+    <div className="flex w-full flex-col gap-2.5">
       {/* The jade panel */}
       <div
         className={cn(
-          "flex flex-col items-center gap-0.5 rounded-[28px] bg-panel px-4 pt-4 pb-3.5 text-panel-foreground transition-shadow duration-500",
+          "flex flex-col items-center gap-0.5 rounded-[28px] bg-panel px-4 pt-3 pb-3 text-panel-foreground transition-shadow duration-500",
           inTune && "shadow-[0_0_0_4px_rgba(63,209,154,0.25)]"
         )}
       >
@@ -89,7 +105,7 @@ export function TunerPractice({
 
         {single ? (
           <>
-            <TunerDial tone={tone} state={dialState} label={dialLabel} />
+            <TunerDial tone={tone} state={dialState} label={dialLabel} needle={needle} />
             <div className="-mt-2.5 flex w-full justify-between text-[13px] font-semibold text-panel-faint">
               <span>{left}</span>
               <span className="text-in-tune">In tune</span>
@@ -103,7 +119,7 @@ export function TunerPractice({
         <ToneWord
           text={text}
           surface="panel"
-          className={cn("mt-1 text-center leading-[1.1] tracking-[-0.03em]", single ? "text-[60px]" : text.length > 14 ? "text-4xl" : "text-5xl")}
+          className={cn("mt-0.5 text-center leading-[1.1] tracking-[-0.03em]", single ? "text-[52px]" : text.length > 14 ? "text-4xl" : "text-5xl")}
         />
         <div className="text-sm text-panel-muted">{meaning}</div>
         {referenceAudio && (
@@ -124,13 +140,13 @@ export function TunerPractice({
 
       {/* Controls */}
       {phase.kind === "idle" || phase.kind === "recording" ? (
-        <div className="flex flex-col items-center gap-1.5 pt-1">
+        <div className="flex flex-col items-center gap-1">
           <button
             type="button"
             onClick={phase.kind === "recording" ? stop : start}
             aria-label={phase.kind === "recording" ? "Stop recording" : "Start recording"}
             className={cn(
-              "flex size-20 items-center justify-center rounded-full text-hero-foreground transition-transform active:scale-95",
+              "flex size-[72px] items-center justify-center rounded-full text-hero-foreground transition-transform active:scale-95",
               phase.kind === "recording"
                 ? "bg-tone-nga shadow-[0_0_0_10px_rgba(196,71,59,0.15),0_10px_24px_rgba(196,71,59,0.3)] dark:bg-[#c4473b]"
                 : "bg-hero shadow-[0_0_0_10px_rgba(14,127,102,0.12),0_10px_24px_rgba(14,127,102,0.3)]"

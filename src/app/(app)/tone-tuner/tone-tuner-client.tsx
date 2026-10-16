@@ -60,7 +60,7 @@ export function ToneTunerClient({
   const index = current ? list.indexOf(current) : 0;
 
   return (
-    <div className="mx-auto flex w-full max-w-md flex-col gap-3">
+    <div className="mx-auto flex w-full max-w-md flex-col gap-2.5">
       <header className="flex h-11 items-center justify-between">
         <Link href="/dashboard" aria-label="Back" className="-ml-2.5 flex size-11 items-center justify-center rounded-full">
           <ChevronLeft className="size-6" strokeWidth={2.2} />
@@ -85,7 +85,7 @@ export function ToneTunerClient({
                 setMode(m);
                 setSelectedId(undefined);
               }}
-              className={cn("h-9 rounded-full px-3.5 capitalize", mode === m ? "bg-card shadow-sm" : "text-muted-foreground")}
+              className={cn("h-8 rounded-full px-3.5 capitalize", mode === m ? "bg-card shadow-sm" : "text-muted-foreground")}
             >
               {m}
             </button>
@@ -107,7 +107,7 @@ export function ToneTunerClient({
                 setSelectedId(undefined);
               }}
               className={cn(
-                "h-[52px] rounded-[14px] text-[22px] transition-colors",
+                "h-12 rounded-[14px] text-[22px] transition-colors",
                 tone === t ? cn("border-[2.5px] font-extrabold", SELECTED[t]) : cn("border-[1.5px] border-border bg-card font-bold", IDLE[t])
               )}
               lang="vi"
@@ -127,7 +127,7 @@ export function ToneTunerClient({
             aria-selected={i.id === current?.id}
             onClick={() => setSelectedId(i.id)}
             className={cn(
-              "flex h-10 shrink-0 items-center rounded-full border px-3.5",
+              "flex h-9 shrink-0 items-center rounded-full border px-3.5",
               i.id === current?.id ? "border-foreground/70 bg-card" : "border-border bg-card/60"
             )}
           >

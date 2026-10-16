@@ -39,19 +39,32 @@ export type DialState = "idle" | "listening" | "checking" | "in-tune" | "rest";
 
 /**
  * The tuner dial on the dark jade panel. `state` drives the needle:
- *   idle / rest — parked at the centre, dimmed
- *   listening   — a gentle sweep while the learner speaks
+ *   idle        — parked at the centre, dimmed
+ *   listening   — follows the live pitch tracker (`needle`), or a gentle
+ *                 sweep until any voice is heard
  *   checking    — a slower sweep while the engine analyses
  *   in-tune     — snaps into the green zone, needle and zone turn green
- * (A position for "not in tune yet" waits on the needle decision — see
- * docs/design/showcase-2026-10/BUILD-PLAN.md §4.)
+ *   rest        — settles at `needle` (from the engine's pitch line), or
+ *                 centre-dimmed when there's no pitch reading
+ * `needle` is -1 (left) … +1 (right), mapped onto the ±60° arc.
  */
-export function TunerDial({ tone, state, label }: { tone: ToneKey; state: DialState; label: string }) {
+export function TunerDial({
+  tone,
+  state,
+  label,
+  needle = null,
+}: {
+  tone: ToneKey;
+  state: DialState;
+  label: string;
+  needle?: number | null;
+}) {
   const inTune = state === "in-tune";
+  const tracked = !inTune && needle !== null && (state === "listening" || state === "rest");
   const color = inTune ? "var(--in-tune)" : NEEDLE_COLOR[tone];
   const tip = polar(0, NEEDLE);
   return (
-    <svg viewBox="0 0 330 196" className="block h-auto w-full max-w-[330px]" role="img" aria-label={label}>
+    <svg viewBox="0 0 330 196" className="block h-auto w-full max-w-[290px]" role="img" aria-label={label}>
       <path d={arc(-60, 60, R)} fill="none" stroke="rgba(207,229,221,0.18)" strokeWidth={10} strokeLinecap="round" />
       <path
         d={arc(-10, 10, 150)}
@@ -83,11 +96,15 @@ export function TunerDial({ tone, state, label }: { tone: ToneKey; state: DialSt
       <g
         className={cn(
           "tuner-needle",
-          state === "listening" && "tuner-needle--sweep",
+          state === "listening" && !tracked && "tuner-needle--sweep",
+          state === "listening" && tracked && "tuner-needle--live",
           state === "checking" && "tuner-needle--sweep-slow",
           inTune && "tuner-needle--in-tune"
         )}
-        style={{ opacity: state === "idle" || state === "rest" ? 0.45 : 1 }}
+        style={{
+          opacity: state === "idle" || (state === "rest" && !tracked) ? 0.45 : 1,
+          ...(tracked ? { transform: `rotate(${(needle * 60).toFixed(1)}deg)` } : {}),
+        }}
       >
         <line x1={CX} y1={CY} x2={tip.x} y2={tip.y} stroke={color} strokeWidth={4} strokeLinecap="round" className="transition-[stroke] duration-500" />
         <circle cx={CX} cy={CY} r={11} fill={color} className="transition-[fill] duration-500" />

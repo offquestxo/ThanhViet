@@ -294,6 +294,10 @@ body {
 .tuner-needle--in-tune {
   transform: rotate(4deg);
 }
+.tuner-needle--live {
+  /* follows the voice ~20×/s: short, linear */
+  transition: transform 120ms linear;
+}
 .tuner-needle--sweep {
   animation: tuner-sweep 1.6s ease-in-out infinite;
 }

@@ -2,6 +2,8 @@
 
 import { useRef, useState } from "react";
 import { useAudioRecorder } from "@/hooks/use-audio-recorder";
+import { useLivePitch } from "@/hooks/use-live-pitch";
+import type { ToneKey } from "@/lib/tones";
 import type { AnalyzeResult } from "@/components/tone-tuner/types";
 
 const MAX_RECORD_MS = { single: 6_000, multi: 10_000 };
@@ -38,8 +40,9 @@ function errorMessage(status: number, body: { error?: string }) {
  * analysis passes 5 s — the engine waking from cold. Callers key the
  * component by target, so a new target always starts fresh.
  */
-export function useToneAnalysis(text: string, syllableCount: number) {
+export function useToneAnalysis(text: string, syllableCount: number, tone: ToneKey) {
   const recorder = useAudioRecorder();
+  const live = useLivePitch(tone);
   const [phase, setPhase] = useState<TonePhase>({ kind: "idle" });
   const [slow, setSlow] = useState(false);
   const stopTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -72,23 +75,43 @@ export function useToneAnalysis(text: string, syllableCount: number) {
 
   const stop = async () => {
     if (stopTimer.current) clearTimeout(stopTimer.current);
+    live.stop();
     const blob = await recorder.stopRecording();
     if (blob && blob.size > 0) await analyze(blob);
     else setPhase({ kind: "error", message: "Nothing was recorded — try again." });
   };
 
   const start = async () => {
+    // Single syllables get a live needle. Web Audio has to be started here,
+    // inside the tap and before any await, or iPhone Safari keeps it muted.
+    if (syllableCount === 1) live.prime();
     recorder.reset();
+    live.clear();
     const started = await recorder.startRecording();
-    if (!started.ok) return setPhase({ kind: "error", message: started.message });
+    if (!started.ok) {
+      live.stop();
+      return setPhase({ kind: "error", message: started.message });
+    }
+    if (syllableCount === 1) live.attach(recorder.getStream());
     setPhase({ kind: "recording" });
     stopTimer.current = setTimeout(stop, syllableCount > 1 ? MAX_RECORD_MS.multi : MAX_RECORD_MS.single);
   };
 
   const reset = () => {
+    live.stop();
+    live.clear();
     recorder.reset();
     setPhase({ kind: "idle" });
   };
 
-  return { phase, slow, start, stop, reset, micBlocked: recorder.errorKind === "permission_denied" };
+  return {
+    phase,
+    slow,
+    start,
+    stop,
+    reset,
+    micBlocked: recorder.errorKind === "permission_denied",
+    /** Live needle while recording (single syllables), -1 … 1, or null before any voice. */
+    liveNeedle: live.needle,
+  };
 }
