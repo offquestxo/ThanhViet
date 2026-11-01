@@ -1,6 +1,6 @@
 # Thanh Việt — Technical Architecture Document (TAD)
 
-*Split from the master spec on August 11, 2026. See also: PRD (Product Requirements), UI/UX Design System, Engineering Standards.*
+*See also: PRD (Product Requirements), UI/UX Design System, Engineering Standards.*
 
 ## 1. Tech Stack
 
@@ -46,7 +46,7 @@ Given: mobile-first *end goal* but starting **web-first** for faster iteration a
 - Supabase (Postgres, Auth, Storage, RLS) — confirmed, live project `pcywqsswbgodycqsanwm`
 - TanStack Query — installed, provider wired in root layout
 - Zustand — installed, not yet used (no local/UI state need arose until the Tone Tuner or lesson drills required it)
-- **Not yet installed as of the homepage redesign:** shadcn/ui, Framer Motion, Lucide Icons — install these first (sequencing proposed during PRD/TAD planning, not yet formalized as a standing convention in Engineering-Standards.md)
+- **Not yet installed as of the homepage redesign:** shadcn/ui, Framer Motion, Lucide Icons — install these first
 - Python/FastAPI audio service — **not started**, gated on Phase 1b reference-recording collection
 
 ---
@@ -109,7 +109,7 @@ This runs as a second backend service alongside Supabase, hosted separately (e.g
 
 ### 4.3 Product Decisions (Confirmed)
 
-Locked in during a follow-up product/research session, treated as settled scope unless explicitly revisited:
+These are settled unless we decide to revisit them:
 
 | # | Decision | Detail |
 |---|---|---|

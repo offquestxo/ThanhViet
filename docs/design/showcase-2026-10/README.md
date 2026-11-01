@@ -30,3 +30,29 @@ Image references use canvas upload URLs (`/_blob/...`). Map them to the app's re
 | 0f30b9d115b27c4635bd169611e788b1 | public/vocab/food/dau-tay.svg |
 
 Numbers on the comps (5-day streak, 8 of 11 words, 11/12, +110 XP) are sample data. Use real data.
+
+## Tone colors
+
+| Tone | Light | Dark mode / on the jade tuner panel | Meaning |
+|---|---|---|---|
+| ngang | `#5f6b66` | `#dfe6e2` | level |
+| huyền | `#2b6cb0` | `#9cc6f2` | falling |
+| sắc | `#d9731f` (big glyphs only; `#9a4b0c` for small text) | `#f5b26e` | rising |
+| hỏi | `#7a52c7` | `#c9b1f2` | dipping |
+| ngã | `#c4473b` | `#f29a8f` | broken rising |
+| nặng | `#14524a` | `#9fe0c4` | heavy, cut off |
+
+Color is never the only signal. Wherever the tone matters, its name is shown as text too.
+
+## Tone Tuner copy (draft, needs a native speaker's check)
+
+This is what's in `src/lib/tone-coaching.ts`.
+
+| Tone | Dial left | Dial right | Tip |
+|---|---|---|---|
+| ngang | Drifting down | Drifting up | Keep it flat and steady, like a held note. |
+| huyền | Fall more | Too high | Start mid, then let it sink gently. |
+| sắc | Rise more | Too much | Start low, then glide up, like asking "huh?" |
+| hỏi | Dip more | Too much | Dip down, then come back up a little. |
+| ngã | Add the break | Too much | Rise, catch in the middle, rise again. |
+| nặng | Drop and cut | Too long | Drop low and cut it short. |

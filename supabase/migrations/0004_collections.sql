@@ -1,8 +1,7 @@
 -- Thanh Việt — Collection (groups Units)
 --
 -- Implements spec Section 9's addendum: Collection sits above Unit,
--- purely additive per this session's product decisions (docs/
--- vietnamese-app-spec.md, Section 9 addendum). Groups units the way a
+-- purely additive. Groups units the way a
 -- convention program or publication would — partially resolves Open
 -- Decision #5 (Section 11) one level up from Unit, without forcing that
 -- decision fully (a Collection could be a program, a publication, or a

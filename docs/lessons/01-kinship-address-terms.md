@@ -1,6 +1,6 @@
 # Lesson 1 — Kinship (Address Terms, First Pass)
 
-*Built per [Curriculum-Lesson-Design-Framework.md](../Curriculum-Lesson-Design-Framework.md)'s Section 18 lesson-document template, and citing that document's numbering throughout ("Framework Section N" — not PRD.md's or TAD.md's, which reuse the same digits for unrelated sections). Companion visual spec: [Visual-Primitives-Reference.md](../Visual-Primitives-Reference.md).*
+*Follows the lesson template in [Curriculum-Lesson-Design-Framework.md](../Curriculum-Lesson-Design-Framework.md) (Section 18). "Framework Section N" refers to that document. Visuals: [Visual-Primitives-Reference.md](../Visual-Primitives-Reference.md).*
 
 ## Lesson Purpose
 

@@ -1,6 +1,6 @@
 # Thanh Việt — UI/UX Design System
 
-*Split from the master spec on August 11, 2026. See also: PRD (Product Requirements), TAD (Technical Architecture), Engineering Standards. Reference files: `design-homepage-handoff.md` (original v1 handoff), `homepage-mockup-reference.png` (visual mockup).*
+*See also: PRD (Product Requirements), TAD (Technical Architecture), Engineering Standards. Visual reference: `homepage-mockup-reference.png`.*
 
 ## 0. Philosophy
 
@@ -108,10 +108,8 @@ The homepage should function as a personalized learning workspace.
 
 ## 5a. Homepage Visual Direction (Resolved)
 
-**Provenance note:** this section was reconstructed from a one-line bracketed summary plus a reference mockup and detailed composition instructions given in chat — not copied from an actual prior draft, which was referenced but never actually received in this conversation (same situation as the original design-homepage-handoff.md earlier in this project, and handled the same way: flagged, not silently paraphrased). Correct anything below that doesn't match what was actually decided elsewhere.
-
-**Two conflicts the reference mockup introduced, resolved in favor of already-settled decisions rather than silently changed:**
-- The mockup's brand mark reads "TONEPATH." Treated as a mockup-generation artifact, not a rename — the app stays **Thanh Việt** (Section 12 of the archived spec, used consistently everywhere else).
+**Where the mockup differs from the spec, the spec wins:**
+- The mockup's brand mark reads "TONEPATH." That's a leftover from the mockup tool, not a rename. The app is **Thanh Việt**.
 - The mockup's sidebar shows "Learn (Courses)" instead of "Collections," and adds a 7th tab, "Social," not present anywhere else in this project. Section 1's tab taxonomy (**Home · Collections · Practice · Tone Tuner · Leaderboard · Profile** — six items, already Resolved) is kept as-is; the mockup's naming/addition is not adopted.
 
 **Composition — three columns, frozen as of this pass (not to be redesigned further without an explicit ask):**
@@ -119,7 +117,7 @@ The homepage should function as a personalized learning workspace.
 - **Center (dominant column):** greeting row → hero card → compact stat cards row → collections grid → recently-practiced row.
 - **Right (narrower rail):** Today's Goal, Leaderboard, Weak Words.
 
-**Hero card:** the clear dominant visual element on the page. **Solid emerald fill** (`--primary`), not a photo/ambient background — supersedes the original design-homepage-handoff.md's "warm sunlight, floating particles" treatment, which assumed real photography/imagery that doesn't exist yet. Large title, progress bar, dual CTAs ("Continue Journey" primary, "View Journey" secondary).
+**Hero card:** the clear dominant visual element on the page. **Solid emerald fill** (`--primary`), not a photo/ambient background — replacing the earlier "warm sunlight, floating particles" idea, which assumed real photography/imagery that doesn't exist yet. Large title, progress bar, dual CTAs ("Continue Journey" primary, "View Journey" secondary).
 
 **Per-collection accent colors:** each Collection card (Scriptures, Presentations, Talks, Favorites) gets its own accent tint rather than uniform styling — the mechanism for "should feel like Spotify playlists" (Section 5) without needing real per-collection photography yet.
 

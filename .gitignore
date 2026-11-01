@@ -46,3 +46,9 @@ next-env.d.ts
 
 # Playwright MCP console logs (local tool output)
 /.playwright-mcp/
+
+# AI coding-assistant files (local only)
+/CLAUDE.md
+/AGENTS.md
+/.claude/
+HANDOFF.md

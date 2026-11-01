@@ -1,6 +1,6 @@
 # Thanh Việt — Product Requirements Document (PRD)
 
-*Split from the master spec on August 11, 2026. See also: TAD (Technical Architecture), UI/UX Design System, Engineering Standards.*
+*See also: TAD (Technical Architecture), UI/UX Design System, Engineering Standards.*
 
 ## 1. Vision
 
@@ -18,8 +18,6 @@ The app is **Duolingo-*shaped*** (streaks, points, unlockable path, gamified dri
 ## 2. Learning Philosophy: Concept-First, Not Translation-First
 
 **Scope note:** everything in this section (and Sections 2a–2c below) applies specifically to the **Collections tab** (formerly "Learning tab") — the actual teaching engine. Two other systems are explicitly **out of scope here and follow their own separate design**: the **Tone Tuner** (see TAD Section 4) and **Practice / Personal Workspace** (Sections 6/6a below — deadline-driven rehearsal of a user's own fixed content, governed by its own research-backed principles, not the acquisition-focused ones below).
-
-*Full research basis: see `research-learning-foundations.md`. This section summarizes the design implications.*
 
 **The core premise.** Standard language apps lean on interlingual translation — mapping Vietnamese words onto English equivalents — which creates a permanent dependency where the learner never stops routing meaning through English. This app is built around **concept-first acquisition** instead: forming meaning directly in Vietnamese, the way a first language is learned, with translation available as a fallback/check rather than the primary teaching mechanism. Vietnamese is a strong fit for this — as an isolating/analytic language (no conjugation, no tense marking, no plural marking), meaning is carried by word order, particles, and context, which rewards pattern recognition over the rule-memorization habits English speakers default to.
 

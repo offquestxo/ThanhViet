@@ -2,7 +2,7 @@ import type { ToneKey } from "./tones";
 
 /**
  * Per-tone coaching copy for the Tone Tuner. DRAFT — every line here needs a
- * native speaker's check before it's final (showcase handoff, Oct 2026).
+ * native speaker's check before it's final (see docs/design/showcase-2026-10).
  *
  * dial: what the left and right ends of the tuner dial mean for this tone.
  * tip:  one line shown beside the sparrow while practising.

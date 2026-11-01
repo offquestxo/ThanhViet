@@ -1,78 +1,76 @@
 # Thanh Việt
 
-A Vietnamese-learning web app (custom lessons + a live pronunciation
-"Tone Tuner") built for a specific study group. See the full
-product spec for vision, phased roadmap, and data model.
+A Vietnamese learning app I'm building for our study group: around 20 to 50 people, mostly beginners, all learning the Northern (Hanoi) accent.
 
-## Stack
+Most language apps teach Vietnamese as a list of words with English next to them. Tones are what trip beginners up, though, so this app is built around hearing and saying them. Its main feature is the **Tone Tuner**: you say a word and a dial, like a guitar tuner, shows whether you hit the tone.
 
-- **Next.js (App Router) + TypeScript** — web/PWA client
-- **Tailwind CSS** — styling
-- **Supabase** — Postgres, Auth, Storage, Row-Level Security
-- **TanStack Query** — server-state fetching/caching
-- **Zustand** — local/UI state
-- **Vercel** — hosting
+It's a work in progress. Signing up needs approval from an admin, since the app is meant for one group.
 
-The Python/FastAPI audio-analysis service for the Tone Tuner (Praat-Parselmouth
-pitch tracking) is a separate service, built in a later phase.
+## What's in it
 
-## Getting started
+- **Collections.** Picture-based vocab sets (Food, Colors, The Body, Clothing, Home). Each has four short activities: See it, Hear it, Match and Say it.
+- **Tone Tuner (beta).** Pick one of the six tones (a à á ả ã ạ), say a practice word, and watch the needle. It moves live while you speak, then settles once the server has analyzed the recording. "In tune" means two separate Vietnamese speech models both heard the right word with the right tone.
+- **Home.** Your streak, a "continue where you left off" card, today's goal, and a tone of the day.
+- **Admin.** Approve new members and manage roles.
+- Installs on a phone as a PWA, with light and dark mode and a sparrow mascot.
+
+Coming later: **Practice**, where you paste in a talk or reading you need to give and the app breaks it into chunks to rehearse.
+
+## How it's built
+
+| Part | Tech |
+|---|---|
+| Web app | Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4 |
+| Data and auth | Supabase (Postgres, Auth, row-level security) |
+| State | TanStack Query, Zustand |
+| Tone engine | Python on [Modal](https://modal.com): Praat/Parselmouth for pitch, plus PhoWhisper and NVIDIA Parakeet speech recognition |
+| Hosting | Vercel |
+
+The browser never talks to the tone engine directly. Recordings go to `/api/tone/analyze` on the Next.js server, which forwards them to Modal with a shared secret.
+
+## Running it locally
+
+You'll need Node 20+ and a Supabase project.
 
 ```bash
 npm install
+cp .env.example .env.local   # then fill in the values
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Then open http://localhost:3000.
 
-### Environment variables
+**Environment variables** (see `.env.example`):
 
-Copy `.env.example` to `.env.local` and fill in values from your Supabase
-project (**Project Settings → API**):
+- `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`: safe to expose. Access is controlled by row-level security.
+- `SUPABASE_SECRET_KEY`: server only, bypasses RLS. Never give it a `NEXT_PUBLIC_` prefix.
+- `MODAL_TONE_ENGINE_URL`, `TONE_ENGINE_SHARED_SECRET`: only needed for the Tone Tuner and Say it.
 
-```bash
-cp .env.example .env.local
-```
+**Database:** run the files in `supabase/migrations/` in order in the Supabase SQL Editor. `npm run seed -- content/units/unit-1.example.json` loads the sample lesson.
 
-- `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` — safe for the
-  browser; access is enforced by Postgres RLS, not by hiding these.
-- `SUPABASE_SECRET_KEY` — **server-only**. Bypasses RLS. Never prefix with
-  `NEXT_PUBLIC_`, never import into a Client Component.
+**Tone engine:** see [`tone-analysis/README.md`](tone-analysis/README.md) for setup and deployment.
 
-`.env.local` is gitignored. For deployed environments (e.g. Vercel), set the
-same three variables in the project's Environment Variables settings.
-
-### Database schema
-
-The schema + Row-Level Security policies live in
-[`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql).
-Run it once against a fresh Supabase project via **SQL Editor → New query**
-in the Supabase dashboard. Future schema changes should be added as new
-numbered files in `supabase/migrations/`.
-
-### Project structure
+## Project layout
 
 ```
-src/
-  app/
-    login/, signup/        — auth screens
-    auth/callback/          — handles Supabase email-confirmation redirects
-    dashboard/               — minimal protected page (proves auth + RLS work)
-    providers.tsx            — TanStack Query provider
-  lib/supabase/
-    client.ts                — browser client (anon key)
-    server.ts                — server client (anon key, cookie-based session)
-    server-admin.ts          — service-role client, server-only, bypasses RLS
-    middleware.ts             — session-refresh logic used by src/proxy.ts
-    types.ts                  — hand-written Database types (see file header)
-  proxy.ts                   — Next.js Proxy (formerly "middleware"): refreshes
-                                the auth session and gates protected routes
-supabase/
-  migrations/                — SQL schema + RLS, run manually for now
+src/app/          pages and API routes
+src/components/   UI (app shell, lessons, tone tuner, vocab activities)
+src/lib/          data access, tone logic, Supabase clients
+supabase/         SQL migrations
+content/          lesson, vocab and Tone Tuner word lists (JSON)
+public/           audio, vocab pictures, mascot, icons
+tone-analysis/    Python tone engine and its tests
+docs/             product spec, architecture, design system, curriculum
 ```
 
-## Deploying
+## Docs
 
-Import the repo at [vercel.com/new](https://vercel.com/new), set the three
-Supabase environment variables above in the Vercel project settings, and
-deploy. No other configuration is required.
+- [Product requirements](docs/PRD.md)
+- [Technical architecture](docs/TAD.md)
+- [UI/UX design system](docs/UI-UX-Design-System.md)
+- [Curriculum and lesson design](docs/Curriculum-Lesson-Design-Framework.md)
+- [Engineering standards](docs/Engineering-Standards.md)
+
+## Audio and credits
+
+Placeholder vocab audio is generated with Google Cloud Text-to-Speech until native recordings are done. Openly licensed recordings used only to test the tone engine are credited in [`tone-analysis/test-audio/SOURCES.md`](tone-analysis/test-audio/SOURCES.md). They aren't included in the repo.

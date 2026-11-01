@@ -27,7 +27,7 @@
 --    half-life heuristic* for Phase 1a, not literal HLR:
 --      - `interval_days` is `real`, not `integer` — HLR half-lives are
 --        continuous, not day-granular like SM-2.
---      - the intended update rule (app-layer, not built this session):
+--      - the intended update rule (app-layer, not built yet):
 --        recall probability p(t) = 2^(-t / half_life), which is exactly
 --        0.5 at t = half_life — so `next_review_at` = `last_practiced_at`
 --        + `interval_days` falls naturally out of treating `interval_days`

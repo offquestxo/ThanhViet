@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { bumpDailyStreak } from "@/lib/streak";
 
 // Fixed award per completed chunk (Section 10: "production > recognition"
-// isn't yet reflected as a variable weight — this session's Review step is
+// isn't yet reflected as a variable weight — the Review step is
 // the first thing that actually writes points, so it starts flat. Revisit
 // once Speak/Produce have real pass/fail signals worth weighting on.)
 const POINTS_PER_CHUNK = 10;

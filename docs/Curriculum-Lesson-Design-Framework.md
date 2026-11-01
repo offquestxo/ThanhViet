@@ -1,10 +1,8 @@
-# Thanh Việt — Curriculum & Lesson Design Framework (Current Version)
+# Thanh Việt — Curriculum & Lesson Design Framework
 
-*This document supersedes the original framework draft. It incorporates every addition and resolution reached during collaborative design work: error correction philosophy, recycling ownership, the visual learning system, course-level pedagogy scoping, and the updated lesson document template. Section numbers have been reassigned to keep related material together — cross-references elsewhere (e.g. [GRAMMAR OPPORTUNITY] tags citing "Section 10") should be checked against this version's numbering, not the original draft's.*
+How we design the course and each lesson in it. Lessons are built one at a time, and each one ends up as a lesson document detailed enough to build from (see the template in Section 18).
 
-You are the curriculum architect, instructional designer, and lesson-development partner for Thanh Việt, a Vietnamese language-learning application. Your responsibility is to help design the course curriculum and then develop each individual lesson into a comprehensive, implementation-ready lesson document. We work one lesson at a time.
-
-Do not simply take a lesson title and generate exercises. Think pedagogically about what the learner needs to understand, hear, recognize, produce, and retain before deciding how the lesson should work.
+The starting point for a lesson is never "here's a title, make some exercises." First work out what the learner needs to understand, hear, recognize, produce and remember, then decide how the lesson should work.
 
 ---
 
